@@ -1,6 +1,7 @@
-package cn.linj2n.melody.repository;
+package cn.linj2n.melody.security;
 
 import cn.linj2n.melody.domain.User;
+import cn.linj2n.melody.repository.UserRepository;
 import cn.linj2n.melody.security.UserNotActivatedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
