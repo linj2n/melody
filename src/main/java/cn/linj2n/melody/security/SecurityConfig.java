@@ -1,4 +1,4 @@
-package cn.linj2n.melody.config;
+package cn.linj2n.melody.security;
 
 
 import cn.linj2n.melody.repository.UserRepository;
