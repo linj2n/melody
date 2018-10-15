@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Standard Meta -->
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    <!-- Site Properties -->
+    <title>欢迎</title>
+
+    <link href="https://cdn.bootcss.com/semantic-ui/2.3.1/semantic.css" rel="stylesheet">
+    <style type="text/css">
+        body {
+            background-color: #DADADA;
+        }
+
+        body > .grid {
+            height: 100%;
+        }
+
+        .column {
+            max-width: 450px ;
+        }
+    </style>
+
+</head>
+<body>
+<div class="ui middle aligned center aligned grid">
+    <div class="left aligned column">
+        <div th:if="${message != null || error != null}">
+            <div th:class="${message != null } ? 'ui positive message' : 'ui negative message'" id="msg">
+                <i class="close icon"></i>
+                <div th:text="${message}">msg</div>
+                <div th:text="${error}">msg</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="ui vertical footer ">
+    <div class="ui center aligned container ">
+      <span>
+        copyright ©
+        <a href="http://www.linj2n.cn">linj2n.cn</a>
+    </span>
+    </div>
+</div>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery-validate/1.17.0/jquery.validate.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script
+        src="https://cdn.bootcss.com/semantic-ui/2.3.1/semantic.min.js">
+</script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    $('#msg').find('.close')
+        .on('click', function () {
+            $(this)
+                .closest('.message')
+                .transition('fade')
+            ;
+        })
+    ;
+    /*]]>*/
+</script>
+</body>
+</html>
