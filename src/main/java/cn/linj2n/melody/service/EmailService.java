@@ -2,6 +2,7 @@ package cn.linj2n.melody.service;
 
 import cn.linj2n.melody.domain.User;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 
 import org.apache.commons.lang.CharEncoding;
@@ -18,6 +19,7 @@ import org.thymeleaf.spring4.SpringTemplateEngine;
 
 import javax.mail.internet.MimeMessage;
 import java.util.Locale;
+import java.util.concurrent.Future;
 
 @Service
 public class EmailService {
@@ -57,18 +59,18 @@ public class EmailService {
         }
     }
 
-    @Async
-    public void sendActivationEmail(User user, String baseUrl) {
-        logger.debug("Sending activation e-mail to '{}'", user.getEmail());
-        /* Only support zh_CN language */
-        Locale locale = new Locale("zh","CN");
-        Context context = new Context(locale);
-        context.setVariable("user", user);
-        context.setVariable("baseUrl", baseUrl);
-        String content = templateEngine.process("mails/activationEmail", context);
-        String subject = messageSource.getMessage("email.activation.title", null, locale);
-        sendEmail(user.getEmail(), subject, content, false, true);
-    }
+//    @Async
+//    public void sendActivationEmail(User user, String baseUrl) {
+//        logger.debug("Sending activation e-mail to '{}'", user.getEmail());
+//        /* Only support zh_CN language */
+//        Locale locale = new Locale("zh","CN");
+//        Context context = new Context(locale);
+//        context.setVariable("user", user);
+//        context.setVariable("baseUrl", baseUrl);
+//        String content = templateEngine.process("mails/activationEmail", context);
+//        String subject = messageSource.getMessage("email.activation.title", null, locale);
+//        sendEmail(user.getEmail(), subject, content, false, true);
+//    }
 
     @Async
     public void sendPasswordResetMail(User user, String baseUrl) {
@@ -78,8 +80,9 @@ public class EmailService {
         Context context = new Context(locale);
         context.setVariable("user", user);
         context.setVariable("baseUrl", baseUrl);
-        String content = templateEngine.process("mails/resetPasswordEmail", context);
+        String content = templateEngine.process("mails/reset-password-email", context);
         String subject = messageSource.getMessage("email.resetPwd.title", null, locale);
         sendEmail(user.getEmail(),subject,content,false,true);
+        logger.info("Execute method asynchronously. {}", Thread.currentThread().getName());
     }
 }
