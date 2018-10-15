@@ -2,7 +2,6 @@ package cn.linj2n.melody.domain;
 
 import cn.linj2n.melody.core.AbstractTimedModel;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Email;
@@ -105,10 +104,16 @@ public class User extends AbstractTimedModel {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Post> posts = new HashSet<>();
 
+    protected User() {
+
+    }
     public User(Long id) {
         setId(id);
     }
 
+    public User(String login) {
+        this.login = login;
+    }
     @Override
     public int hashCode() {
         return 31;
