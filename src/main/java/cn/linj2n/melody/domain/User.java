@@ -98,11 +98,6 @@ public class User extends AbstractTimedModel {
             inverseJoinColumns = {@JoinColumn(name = "authority_id", referencedColumnName = "id")})
     private Set<Authority> authorities = new HashSet<>();
 
-    /**
-     * 用户所有文章集合
-     */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<Post> posts = new HashSet<>();
 
     protected User() {
 

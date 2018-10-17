@@ -15,11 +15,6 @@ import java.util.Set;
 @Setter
 public class Post extends AbstractTimedModel {
 
-    /**
-     * 文章所属用户
-     */
-    @ManyToOne
-    private User user;
 
     /**
      * 文章标题
@@ -63,7 +58,7 @@ public class Post extends AbstractTimedModel {
      */
     @ManyToMany(cascade = {
             CascadeType.MERGE,
-            CascadeType.PERSIST
+            CascadeType.PERSIST,
     },fetch = FetchType.LAZY)
     @JoinTable(name = "post_tag" ,
             joinColumns = {@JoinColumn(name = "post_id", referencedColumnName = "id")},
@@ -72,15 +67,30 @@ public class Post extends AbstractTimedModel {
 
     public void addTag(Tag tag) {
         tags.add(tag);
-        tag.getPosts().add(this);
     }
 
     public void removeTag(Tag tag) {
         tags.remove(tag);
-        tag.getPosts().remove(this);
     }
 
+    public void addCategory(Category category) {
+        categories.add(category);
+    }
+
+    public void removeCategory(Category category) {
+        categories.remove(category);
+    }
+
+
     protected Post() {
+    }
+
+    public Post(String title, String content, String status, String url, Long views) {
+        this.title = title;
+        this.content = content;
+        this.status = status;
+        this.url = url;
+        this.views = views;
     }
 
     @Override

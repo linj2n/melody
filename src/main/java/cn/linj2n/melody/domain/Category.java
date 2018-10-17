@@ -24,6 +24,12 @@ public class Category extends AbstractModel{
     @ManyToMany(mappedBy = "categories")
     private Set<Post> posts = new HashSet<>();
 
+    protected Category() {}
+
+    public Category(String name) {
+        this.name = name;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
