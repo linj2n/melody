@@ -19,11 +19,12 @@ public class TagServiceImpl implements TagService{
 
     private static final Logger logger = LoggerFactory.getLogger(TagServiceImpl.class);
 
-    @Autowired
-    private PostRepository postRepository;
+    private TagRepository tagRepository;
 
     @Autowired
-    private TagRepository tagRepository;
+    public TagServiceImpl(TagRepository tagRepository) {
+        this.tagRepository = tagRepository;
+    }
 
     @Override
     public Tag createTag(String tagName) {

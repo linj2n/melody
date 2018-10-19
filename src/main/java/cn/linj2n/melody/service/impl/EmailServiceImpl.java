@@ -26,16 +26,18 @@ public class EmailServiceImpl implements EmailService {
     @Value("${spring.mail.username}")
     private String FROM_ADRRESS ;
 
-
-    @Autowired
     private SpringTemplateEngine templateEngine;
 
-    @Autowired
     private MessageSource messageSource;
 
-    @Autowired
     private JavaMailSenderImpl javaMailSender;
 
+    @Autowired
+    public EmailServiceImpl(JavaMailSenderImpl javaMailSender,MessageSource messageSource,SpringTemplateEngine springTemplateEngine) {
+        this.javaMailSender = javaMailSender;
+        this.messageSource = messageSource;
+        this.templateEngine = springTemplateEngine;
+    }
 
     @Override
     @Async

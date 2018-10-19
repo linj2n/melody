@@ -12,7 +12,11 @@ public class CategoryServiceImpl implements CategoryService {
 
     private static final Logger logger = LoggerFactory.getLogger(CategoryService.class);
 
+    private CategoryRepository categoryRepository;
+
     @Autowired
-    CategoryRepository categoryRepository;
+    public CategoryServiceImpl(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
 
 }

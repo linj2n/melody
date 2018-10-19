@@ -19,8 +19,12 @@ public class PostServiceImpl implements PostService{
 
     private static final Logger logger = LoggerFactory.getLogger(PostServiceImpl.class);
 
-    @Autowired
     PostRepository postRepository;
+
+    @Autowired
+    public PostServiceImpl(PostRepository postRepository) {
+        this.postRepository = postRepository;
+    }
 
     @Override
     public void removePostByName(String PostName) {

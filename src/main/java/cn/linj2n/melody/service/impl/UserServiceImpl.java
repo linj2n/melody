@@ -24,14 +24,18 @@ public class UserServiceImpl implements UserService{
 
     private Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
     private UserRepository userRepository;
 
-    @Autowired
     private AuthorityRepository authorityRepository;
+
+    @Autowired
+    public UserServiceImpl(UserRepository userRepository, AuthorityRepository authorityRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.authorityRepository = authorityRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     public User createUserInformation(String login, String password, String username, String email) {
