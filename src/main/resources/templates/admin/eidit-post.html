@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Material Design Bootstrap</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap core CSS -->
+    <link href="../../static/admin/plugins/md-bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="../../static/admin/plugins/md-bootstrap/css/mdb.min.css" rel="stylesheet">
+    <!-- Your custom styles (optional) -->
+    <link href="../../static/admin/plugins/md-bootstrap/css/style.css" rel="stylesheet">
+    <!-- Simplemde-Markdown-Editor -->
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"> -->
+    <link rel="stylesheet" href="../../static/admin/plugins/lepture-markdown-editor/editor/editor.css" />
+    <style type="text/css">
+        .CodeMirror {
+    height: 500px;}
+    </style>
+</head>
+
+<body class="grey lighten-3">
+
+<!--Main Navigation-->
+<header>
+
+    <!-- Navbar -->
+    <nav class="navbar fixed-top navbar-expand-sm navbar-light white" id="none-item-nav">
+        <div class="container-fluid">
+            <!-- Collapse -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Links -->
+            <div class="collapse navbar-collapse" id="#">
+
+                <!-- Left -->
+                <ul class="navbar-nav mr-auto"></ul>
+
+                <!-- Right -->
+                <ul class="navbar-nav nav-flex-icons">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+                           aria-expanded="false">
+                            <i class="fa fa-user"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-default" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- Navbar -->
+    <!-- Navbar -->
+    <nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar" id="item-nav">
+        <div class="container-fluid">
+            <!-- Brand -->
+            <a class="navbar-brand waves-effect" href="#"
+               target="_blank">
+                <strong class="blue-text">Melody</strong>
+            </a>
+
+            <!-- Collapse -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Links -->
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+                <!-- Left -->
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link waves-effect" href="#"
+                           target="_blank"><strong>发布文章</strong></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link waves-effect" href="#"
+                           target="_blank"><strong>文章管理</strong></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link waves-effect" href="#"
+                           target="_blank"><strong>分类与标签</strong></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link waves-effect" href="#"
+                           target="_blank"><strong>我的账号</strong></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link waves-effect" href="#"
+                           target="_blank"><strong>系统设置</strong></a>
+                    </li>
+                </ul>
+
+                <!-- Right -->
+                <ul class="navbar-nav nav-flex-icons">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link border border-light rounded waves-effect"
+                           target="_blank">
+                            <i class="fa fa-user mr-2"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- Navbar -->
+
+
+
+    <!-- Sidebar -->
+    <div class="sidebar-fixed position-fixed">
+        <div class="logo-wrapper waves-effect text-center">
+            <a class="navbar-brand" href="#"
+               target="_blank"><strong class="blue-text">Melody</strong></a>
+        </div>
+        <div class="list-group list-group-flush">
+            <a href="#" class="list-group-item active waves-effect">
+                <i class="fa fa-pie-chart mr-3"></i>发布文章
+            </a>
+            <a href="#" class="list-group-item list-group-item-action waves-effect">
+                <i class="fa fa-table mr-3"></i>文章管理</a>
+            <a href="#" class="list-group-item list-group-item-action waves-effect">
+                <i class="fa fa-map mr-3"></i>分类与标签</a>
+            <a href="#" class="list-group-item list-group-item-action waves-effect">
+                <i class="fa fa-money mr-3"></i>系统设置</a>
+            <a href="#" class="list-group-item list-group-item-action waves-effect">
+                <i class="fa fa-user mr-3"></i> 我的账号</a>
+        </div>
+    </div>
+    <!-- Sidebar -->
+
+</header>
+<!--Main Navigation-->
+
+<!--Main layout-->
+<main class="pt-5 mx-lg-5">
+    <div class="container-fluid mt-4">
+        <!-- Heading -->
+        <!-- Heading -->
+        <!--Grid row-->
+        <div class="row wow fadeIn">
+            <div class="col-lg-12 col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title"><i class="fa fa-edit"></i><a> 编辑文章</a></h4>
+                        <hr>
+<div class="md-form">
+    <input id="input-char-counter" type="text" length="10" class="form-control">
+    <label for="input-char-counter">Input text</label>
+</div>
+                        <textarea id="exampleFormControlTextarea1"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Grid row-->
+
+    </div>
+</main>
+<!--Main layout-->
+
+<!--Footer-->
+<footer class="page-footer text-center font-small mt-4 ">
+    <!--Copyright-->
+    <div class="footer-copyright">
+        © 2018 Copyright:
+        <a href="#" target="_blank"> linj2n.cn </a>
+    </div>
+    <!--/.Copyright-->
+
+</footer>
+<!--/.Footer-->
+<!-- SCRIPTS -->
+<!-- JQuery -->
+<script type="text/javascript" src="../../static/admin/plugins/md-bootstrap/js/jquery-3.3.1.min.js"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="../../static/admin/plugins/md-bootstrap/js/popper.min.js"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="../../static/admin/plugins/md-bootstrap/js/bootstrap.min.js"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="../../static/admin/plugins/md-bootstrap/js/mdb.min.js"></script>
+<!-- Simplemde-Markdown-Editor -->
+<!-- <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script> -->
+<script type="text/javascript" src="../../static/admin/plugins/lepture-markdown-editor/editor/editor.js"></script>
+<script type="text/javascript" src="../../static/admin/plugins/lepture-markdown-editor/editor/marked.js"></script>
+<!-- Initializations -->
+<script type="text/javascript">
+    // Animations initialization
+    new WOW().init();
+    var editor = new Editor();
+editor.render();
+</script>
+
+<!-- Charts -->
+<script>
+
+</script>
+</body>
+
+</html>
