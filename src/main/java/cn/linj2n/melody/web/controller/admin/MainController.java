@@ -6,8 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,14 +21,15 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 public class MainController {
     private static final Logger logger = LoggerFactory.getLogger(MainController.class);
 
-    @Autowired
     private UserService userService;
 
-    @Autowired
     private MessageSource messageSource;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    public MainController(UserService userService, MessageSource messageSource) {
+        this.userService = userService;
+        this.messageSource = messageSource;
+    }
 
     @RequestMapping(value = "/login", method = GET)
     public String login() {
@@ -48,7 +47,7 @@ public class MainController {
     }
     @RequestMapping(value = "/account/password_reset/{resetKey}", method = GET)
     public ModelAndView getPasswordResetView(@PathVariable final String resetKey, ModelMap model, Locale local) {
-        User user = userService.getUserByPasswordResetKey(resetKey).orElse(null);
+        User user = userService.geptUserByPasswordResetKey(resetKey).orElse(null);
         if (user == null) {
             logger.info("Get URL /account/password_reset/{} : Wrong Key.", resetKey);
             model.addAttribute("error",messageSource.getMessage("account.wrongResetLink",null,local));
@@ -57,5 +56,10 @@ public class MainController {
         model.addAttribute("user", user);
         model.addAttribute("resetKey", resetKey);
         return new ModelAndView("/admin/password-reset", model);
+    }
+
+    @RequestMapping(value = "/blank", method = GET)
+    public String blank() {
+        return "admin/blank";
     }
 }
