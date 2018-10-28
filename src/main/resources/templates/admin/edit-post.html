@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
+<html xmlns:th="http://www.thymeleaf.org" th:with="title='编辑文章',styles_version='local',active_tab='edit-post'">
+<head th:replace="admin/head :: common_header(${title},${styles_version})">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -27,7 +26,7 @@
 <body class="grey lighten-4">
 
 <!--Main Navigation-->
-<header>
+<header th:replace="admin/head :: common_nav(${active_tab})">
 
     <!-- Navbar -->
     <nav class="navbar fixed-top navbar-expand-sm navbar-light white" id="none-item-nav">
@@ -127,7 +126,7 @@
                target="_blank"><strong class="blue-text">Melody</strong></a>
         </div>
         <div class="list-group list-group-flush">
-            <a href="#" class="list-group-item active waves-effect">
+            <a href="#" class="list-group-item waves-effect" >
                 <i class="fa fa-pie-chart mr-3"></i>发布文章
             </a>
             <a href="#" class="list-group-item list-group-item-action waves-effect">
@@ -300,7 +299,7 @@
 <script type="text/javascript" src="../../static/admin/plugins/lepture-markdown-editor/editor/marked.js"></script>
 
 <!-- Select2 -->
-<script type="text/javascript" src="https://cdn.staticfile.org/select2/4.0.6-rc.1/js/select2.min.js"></script>
+<script type="text/javascript" src="../../static/admin/plugins/select2/js/select2.js"></script>
 <!-- Initializations -->
 <script type="text/javascript">
     // Animations initialization
