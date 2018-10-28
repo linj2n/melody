@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="common_header(title,styles_version)">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title th:text="${title}">This is an title for current page</title>
+    <th:block th:if="${styles_version} == 'cdn'">
+        <!-- Common styles from CDN-->
+        <!-- Font Awesome -->
+        <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css}">
+    </th:block>
+    <th:block th:if="${styles_version} == 'local'">
+        <!-- Common styles from local repository-->
+        <!-- Font Awesome -->
+        <link rel="stylesheet" th:href="@{/admin/plugins/font-awesome-4.7.0/css/font-awesome.min.css}">
+        <!-- Bootstrap core CSS -->
+        <link th:href="@{/admin/plugins/md-bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+        <!-- Material Design Bootstrap -->
+        <link th:href="@{/admin/plugins/md-bootstrap/css/mdb.min.css}" rel="stylesheet">
+        <!-- Your custom styles (optional) -->
+        <link th:href="@{/admin/plugins/md-bootstrap/css/style.css}" rel="stylesheet">
+        <!-- Lepture-Markdown-Editor -->
+        <link rel="stylesheet" th:href="@{/admin/plugins/lepture-markdown-editor/editor/editor.css}">
+        <!-- Select2  -->
+        <link rel="stylesheet" th:href="@{/admin/plugins/select2/css/select2.css}">
+    </th:block>
+</head>
+
+<body>
+    <header th:fragment="common_nav(active_tab)">
+        <!-- Navbar -->
+        <nav class="navbar fixed-top navbar-expand-sm navbar-light white" id="none-item-nav">
+            <div class="container-fluid">
+                <!-- Collapse -->
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Links -->
+                <div class="collapse navbar-collapse" id="#">
+
+                    <!-- Left -->
+                    <ul class="navbar-nav mr-auto"></ul>
+
+                    <!-- Right -->
+                    <ul class="navbar-nav nav-flex-icons">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                               aria-haspopup="true"
+                               aria-expanded="false">
+                                <i class="fa fa-user"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right dropdown-default"
+                                 aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Navbar -->
+        <!-- Navbar -->
+        <nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar" id="item-nav">
+            <div class="container-fluid">
+                <!-- Brand -->
+                <a class="navbar-brand waves-effect" href="#"
+                   target="_blank">
+                    <strong class="blue-text">Melody</strong>
+                </a>
+
+                <!-- Collapse -->
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Links -->
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+                    <!-- Left -->
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link waves-effect" href="#"
+                               target="_blank"><strong>发布文章</strong></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link waves-effect" href="#"
+                               target="_blank"><strong>文章管理</strong></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link waves-effect" href="#"
+                               target="_blank"><strong>分类/标签</strong></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link waves-effect" href="#"
+                               target="_blank"><strong>我的账号</strong></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link waves-effect" href="#"
+                               target="_blank"><strong>系统设置</strong></a>
+                        </li>
+                    </ul>
+
+                    <!-- Right -->
+                    <ul class="navbar-nav nav-flex-icons">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link border border-light rounded waves-effect"
+                               target="_blank">
+                                <i class="fa fa-user mr-2"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Navbar -->
+
+
+        <!-- Sidebar -->
+        <div class="sidebar-fixed position-fixed">
+            <div class="logo-wrapper waves-effect text-center">
+                <a class="navbar-brand" href="#"
+                   target="_blank"><strong class="blue-text">Melody</strong></a>
+            </div>
+            <div class="list-group list-group-flush">
+                <a href="#" class="list-group-item waves-effect" th:classappend="${active_tab == 'edit-post' ? 'active' : ''}">
+                    <i class="fa fa-pie-chart mr-3"></i>发布文章
+                </a>
+                <a href="#" class="list-group-item list-group-item-action waves-effect" th:classappend="${active_tab == 'edit-post' ? 'active' : ''}">
+                    <i class="fa fa-table mr-3"></i>文章管理</a>
+                <a href="#" class="list-group-item list-group-item-action waves-effect" th:classappend="${active_tab == 'tag-category' ? 'active' : ''}">
+                    <i class="fa fa-map mr-3"></i>分类与标签</a>
+                <a href="#" class="list-group-item list-group-item-action waves-effect" th:classappend="${active_tab == 'sys-setting' ? 'active' : ''}">
+                    <i class="fa fa-money mr-3"></i>系统设置</a>
+                <a href="#" class="list-group-item list-group-item-action waves-effect" th:classappend="${active_tab == 'user-setting' ? 'active' : ''}">
+                    <i class="fa fa-user mr-3"></i> 我的账号</a>
+            </div>
+        </div>
+        <!-- Sidebar -->
+    </header>
+</body>
+</html>
