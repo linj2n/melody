@@ -47,7 +47,7 @@ public class MainController {
     }
     @RequestMapping(value = "/account/password_reset/{resetKey}", method = GET)
     public ModelAndView getPasswordResetView(@PathVariable final String resetKey, ModelMap model, Locale local) {
-        User user = userService.geptUserByPasswordResetKey(resetKey).orElse(null);
+        User user = userService.getUserByPasswordResetKey(resetKey).orElse(null);
         if (user == null) {
             logger.info("Get URL /account/password_reset/{} : Wrong Key.", resetKey);
             model.addAttribute("error",messageSource.getMessage("account.wrongResetLink",null,local));
