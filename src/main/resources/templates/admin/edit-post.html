@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:with="title='编辑文章',styles_version='local',active_tab='edit-post'">
-<head th:replace="admin/head :: common_header(${title},${styles_version})">
+<html xmlns:th="http://www.thymeleaf.org" th:with="title='编辑文章',styles_version='local',scripts_version='local',active_tab='edit-post'">
+<head th:replace="admin/header :: common_header(${title},${styles_version})">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -26,7 +26,7 @@
 <body class="grey lighten-4">
 
 <!--Main Navigation-->
-<header th:replace="admin/head :: common_nav(${active_tab})">
+<header th:replace="admin/header :: common_nav(${active_tab})">
 
     <!-- Navbar -->
     <nav class="navbar fixed-top navbar-expand-sm navbar-light white" id="none-item-nav">
@@ -273,8 +273,9 @@
 </main>
 <!--Main layout-->
 
+
 <!--Footer-->
-<footer class="page-footer text-center font-small mt-4 ">
+<footer class="page-footer text-center font-small mt-4" th:replace="admin/footer :: common_footer(${scripts_version})">
     <!--Copyright-->
     <div class="footer-copyright">
         © 2018 Copyright:
@@ -282,26 +283,28 @@
     </div>
     <!--/.Copyright-->
 
-</footer>
-<!--/.Footer-->
-<!-- SCRIPTS -->
-<!-- JQuery -->
-<script type="text/javascript" src="../../static/admin/plugins/md-bootstrap/js/jquery-3.3.1.min.js"></script>
-<!-- Bootstrap tooltips -->
-<script type="text/javascript" src="../../static/admin/plugins/md-bootstrap/js/popper.min.js"></script>
-<!-- Bootstrap core JavaScript -->
-<script type="text/javascript" src="../../static/admin/plugins/md-bootstrap/js/bootstrap.min.js"></script>
-<!-- MDB core JavaScript -->
-<script type="text/javascript" src="../../static/admin/plugins/md-bootstrap/js/mdb.min.js"></script>
-<!-- Simplemde-Markdown-Editor -->
-<!-- <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script> -->
-<script type="text/javascript" src="../../static/admin/plugins/lepture-markdown-editor/editor/editor.js"></script>
-<script type="text/javascript" src="../../static/admin/plugins/lepture-markdown-editor/editor/marked.js"></script>
+    <!--/.Footer-->
+    <!-- SCRIPTS -->
+    <!-- JQuery -->
+    <script type="text/javascript" src="../../static/admin/plugins/md-bootstrap/js/jquery-3.3.1.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" src="../../static/admin/plugins/md-bootstrap/js/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="../../static/admin/plugins/md-bootstrap/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="../../static/admin/plugins/md-bootstrap/js/mdb.min.js"></script>
+    <!-- Simplemde-Markdown-Editor -->
+    <script type="text/javascript" src="../../static/admin/plugins/lepture-markdown-editor/editor/editor.js"></script>
+    <script type="text/javascript" src="../../static/admin/plugins/lepture-markdown-editor/editor/marked.js"></script>
 
-<!-- Select2 -->
-<script type="text/javascript" src="../../static/admin/plugins/select2/js/select2.js"></script>
+    <!-- Select2 -->
+    <script type="text/javascript" src="../../static/admin/plugins/select2/js/select2.js"></script>
+
+</footer>
+
+
 <!-- Initializations -->
-<script type="text/javascript">
+<script>
     // Animations initialization
     $(document).ready(function () {
         new WOW().init();
@@ -314,11 +317,6 @@
             tags: true
         });
     });
-</script>
-
-<!-- Charts -->
-<script>
-
 </script>
 </body>
 
