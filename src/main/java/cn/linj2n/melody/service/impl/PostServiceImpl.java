@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -51,5 +50,20 @@ public class PostServiceImpl implements PostService{
                     e.getCategories().size();
                 })
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<Post> getPost(Long id) {
+        return postRepository.findOptionalById(id).map(u -> {
+            u.getTags().size();
+            u.getCategories().size();
+            return u;
+        });
+    }
+
+    @Override
+    public Post createPost(){
+        return postRepository.save(new Post("Untitled"));
     }
 }

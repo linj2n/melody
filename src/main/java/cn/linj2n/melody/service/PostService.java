@@ -21,9 +21,13 @@ public interface PostService {
      */
     Optional<Post> getPost(String postTitle);
 
+    Optional<Post> getPost(Long id);
+
     /**
      * 获取所有的文章，包括文章所对应的标签
      * @return 返回所有文章及其对应的标签
      */
     List<Post> listPosts();
+
+    Post createPost();
 }
