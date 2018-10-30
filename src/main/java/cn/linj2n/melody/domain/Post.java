@@ -32,7 +32,7 @@ public class Post extends AbstractTimedModel {
     private String status;
 
     /**
-     * 文章资源 url
+     * 文章 url
      */
     private String url;
 
@@ -49,7 +49,7 @@ public class Post extends AbstractTimedModel {
             CascadeType.PERSIST
     },fetch = FetchType.LAZY)
     @JoinTable(name = "post_category" ,
-            joinColumns = {@JoinColumn(name = "psot_id", referencedColumnName = "id")},
+            joinColumns = {@JoinColumn(name = "post_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "category_id", referencedColumnName = "id")})
     private Set<Category> categories = new HashSet<>();
 
@@ -83,6 +83,10 @@ public class Post extends AbstractTimedModel {
 
 
     protected Post() {
+    }
+
+    public Post(String title) {
+        this.title = title;
     }
 
     public Post(String title, String content, String status, String url, Long views) {
