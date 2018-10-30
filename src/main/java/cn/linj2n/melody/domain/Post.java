@@ -1,6 +1,7 @@
 package cn.linj2n.melody.domain;
 
 import cn.linj2n.melody.core.AbstractTimedModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -44,6 +45,7 @@ public class Post extends AbstractTimedModel {
     /**
      * 文章所属的类别
      */
+    @JsonIgnore
     @ManyToMany(cascade = {
             CascadeType.MERGE,
             CascadeType.PERSIST
@@ -56,6 +58,7 @@ public class Post extends AbstractTimedModel {
     /**
      * 文章所属的标签
      */
+    @JsonIgnore
     @ManyToMany(cascade = {
             CascadeType.MERGE,
             CascadeType.PERSIST,
