@@ -2,6 +2,7 @@ package cn.linj2n.melody.domain;
 
 import cn.linj2n.melody.core.AbstractModel;
 import cn.linj2n.melody.core.AbstractTimedModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,6 +22,7 @@ public class Category extends AbstractModel{
     @Column(nullable = false)
     private String name;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "categories")
     private Set<Post> posts = new HashSet<>();
 
