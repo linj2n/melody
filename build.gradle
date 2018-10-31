@@ -98,5 +98,6 @@ dependencies {
 	compile group: 'commons-lang', name: 'commons-lang', version: '2.6'
 
 	compileOnly "org.projectlombok:lombok:1.16.16"
+	compile group: 'org.modelmapper', name: 'modelmapper', version: '2.3.0'
 
 }
