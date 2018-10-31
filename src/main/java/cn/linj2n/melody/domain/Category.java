@@ -46,4 +46,12 @@ public class Category extends AbstractModel{
     public int hashCode() {
         return name.hashCode();
     }
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                "name='" + name + '\'' +
+                ", posts=" + posts +
+                "} " + super.toString();
+    }
 }

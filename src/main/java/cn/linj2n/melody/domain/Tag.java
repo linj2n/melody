@@ -44,4 +44,12 @@ public class Tag extends AbstractModel{
     public int hashCode() {
         return name.hashCode();
     }
+
+    @Override
+    public String toString() {
+        return "Tag{" +
+                "name='" + name + '\'' +
+                ", posts=" + posts +
+                "} " + super.toString();
+    }
 }

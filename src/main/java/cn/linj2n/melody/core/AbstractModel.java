@@ -25,5 +25,11 @@ public abstract class AbstractModel implements Comparable<AbstractModel>, Serial
         this.id = id;
     }
 
+    @Override
+    public String toString() {
+        return "AbstractModel{" +
+                "id=" + id +
+                '}';
+    }
 }
 

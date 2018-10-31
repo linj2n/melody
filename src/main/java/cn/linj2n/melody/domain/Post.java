@@ -112,4 +112,17 @@ public class Post extends AbstractTimedModel {
     public int hashCode() {
         return 31;
     }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", status='" + status + '\'' +
+                ", url='" + url + '\'' +
+                ", views=" + views +
+                ", categories=" + categories +
+                ", tags=" + tags +
+                '}';
+    }
 }
