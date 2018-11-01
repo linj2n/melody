@@ -19,7 +19,7 @@ import java.util.Set;
 @Setter
 public class Category extends AbstractModel{
 
-    @Column(nullable = false)
+    @Column(nullable = false,unique = true)
     private String name;
 
     @JsonIgnore
@@ -51,7 +51,6 @@ public class Category extends AbstractModel{
     public String toString() {
         return "Category{" +
                 "name='" + name + '\'' +
-                ", posts=" + posts +
                 "} " + super.toString();
     }
 }

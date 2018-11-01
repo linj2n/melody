@@ -16,7 +16,7 @@ import java.util.Set;
 @Setter
 public class Tag extends AbstractModel{
 
-    @Column(nullable = false)
+    @Column(nullable = false,unique = true)
     private String name;
 
     @JsonIgnore
@@ -49,7 +49,6 @@ public class Tag extends AbstractModel{
     public String toString() {
         return "Tag{" +
                 "name='" + name + '\'' +
-                ", posts=" + posts +
                 "} " + super.toString();
     }
 }
