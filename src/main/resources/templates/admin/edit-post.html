@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:with="title='编辑文章',styles_version='local',scripts_version='local',active_tab='edit-post'">
+<html xmlns:th="http://www.thymeleaf.org"
+      th:with="title='编辑文章',styles_version='local',scripts_version='local',active_tab='edit-post'">
 <head th:replace="admin/header :: common_header(${title},${styles_version})">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -126,7 +127,7 @@
                target="_blank"><strong class="blue-text">Melody</strong></a>
         </div>
         <div class="list-group list-group-flush">
-            <a href="#" class="list-group-item waves-effect" >
+            <a href="#" class="list-group-item waves-effect">
                 <i class="fa fa-pie-chart mr-3"></i>发布文章
             </a>
             <a href="#" class="list-group-item list-group-item-action waves-effect">
@@ -151,71 +152,101 @@
         <!-- Heading -->
         <!--Section: Modals-->
         <section>
-            <div class="modal fade" id="modalPostSetting" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+            <div class="modal fade" id="modalPostSetting" tabindex="-1" role="dialog" aria-labelledby="modalPostSetting"
                  aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title blue-text">文章设置</h4>
+                            <h4 class="modal-title blue-text">设置</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
-                            <div class="container-fluid">
-                                <!-- Grid row -->
-                                  <div class="form-group row">
-                                    <!-- Material input -->
-                                    <label for="tagsSeclect" class="col-sm-2 col-form-label">添加标签</label>
-                                    <div class="col-sm-10 pl-0">
-                                      <div class="md-form mt-0">
-                                        <select id="tagsSeclect" class="browser-default custom-select"
-                                                multiple="multiple" style="width: 80%">
-                                            <option value="1">Spring Boot</option>
-                                            <option value="2">Spring MVC</option>
-                                            <option value="3">JavaScript</option>
-                                        </select>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <!-- Grid row -->
 
-                                  <!-- Grid row -->
-                                  <div class="form-group row">
-                                    <!-- Material input -->
-                                    <label for="categoriesSelect" class="col-sm-2 col-form-label">添加分类</label>
-                                    <div class="col-sm-10 pl-0">
-                                      <div class="md-form mt-0">
-                                        <select id="categoriesSelect" class="browser-default custom-select"
-                                                multiple="multiple" style="width: 80%">
-                                            <option value="1">Spring Boot</option>
-                                            <option value="2">Spring MVC</option>
-                                            <option value="3">JavaScript</option>
-                                        </select>                                      
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <!-- Grid row -->
-
-                                  <!-- Grid row -->
-                                  <div class="form-group row">
-                                    <!-- Material input -->
-                                    <label for="summary" class="col-sm-2 col-form-label">添加概述</label>
-                                    <div class="col-sm-10 pl-0">
-                                      <div class="md-form mt-0">
-                                        <textarea  class="md-textarea form-control" id="summary" ></textarea>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <!-- Grid row -->
+                            <div class="md-form form-sm mt-0">
+                                <i class="fa fa-tags grey-text mb-3"> 标签</i>
+                                <select id="postTagSelect" class="browser-default custom-select form-control mb-1"
+                                        multiple="multiple" style="width: 100%">
+                                    <option th:each="tag : ${allTags}" th:value="${tag.id}"
+                                            th:text="${tag.name}"></option>
+                                    <option id="2331">testTag1</option>
+                                </select>
                             </div>
+                            <!-- Grid row -->
+
+                            <!-- Grid row -->
+
+                            <div class="md-form form-sm mt-0">
+                                <i class="fa fa-book grey-text mb-3"> 分类</i>
+                                <select id="postCategorySelect" class="browser-default custom-select form-control mb-1"
+                                        multiple="multiple" style="width: 100%">
+                                    <option th:each="category : ${allCategories}" th:value="${category.id}"
+                                            th:text="${category.name}"></option>
+                                    <option id="2144">testCategory1</option>
+                                </select>
+                            </div>
+                            <!-- Grid row -->
+
+                            <!-- Grid row -->
+                            <div class="md-form form-sm mt-0">
+                                <i class="fa fa-file-text-o  grey-text"> 概要</i>
+                                <textarea class="md-textarea form-control mb-1" id="postSummary"></textarea>
+                            </div>
+                            <!-- Grid row -->
+                            <!-- Grid row -->
+                            <div class="md-form form-sm mb-2" id="postStatus">
+                                <i class="fa fa-info grey-text mr-5"> 类型</i>
+                                <!-- Default inline 1-->
+                                <div class="custom-control custom-radio custom-control-inline pr-3">
+                                    <input type="radio" class="custom-control-input"
+                                           name="draftRadio" value="draft" checked="checked">
+                                    <label class="custom-control-label" >草稿</label>
+                                </div>
+                                <!-- Default inline 2-->
+                                <div class="custom-control custom-radio custom-control-inline pr-3">
+                                    <input type="radio" class="custom-control-input" value="post"
+                                           name="postRadio">
+                                    <label class="custom-control-label" >文章</label>
+                                </div>
+                            </div>
+                            <!-- Grid row -->
                         </div>
                         <div class="modal-footer d-flex">
-                            <button class="btn btn-primary">确定</button>
+                            <button class="btn btn-primary" id="submitToPost">确定</button>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="modal fade" id="centralModalSuccess" tabindex="-1" role="dialog" aria-labelledby="centralModalSuccess" aria-hidden="true">
+                <div class="modal-dialog modal-notify modal-success" role="document">
+                    <!--Content-->
+                    <div class="modal-content">
+                        <!--Header-->
+                        <div class="modal-header">
+                            <p class="heading lead">消息</p>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true" class="white-text">&times;</span>
+                            </button>
+                        </div>
+
+                        <!--Body-->
+                        <div class="modal-body">
+                            <div class="text-center">
+                                <i class="fa fa-check fa-4x mb-3 animated rotateIn"></i>
+                                <p><strong>操作成功！</strong></p>
+                            </div>
+                        </div>
+
+                        <!--Footer-->
+                        <div class="modal-footer justify-content-center">
+                            <button type="button" class="btn btn-success waves-effect" data-dismiss="modal">确定</button>
+                        </div>
+                    </div>
+                    <!--/.Content-->
+                </div>
+            </div>
+            <!-- Central Modal Medium Success-->
         </section>
         <!--Section: Modals-->
 
@@ -228,6 +259,8 @@
                     <div class="card-body">
                         <form>
                             <!-- Material form grid -->
+                            <!-- Grid hidden row-->
+                            <input type="hidden" th:value="${post.id}" name="postId" id="postId">
                             <!-- Grid row -->
                             <div class="row">
                                 <!-- Grid column -->
@@ -238,7 +271,7 @@
                                 <!-- Grid column -->
                                 <div class="col-md-3 col-sm-6 mb-0">
                                     <!-- Material input -->
-                                    <button type="button" class="btn btn-blue-grey">保存</button>
+                                    <button type="button" class="btn btn-blue-grey" id="savePostButton">保存</button>
                                     <button type="button" class="btn btn-primary" data-toggle="modal"
                                             data-target="#modalPostSetting">发布
                                     </button>
@@ -252,7 +285,7 @@
                                 <div class="col-md-12">
                                     <!-- Material input -->
                                     <div class="md-form mt-0 mb-4">
-                                        <input type="text" class="form-control" placeholder="#未命名">
+                                        <input type="text" value="Untitled" class="form-control"  id="postTitle">
                                     </div>
                                 </div>
                                 <!-- Grid column -->
@@ -304,9 +337,22 @@
 
 
 <!-- Initializations -->
-<script>
-    // Animations initialization
+<script th:inline="javascript">
+
+    var token = $('#_csrf').attr('content');
+    var header = $('#_csrf_header').attr('content');
+    var paramHeader = /*[[${_csrf.parameterName}]]*/null;
+    var csrfToken = /*[[${_csrf.token}]]*/null;
     $(document).ready(function () {
+        var $postTagSelect = $('#postTagSelect');
+        var $postCategorySelect = $('#postCategorySelect');
+
+        var postAllTagsId = Array.from(/*[[${post.tags}]]*/ null, item => item.id);
+        var postAllCategoriesId = Array.from(/*[[${post.categories}]]*/ null, item => item.id);
+
+        $postTagSelect.val(postAllTagsId).trigger('change');
+        $postCategorySelect.val(postAllCategoriesId).trigger('change');
+
         new WOW().init();
         var postEditor = new Editor({
             element: document.getElementById('postEditor')
@@ -314,9 +360,72 @@
         postEditor.render();
         $('.custom-select').select2({
             width: 'resolve',
-            tags: true
+            tags: true,
+            createTag: function (params) {
+                var term = $.trim(params.term);
+                if (term === '') {
+                    return null;
+                }
+
+                return {
+                    id: -1,
+                    text: term,
+                    newTag: true
+                }
+            }
         });
+        var postData = JSON.stringify({
+            'id': $('#postId').val(),
+            'title': $('#postTitle').val(),
+            'summary': $('#postSummary').val(),
+            'content': postEditor.codemirror.getValue(),
+            'categories': getAllSelectedOptions($('#postCategorySelect')),
+            'tags': getAllSelectedOptions($('#postTagSelect')),
+            'status': $("#postStatus").find(":checked").val()
+        });
+        var targetUrl = "/api/v1/posts/" + $('#postId').val();
+
+        // TODO: improve save and submit operation.
+        $('#submitToPost').click(function () {
+            savePost(postData,targetUrl);
+        });
+        $('#savePostButton').click(function () {
+            savePost(postData,targetUrl);
+        })
     });
+    function savePost(postData,targetUrl) {
+        $.ajax({
+            type: "PUT",
+            url: targetUrl,
+            contentType: "application/json",
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(header, token);
+            },
+            data: postData,
+            success: function (data) {
+                $('#modalPostSetting').modal("hide");
+                $('#centralModalSuccess').modal("show");
+            },
+            error: function (jqXHR, textStatus, errorThrown ) {
+                console.log("error");
+                console.log(textStatus);
+                console.log(errorThrown);
+            }
+        });
+    }
+
+    function getAllSelectedOptions(select) {
+        var optionList = [];
+        $(select).find('option:selected')
+            .map(function () {
+                var item = {};
+                item.id = this.value > 0 ? this.value : null;
+                item.name = this.text;
+                optionList.push(item);
+            });
+        return optionList;
+    }
+
 </script>
 </body>
 
