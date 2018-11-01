@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -23,8 +24,15 @@ public class Post extends AbstractTimedModel {
     private String title;
 
     /**
+     * 文章概要
+     */
+    @Type(type = "text")
+    private String summary;
+
+    /**
      * 文章内容
      */
+    @Type(type = "text")
     private String content;
 
     /**
@@ -85,7 +93,7 @@ public class Post extends AbstractTimedModel {
     }
 
 
-    protected Post() {
+    public Post() {
     }
 
     public Post(String title) {
@@ -117,12 +125,13 @@ public class Post extends AbstractTimedModel {
     public String toString() {
         return "Post{" +
                 "title='" + title + '\'' +
-                ", content='" + content + '\'' +
+                ", summary='" + summary + '\'' +
+                ", content='" + (content != null) + '\'' +
                 ", status='" + status + '\'' +
                 ", url='" + url + '\'' +
                 ", views=" + views +
                 ", categories=" + categories +
                 ", tags=" + tags +
-                '}';
+                "} " + super.toString();
     }
 }
