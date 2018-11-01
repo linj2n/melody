@@ -51,7 +51,9 @@ public class PostController {
 
     @RequestMapping(value = "/{postId}/edit", method = GET)
     public ModelAndView setupPostEditView(@PathVariable(value = "postId") Long id, ModelMap modelMap) {
-        modelMap.addAttribute("post", postService.getPost(id));
+
+        // TODO: Using @ModelAttribute to setup all Tags/Categories data
+        modelMap.addAttribute("post", postService.getPost(id).orElseGet(null));
         modelMap.addAttribute("allTags", tagService.listTags());
         modelMap.addAttribute("allCategories", categoryService.listCategories());
         return new ModelAndView("admin/edit-post",modelMap);
