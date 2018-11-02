@@ -195,7 +195,6 @@
                         <form>
                             <!-- Material form grid -->
                             <!-- Grid hidden row-->
-                            <input type="hidden" th:value="${post.id}" name="postId" id="postId">
                             <!-- Grid row -->
                             <div class="row">
                                 <!-- Grid column -->
@@ -212,7 +211,7 @@
                             <!-- Grid row -->
                         </form>
                         <!-- Material form grid -->
-                        <table class="table table-sm table-striped table-responsive-md btn-table text-center" id="postTable">
+                        <table class="table table-sm table-striped table-responsive-md btn-table table-hover text-center" id="postTable">
 
                         <thead>
                         <tr>
@@ -226,475 +225,19 @@
                         </thead>
 
                         <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-
-                            <td>Hello world</td>
-                            <td>2018-11-01 20:26:23</td>
-                            <td>1523</td>
-                            <td>已发布</td>
+                        <tr th:each="post : ${allPosts}">
+                            <td scope="row" th:text="${post.id}"></td>
+                            <td th:text="${post.title}"></td>
+                            <td th:text="${post.createdAt}"></td>
+                            <td th:text="${post.views}"></td>
+                            <td th:if="${post.status}=='draft'">草稿</td>
+                            <td th:if="${post.status}=='post'">已发布</td>
                             <td>
-                                <button type="button" class="btn btn-default btn-sm mr-1 "><i class="fa fa-edit"></i>编辑</button>
-                                <button type="button" class="btn btn-danger btn-sm mr-1 "><i class="fa fa-trash"></i>删除</button>
-                                <button type="button" class="btn btn-amber btn-sm mr-1 "><i class="fa fa-eye"></i>预览</button>
+                                <button type="button" th:href="@{'/admin/posts/' + ${post.id} + '/edit'}" class="btn btn-default btn-sm mr-1 "><i class="fa fa-edit"></i>编辑</button>
+                                <button id="postDeleteButton" type="button" class="btn btn-danger btn-sm mr-1 "><i class="fa fa-trash"></i>删除</button>
+                                <button id="postPreviewButton" type="button" class="btn btn-amber btn-sm mr-1 "><i class="fa fa-eye"></i>预览</button>
                             </td>
                         </tr>
-                        <tr>
-                            <th scope="row">2</th>
-
-                            <td>Hello world</td>
-                            <td>2018-11-01 20:26:23</td>
-                            <td>1523</td>
-                            <td>已发布</td>
-                            <td>
-                                <button type="button" class="btn btn-default btn-sm mr-1"><i class="fa fa-edit"></i>编辑</button>
-                                <button type="button" class="btn btn-danger btn-sm mr-1"><i class="fa fa-trash"></i>删除</button>
-                                <button type="button" class="btn btn-amber btn-sm mr-1"><i class="fa fa-eye"></i>预览</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-
-                            <td>Hello world</td>
-                            <td>2018-11-01 20:26:23</td>
-                            <td>1523</td>
-                            <td>已发布</td>
-                            <td>
-                                <button type="button" class="btn btn-default btn-sm mr-1"><i class="fa fa-edit"></i>编辑</button>
-                                <button type="button" class="btn btn-danger btn-sm mr-1"><i class="fa fa-trash"></i>删除</button>
-                                <button type="button" class="btn btn-amber btn-sm mr-1"><i class="fa fa-eye"></i>预览</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">4</th>
-
-                            <td>Hello world</td>
-                            <td>2018-11-01 20:26:23</td>
-                            <td>1523</td>
-                            <td>已发布</td>
-                            <td>
-                                <button type="button" class="btn btn-default btn-sm mr-1"><i class="fa fa-edit"></i>编辑</button>
-                                <button type="button" class="btn btn-danger btn-sm mr-1"><i class="fa fa-trash"></i>删除</button>
-                                <button type="button" class="btn btn-amber btn-sm mr-1"><i class="fa fa-eye"></i>预览</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">5</th>
-
-                            <td>Hello world</td>
-                            <td>2018-11-01 20:26:23</td>
-                            <td>1523</td>
-                            <td>已发布</td>
-                            <td>
-                                <button type="button" class="btn btn-default btn-sm mr-1"><i class="fa fa-edit"></i>编辑</button>
-                                <button type="button" class="btn btn-danger btn-sm mr-1"><i class="fa fa-trash"></i>删除</button>
-                                <button type="button" class="btn btn-amber btn-sm mr-1"><i class="fa fa-eye"></i>预览</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">6</th>
-
-                            <td>Hello world</td>
-                            <td>2018-11-01 20:26:23</td>
-                            <td>1523</td>
-                            <td>已发布</td>
-                            <td>
-                                <button type="button" class="btn btn-default btn-sm mr-1"><i class="fa fa-edit"></i>编辑</button>
-                                <button type="button" class="btn btn-danger btn-sm mr-1"><i class="fa fa-trash"></i>删除</button>
-                                <button type="button" class="btn btn-amber btn-sm mr-1"><i class="fa fa-eye"></i>预览</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">7</th>
-
-                            <td>Hello world</td>
-                            <td>2018-11-01 20:26:23</td>
-                            <td>1523</td>
-                            <td>已发布</td>
-                            <td>
-                                <button type="button" class="btn btn-default btn-sm mr-1"><i class="fa fa-edit"></i>编辑</button>
-                                <button type="button" class="btn btn-danger btn-sm mr-1"><i class="fa fa-trash"></i>删除</button>
-                                <button type="button" class="btn btn-amber btn-sm mr-1"><i class="fa fa-eye"></i>预览</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">8</th>
-
-                            <td>Hello world</td>
-                            <td>2018-11-01 20:26:23</td>
-                            <td>1523</td>
-                            <td>已发布</td>
-                            <td>
-                                <button type="button" class="btn btn-default btn-sm mr-1"><i class="fa fa-edit"></i>编辑</button>
-                                <button type="button" class="btn btn-danger btn-sm mr-1"><i class="fa fa-trash"></i>删除</button>
-                                <button type="button" class="btn btn-amber btn-sm mr-1"><i class="fa fa-eye"></i>预览</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">9</th>
-
-                            <td>Hello world</td>
-                            <td>2018-11-01 20:26:23</td>
-                            <td>1523</td>
-                            <td>已发布</td>
-                            <td>
-                                <button type="button" class="btn btn-default btn-sm mr-1"><i class="fa fa-edit"></i>编辑</button>
-                                <button type="button" class="btn btn-danger btn-sm mr-1"><i class="fa fa-trash"></i>删除</button>
-                                <button type="button" class="btn btn-amber btn-sm mr-1"><i class="fa fa-eye"></i>预览</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">10</th>
-
-                            <td>Hello world</td>
-                            <td>2018-11-01 20:26:23</td>
-                            <td>1523</td>
-                            <td>已发布</td>
-                            <td>
-                                <button type="button" class="btn btn-default btn-sm mr-1"><i class="fa fa-edit"></i>编辑</button>
-                                <button type="button" class="btn btn-danger btn-sm mr-1"><i class="fa fa-trash"></i>删除</button>
-                                <button type="button" class="btn btn-amber btn-sm mr-1"><i class="fa fa-eye"></i>预览</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">10</th>
-
-                            <td>Hello world</td>
-                            <td>2018-11-01 20:26:23</td>
-                            <td>1523</td>
-                            <td>已发布</td>
-                            <td>
-                                <button type="button" class="btn btn-default btn-sm mr-1"><i class="fa fa-edit"></i>编辑</button>
-                                <button type="button" class="btn btn-danger btn-sm mr-1"><i class="fa fa-trash"></i>删除</button>
-                                <button type="button" class="btn btn-amber btn-sm mr-1"><i class="fa fa-eye"></i>预览</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">10</th>
-
-                            <td>Hello world</td>
-                            <td>2018-11-01 20:26:23</td>
-                            <td>1523</td>
-                            <td>已发布</td>
-                            <td>
-                                <button type="button" class="btn btn-default btn-sm mr-1"><i class="fa fa-edit"></i>编辑</button>
-                                <button type="button" class="btn btn-danger btn-sm mr-1"><i class="fa fa-trash"></i>删除</button>
-                                <button type="button" class="btn btn-amber btn-sm mr-1"><i class="fa fa-eye"></i>预览</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">10</th>
-
-                            <td>Hello world</td>
-                            <td>2018-11-01 20:26:23</td>
-                            <td>1523</td>
-                            <td>已发布</td>
-                            <td>
-                                <button type="button" class="btn btn-default btn-sm mr-1"><i class="fa fa-edit"></i>编辑</button>
-                                <button type="button" class="btn btn-danger btn-sm mr-1"><i class="fa fa-trash"></i>删除</button>
-                                <button type="button" class="btn btn-amber btn-sm mr-1"><i class="fa fa-eye"></i>预览</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">10</th>
-
-                            <td>Hello world</td>
-                            <td>2018-11-01 20:26:23</td>
-                            <td>1523</td>
-                            <td>已发布</td>
-                            <td>
-                                <button type="button" class="btn btn-default btn-sm mr-1"><i class="fa fa-edit"></i>编辑</button>
-                                <button type="button" class="btn btn-danger btn-sm mr-1"><i class="fa fa-trash"></i>删除</button>
-                                <button type="button" class="btn btn-amber btn-sm mr-1"><i class="fa fa-eye"></i>预览</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">10</th>
-
-                            <td>Hello world</td>
-                            <td>2018-11-01 20:26:23</td>
-                            <td>1523</td>
-                            <td>已发布</td>
-                            <td>
-                                <button type="button" class="btn btn-default btn-sm mr-1"><i class="fa fa-edit"></i>编辑</button>
-                                <button type="button" class="btn btn-danger btn-sm mr-1"><i class="fa fa-trash"></i>删除</button>
-                                <button type="button" class="btn btn-amber btn-sm mr-1"><i class="fa fa-eye"></i>预览</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">10</th>
-
-                            <td>Hello world</td>
-                            <td>2018-11-01 20:26:23</td>
-                            <td>1523</td>
-                            <td>已发布</td>
-                            <td>
-                                <button type="button" class="btn btn-default btn-sm mr-1"><i class="fa fa-edit"></i>编辑</button>
-                                <button type="button" class="btn btn-danger btn-sm mr-1"><i class="fa fa-trash"></i>删除</button>
-                                <button type="button" class="btn btn-amber btn-sm mr-1"><i class="fa fa-eye"></i>预览</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">10</th>
-
-                            <td>Hello world</td>
-                            <td>2018-11-01 20:26:23</td>
-                            <td>1523</td>
-                            <td>已发布</td>
-                            <td>
-                                <button type="button" class="btn btn-default btn-sm mr-1"><i class="fa fa-edit"></i>编辑</button>
-                                <button type="button" class="btn btn-danger btn-sm mr-1"><i class="fa fa-trash"></i>删除</button>
-                                <button type="button" class="btn btn-amber btn-sm mr-1"><i class="fa fa-eye"></i>预览</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">10</th>
-
-                            <td>Hello world</td>
-                            <td>2018-11-01 20:26:23</td>
-                            <td>1523</td>
-                            <td>已发布</td>
-                            <td>
-                                <button type="button" class="btn btn-default btn-sm mr-1"><i class="fa fa-edit"></i>编辑</button>
-                                <button type="button" class="btn btn-danger btn-sm mr-1"><i class="fa fa-trash"></i>删除</button>
-                                <button type="button" class="btn btn-amber btn-sm mr-1"><i class="fa fa-eye"></i>预览</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">10</th>
-
-                            <td>Hello world</td>
-                            <td>2018-11-01 20:26:23</td>
-                            <td>1523</td>
-                            <td>已发布</td>
-                            <td>
-                                <button type="button" class="btn btn-default btn-sm mr-1"><i class="fa fa-edit"></i>编辑</button>
-                                <button type="button" class="btn btn-danger btn-sm mr-1"><i class="fa fa-trash"></i>删除</button>
-                                <button type="button" class="btn btn-amber btn-sm mr-1"><i class="fa fa-eye"></i>预览</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">10</th>
-
-                            <td>Hello world</td>
-                            <td>2018-11-01 20:26:23</td>
-                            <td>1523</td>
-                            <td>已发布</td>
-                            <td>
-                                <button type="button" class="btn btn-default btn-sm mr-1"><i class="fa fa-edit"></i>编辑</button>
-                                <button type="button" class="btn btn-danger btn-sm mr-1"><i class="fa fa-trash"></i>删除</button>
-                                <button type="button" class="btn btn-amber btn-sm mr-1"><i class="fa fa-eye"></i>预览</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">10</th>
-
-                            <td>Hello world</td>
-                            <td>2018-11-01 20:26:23</td>
-                            <td>1523</td>
-                            <td>已发布</td>
-                            <td>
-                                <button type="button" class="btn btn-default btn-sm mr-1"><i class="fa fa-edit"></i>编辑</button>
-                                <button type="button" class="btn btn-danger btn-sm mr-1"><i class="fa fa-trash"></i>删除</button>
-                                <button type="button" class="btn btn-amber btn-sm mr-1"><i class="fa fa-eye"></i>预览</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">10</th>
-
-                            <td>Hello world</td>
-                            <td>2018-11-01 20:26:23</td>
-                            <td>1523</td>
-                            <td>已发布</td>
-                            <td>
-                                <button type="button" class="btn btn-default btn-sm mr-1"><i class="fa fa-edit"></i>编辑</button>
-                                <button type="button" class="btn btn-danger btn-sm mr-1"><i class="fa fa-trash"></i>删除</button>
-                                <button type="button" class="btn btn-amber btn-sm mr-1"><i class="fa fa-eye"></i>预览</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">10</th>
-
-                            <td>Hello world</td>
-                            <td>2018-11-01 20:26:23</td>
-                            <td>1523</td>
-                            <td>已发布</td>
-                            <td>
-                                <button type="button" class="btn btn-default btn-sm mr-1"><i class="fa fa-edit"></i>编辑</button>
-                                <button type="button" class="btn btn-danger btn-sm mr-1"><i class="fa fa-trash"></i>删除</button>
-                                <button type="button" class="btn btn-amber btn-sm mr-1"><i class="fa fa-eye"></i>预览</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">10</th>
-
-                            <td>Hello world</td>
-                            <td>2018-11-01 20:26:23</td>
-                            <td>1523</td>
-                            <td>已发布</td>
-                            <td>
-                                <button type="button" class="btn btn-default btn-sm mr-1"><i class="fa fa-edit"></i>编辑</button>
-                                <button type="button" class="btn btn-danger btn-sm mr-1"><i class="fa fa-trash"></i>删除</button>
-                                <button type="button" class="btn btn-amber btn-sm mr-1"><i class="fa fa-eye"></i>预览</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">10</th>
-
-                            <td>Hello world</td>
-                            <td>2018-11-01 20:26:23</td>
-                            <td>1523</td>
-                            <td>已发布</td>
-                            <td>
-                                <button type="button" class="btn btn-default btn-sm mr-1"><i class="fa fa-edit"></i>编辑</button>
-                                <button type="button" class="btn btn-danger btn-sm mr-1"><i class="fa fa-trash"></i>删除</button>
-                                <button type="button" class="btn btn-amber btn-sm mr-1"><i class="fa fa-eye"></i>预览</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">10</th>
-
-                            <td>Hello world</td>
-                            <td>2018-11-01 20:26:23</td>
-                            <td>1523</td>
-                            <td>已发布</td>
-                            <td>
-                                <button type="button" class="btn btn-default btn-sm mr-1"><i class="fa fa-edit"></i>编辑</button>
-                                <button type="button" class="btn btn-danger btn-sm mr-1"><i class="fa fa-trash"></i>删除</button>
-                                <button type="button" class="btn btn-amber btn-sm mr-1"><i class="fa fa-eye"></i>预览</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">10</th>
-
-                            <td>Hello world</td>
-                            <td>2018-11-01 20:26:23</td>
-                            <td>1523</td>
-                            <td>已发布</td>
-                            <td>
-                                <button type="button" class="btn btn-default btn-sm mr-1"><i class="fa fa-edit"></i>编辑</button>
-                                <button type="button" class="btn btn-danger btn-sm mr-1"><i class="fa fa-trash"></i>删除</button>
-                                <button type="button" class="btn btn-amber btn-sm mr-1"><i class="fa fa-eye"></i>预览</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">10</th>
-
-                            <td>Hello world</td>
-                            <td>2018-11-01 20:26:23</td>
-                            <td>1523</td>
-                            <td>已发布</td>
-                            <td>
-                                <button type="button" class="btn btn-default btn-sm mr-1"><i class="fa fa-edit"></i>编辑</button>
-                                <button type="button" class="btn btn-danger btn-sm mr-1"><i class="fa fa-trash"></i>删除</button>
-                                <button type="button" class="btn btn-amber btn-sm mr-1"><i class="fa fa-eye"></i>预览</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">10</th>
-
-                            <td>Hello world</td>
-                            <td>2018-11-01 20:26:23</td>
-                            <td>1523</td>
-                            <td>已发布</td>
-                            <td>
-                                <button type="button" class="btn btn-default btn-sm mr-1"><i class="fa fa-edit"></i>编辑</button>
-                                <button type="button" class="btn btn-danger btn-sm mr-1"><i class="fa fa-trash"></i>删除</button>
-                                <button type="button" class="btn btn-amber btn-sm mr-1"><i class="fa fa-eye"></i>预览</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">10</th>
-
-                            <td>Hello world</td>
-                            <td>2018-11-01 20:26:23</td>
-                            <td>1523</td>
-                            <td>已发布</td>
-                            <td>
-                                <button type="button" class="btn btn-default btn-sm mr-1"><i class="fa fa-edit"></i>编辑</button>
-                                <button type="button" class="btn btn-danger btn-sm mr-1"><i class="fa fa-trash"></i>删除</button>
-                                <button type="button" class="btn btn-amber btn-sm mr-1"><i class="fa fa-eye"></i>预览</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">10</th>
-
-                            <td>Hello world</td>
-                            <td>2018-11-01 20:26:23</td>
-                            <td>1523</td>
-                            <td>已发布</td>
-                            <td>
-                                <button type="button" class="btn btn-default btn-sm mr-1"><i class="fa fa-edit"></i>编辑</button>
-                                <button type="button" class="btn btn-danger btn-sm mr-1"><i class="fa fa-trash"></i>删除</button>
-                                <button type="button" class="btn btn-amber btn-sm mr-1"><i class="fa fa-eye"></i>预览</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">10</th>
-
-                            <td>Hello world</td>
-                            <td>2018-11-01 20:26:23</td>
-                            <td>1523</td>
-                            <td>已发布</td>
-                            <td>
-                                <button type="button" class="btn btn-default btn-sm mr-1"><i class="fa fa-edit"></i>编辑</button>
-                                <button type="button" class="btn btn-danger btn-sm mr-1"><i class="fa fa-trash"></i>删除</button>
-                                <button type="button" class="btn btn-amber btn-sm mr-1"><i class="fa fa-eye"></i>预览</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">10</th>
-
-                            <td>Hello world</td>
-                            <td>2018-11-01 20:26:23</td>
-                            <td>1523</td>
-                            <td>已发布</td>
-                            <td>
-                                <button type="button" class="btn btn-default btn-sm mr-1"><i class="fa fa-edit"></i>编辑</button>
-                                <button type="button" class="btn btn-danger btn-sm mr-1"><i class="fa fa-trash"></i>删除</button>
-                                <button type="button" class="btn btn-amber btn-sm mr-1"><i class="fa fa-eye"></i>预览</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">10</th>
-
-                            <td>Hello world</td>
-                            <td>2018-11-01 20:26:23</td>
-                            <td>1523</td>
-                            <td>已发布</td>
-                            <td>
-                                <button type="button" class="btn btn-default btn-sm mr-1"><i class="fa fa-edit"></i>编辑</button>
-                                <button type="button" class="btn btn-danger btn-sm mr-1"><i class="fa fa-trash"></i>删除</button>
-                                <button type="button" class="btn btn-amber btn-sm mr-1"><i class="fa fa-eye"></i>预览</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">10</th>
-
-                            <td>Hello world</td>
-                            <td>2018-11-01 20:26:23</td>
-                            <td>12345</td>
-                            <td>已发布</td>
-                            <td>
-                                <button type="button" class="btn btn-default btn-sm mr-1"><i class="fa fa-edit"></i>编辑</button>
-                                <button type="button" class="btn btn-danger btn-sm mr-1"><i class="fa fa-trash"></i>删除</button>
-                                <button type="button" class="btn btn-amber btn-sm mr-1"><i class="fa fa-eye"></i>预览</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">10</th>
-
-                            <td>Hello world</td>
-                            <td>2018-11-01 20:26:23</td>
-                            <td>1523</td>
-                            <td>已发布</td>
-                            <td>
-                                <button type="button" class="btn btn-default btn-sm mr-1"><i class="fa fa-edit"></i>编辑</button>
-                                <button type="button" class="btn btn-danger btn-sm mr-1"><i class="fa fa-trash"></i>删除</button>
-                                <button type="button" class="btn btn-amber btn-sm mr-1"><i class="fa fa-eye"></i>预览</button>
-                            </td>
-                        </tr>
-
                         </tbody>
 
                         </table>
@@ -711,7 +254,7 @@
 
 
 <!--Footer-->
-<footer class="page-footer text-center font-small mt-4" th:replace="admin/footer :: common_footer(${scripts_version})">
+<footer class="page-footer text-center font-small mt-4 " th:replace="admin/footer :: common_footer(${scripts_version})">
     <!--Copyright-->
     <div class="footer-copyright">
         © 2018 Copyright:
@@ -745,7 +288,10 @@
 <script th:inline="javascript">
 
     $(document).ready(function () {
-        $('#postTable').DataTable();
+        $('#postTable').DataTable({
+            "scrollY": "500px",
+            "scrollCollapse": true,
+        });
         $('.dataTables_length').addClass('bs-select');
     });
 </script>
