@@ -5,6 +5,7 @@ import cn.linj2n.melody.service.CategoryService;
 import cn.linj2n.melody.service.PostService;
 import cn.linj2n.melody.service.TagService;
 import cn.linj2n.melody.web.dto.PostDTO;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Controller
@@ -30,17 +34,26 @@ public class PostController {
 
     private CategoryService categoryService;
 
+    private ModelMapper modelMapper;
+
     @Autowired
-    public PostController(PostService postService, TagService tagService, CategoryService categoryService) {
+    public PostController(PostService postService, TagService tagService, CategoryService categoryService, ModelMapper modelMapper) {
         this.postService = postService;
         this.tagService = tagService;
         this.categoryService = categoryService;
+        this.modelMapper = modelMapper;
     }
 
     @RequestMapping(value = {"/", "/index"}, method = GET)
     public ModelAndView setupPostList(ModelMap modelMap) {
-        modelMap.addAttribute("postList", postService.listPosts());
-        return new ModelAndView("admin/post", modelMap);
+        List<PostDTO> allPosts=new ArrayList<PostDTO>();
+        postService.listAllPosts().forEach(post -> {
+            PostDTO postDTO = modelMapper.map(post,PostDTO.class);
+            postDTO.setId(post.getId());
+        });
+
+//        modelMap.addAttribute("allPosts", postService.listAllPosts());
+        return new ModelAndView("admin/posts", modelMap);
     }
 
     @RequestMapping(value = "/new", method = GET)

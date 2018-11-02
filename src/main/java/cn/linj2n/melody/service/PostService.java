@@ -28,10 +28,16 @@ public interface PostService {
     Optional<Post> getPost(Long id);
 
     /**
-     * 获取所有的文章，包括文章所对应的标签
-     * @return 返回所有文章及其对应的标签
+     * 获取所有的文章，不包含标签与分类等信息
+     * @return 返回文章列表
      */
-    List<Post> listPosts();
+    List<Post> listAllPosts();
+
+    /**
+     * 获取所有的文章，包含标签与分类等信息
+     * @return 返回文章列表
+     */
+    List<Post> listAllPostsWithDetails();
 
     /**
      * 新建文章

@@ -57,14 +57,19 @@ public class PostServiceImpl implements PostService{
 
     @Override
     @Transactional(readOnly = true)
-    public List<Post> listPosts() {
-        return postRepository.findAll()
+    public List<Post> listAllPostsWithDetails() {
+        return postRepository.findAllByOrderByCreatedAtDesc()
                 .stream()
                 .peek(e -> {
                     e.getTags().size();
                     e.getCategories().size();
                 })
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Post> listAllPosts() {
+        return postRepository.findAllByOrderByCreatedAtDesc();
     }
 
     @Override

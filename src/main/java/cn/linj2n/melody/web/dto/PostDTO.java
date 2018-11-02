@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.ZonedDateTime;
 import java.util.Set;
 
 @Data
@@ -50,4 +51,15 @@ public class PostDTO {
      * 文章所属的标签
      */
     private Set<Tag> tags;
+
+    /**
+     * 文章创建时间
+     */
+    private ZonedDateTime createdAt;
+
+    /**
+     * 文章最后的更新时间
+     */
+    private ZonedDateTime updatedAt;
+
 }
