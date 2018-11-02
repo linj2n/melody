@@ -54,7 +54,7 @@ public class Post {
     private String url;
 
     /**
-     * 文章查看次数
+     * 文章浏览次数
      */
     private Long views;
 

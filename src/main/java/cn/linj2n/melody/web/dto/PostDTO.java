@@ -43,6 +43,12 @@ public class PostDTO {
     private String url;
 
     /**
+     * 文章浏览次数
+     */
+    private Long views;
+
+
+    /**
      * 文章所属的类别
      */
     private Set<Category> categories;
