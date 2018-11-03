@@ -248,6 +248,7 @@
                             <th>ID</th>
                             <th>文章标题</th>
                             <th>创建时间</th>
+                            <th>更新时间</th>
                             <th>浏览量</th>
                             <th>类型</th>
                             <th>操作</th>
@@ -257,15 +258,16 @@
                         <tbody>
                         <tr th:each="post : ${allPosts}" th:id="row- + ${post.id}">
                             <td scope="row" th:text="${post.id}"></td>
-                            <td th:text="${post.title}"></td>
+                            <td th:text="${post.title}" ></td>
                             <td th:text="${post.createdAt}"></td>
+                            <td th:text="${post.updatedAt}"></td>
                             <td th:text="${post.views}"></td>
                             <td th:if="${post.status}=='draft'">草稿</td>
                             <td th:if="${post.status}=='post'">已发布</td>
                             <td>
-                                <a th:href="@{'/admin/posts/' + ${post.id} + '/edit'}" class="btn btn-default btn-sm mr-1 "><i class="fa fa-edit"></i>编辑</a>
-                                <button  class="btn btn-danger btn-sm mr-1 " th:attr="data-href=@{'/api/v1/posts/' + ${post.id}},data-post-id=${post.id}"  data-toggle="modal" data-target="#modalConfirmDelete" ><i class="fa fa-trash"></i>删除</button>
-                                <a  class="btn btn-amber btn-sm mr-1 "><i class="fa fa-eye"></i>预览</a>
+                                <a th:href="@{'/admin/posts/' + ${post.id} + '/edit'}" class="trigger info-color text-white "><i class="fa fa-edit"></i>编辑</a>
+                                <a  class="trigger danger-color text-white" th:attr="data-href=@{'/api/v1/posts/' + ${post.id}},data-post-id=${post.id}"  data-toggle="modal" data-target="#modalConfirmDelete" ><i class="fa fa-trash"></i>删除</a>
+                                <a  class="trigger amber darken-2 text-white"><i class="fa fa-eye"></i>预览</a>
                             </td>
                         </tr>
                         </tbody>
@@ -321,7 +323,7 @@
     var header = $('#_csrf_header').attr('content');
     $(document).ready(function () {
         var $postTable = $('#postTable').DataTable({
-            "scrollY": "400px",
+            "scrollY": "380px",
             "scrollCollapse": true,
         });
         $('.dataTables_length').addClass('bs-select');
