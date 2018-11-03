@@ -37,6 +37,12 @@ public class PostServiceImpl implements PostService{
 
     @Override
     @Transactional
+    public void removePost(Long id) {
+        postRepository.delete(id);
+    }
+
+    @Override
+    @Transactional
     public void removePostByTitle(String title) {
         // TODO:
         postRepository.findOptionalByTitle(title).map(u -> {
@@ -94,5 +100,10 @@ public class PostServiceImpl implements PostService{
         // TODO: Do we need to check if the label or category is valid?
         newPost.setCreatedAt(oldPost.getCreatedAt());
         return postRepository.save(newPost);
+    }
+
+    @Override
+    public Boolean existsById(Long id) {
+        return postRepository.exists(id);
     }
 }

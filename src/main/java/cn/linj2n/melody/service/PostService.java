@@ -14,6 +14,12 @@ public interface PostService {
     void removePostByTitle(String title);
 
     /**
+     * 删除文章
+     * @param id 文章 id
+     */
+    void removePost(Long id);
+
+    /**
      * 获取文章，包括该文章所对应的标签
      * @param postTitle 文章名称
      * @return 返回文章及其标签
@@ -51,4 +57,11 @@ public interface PostService {
      * @return 更新后的 post 实体
      */
     Post updatePost(Post newPost);
+
+    /**
+     * 查找对应 id 的文章是否存在
+     * @param id
+     * @return 查找结果
+     */
+    Boolean existsById(Long id);
 }
