@@ -1,6 +1,8 @@
 package cn.linj2n.melody.web.controller.admin;
 
+import cn.linj2n.melody.domain.Category;
 import cn.linj2n.melody.domain.Post;
+import cn.linj2n.melody.domain.Tag;
 import cn.linj2n.melody.service.CategoryService;
 import cn.linj2n.melody.service.PostService;
 import cn.linj2n.melody.service.TagService;
@@ -12,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
@@ -48,17 +51,25 @@ public class PostController {
         this.viewUtils = viewUtils;
     }
 
+    @ModelAttribute("allTags")
+    public List<Tag> getAllTags() {
+        return tagService.listAllTags();
+    }
+
+    @ModelAttribute("allCategories")
+    public List<Category> getAllCategories() {
+        return categoryService.listAllCategories();
+    }
+
     @RequestMapping(value = {"","/", "/index"}, method = GET)
     public ModelAndView setupPostList(ModelMap modelMap) {
-        List<PostDTO> allPosts=new ArrayList<PostDTO>();
+        List<PostDTO> allPosts=new ArrayList<>();
         postService.listAllPosts().forEach(post -> {
             PostDTO postDTO = modelMapper.map(post,PostDTO.class);
             postDTO.setCreatedAt(viewUtils.getFormatDate(post.getCreatedAt()));
             postDTO.setUpdatedAt(viewUtils.getFormatDate(post.getUpdatedAt()));
             allPosts.add(postDTO);
-            logger.info("postDTO= " + postDTO.toString());
         });
-        logger.info("allPosts.size -----------> " + allPosts.size());
         modelMap.addAttribute("allPosts", allPosts);
         return new ModelAndView("admin/posts", modelMap);
     }
@@ -71,11 +82,7 @@ public class PostController {
 
     @RequestMapping(value = "/{postId}/edit", method = GET)
     public ModelAndView setupPostEditView(@PathVariable(value = "postId") Long id, ModelMap modelMap) {
-
-        // TODO: Using @ModelAttribute to setup all Tags/Categories data
         modelMap.addAttribute("post", postService.getPost(id).orElseGet(null));
-        modelMap.addAttribute("allTags", tagService.listTags());
-        modelMap.addAttribute("allCategories", categoryService.listCategories());
         return new ModelAndView("admin/edit-post",modelMap);
     }
 }
