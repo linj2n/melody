@@ -199,15 +199,15 @@
                                 <i class="fa fa-info grey-text mr-5"> 类型</i>
                                 <!-- Default inline 1-->
                                 <div class="custom-control custom-radio custom-control-inline pr-3">
-                                    <input type="radio" class="custom-control-input"
-                                           name="draftRadio" value="draft" checked="checked">
-                                    <label class="custom-control-label" >草稿</label>
+                                    <input type="radio" class="custom-control-input" id="radio1"
+                                           name="statusRadio" value="draft" th:checked="${post.status} == 'draft'">
+                                    <label class="custom-control-label" for="radio1" >草稿</label>
                                 </div>
                                 <!-- Default inline 2-->
                                 <div class="custom-control custom-radio custom-control-inline pr-3">
-                                    <input type="radio" class="custom-control-input" value="post"
-                                           name="postRadio">
-                                    <label class="custom-control-label" >文章</label>
+                                    <input type="radio" class="custom-control-input" id="radio2" value="post"
+                                           name="statusRadio" th:checked="${post.status} == 'post'">
+                                    <label class="custom-control-label" for="radio2" >文章</label>
                                 </div>
                             </div>
                             <!-- Grid row -->
@@ -285,7 +285,7 @@
                                 <div class="col-md-12">
                                     <!-- Material input -->
                                     <div class="md-form mt-0 mb-4">
-                                        <input type="text" value="Untitled" class="form-control"  id="postTitle">
+                                        <input type="text"  th:value="${post.title} == null ? 'Untitled' : ${post.title}" class="form-control"  id="postTitle">
                                     </div>
                                 </div>
                                 <!-- Grid column -->
@@ -339,11 +339,13 @@
 <!-- Initializations -->
 <script th:inline="javascript">
 
-    var token = $('#_csrf').attr('content');
-    var header = $('#_csrf_header').attr('content');
-    var paramHeader = /*[[${_csrf.parameterName}]]*/null;
-    var csrfToken = /*[[${_csrf.token}]]*/null;
     $(document).ready(function () {
+
+        var token = $('#_csrf').attr('content');
+        var header = $('#_csrf_header').attr('content');
+        var paramHeader = /*[[${_csrf.parameterName}]]*/null;
+        var csrfToken = /*[[${_csrf.token}]]*/null;
+
         var $postTagSelect = $('#postTagSelect');
         var $postCategorySelect = $('#postCategorySelect');
 
@@ -374,57 +376,66 @@
                 }
             }
         });
-        var postData = JSON.stringify({
-            'id': $('#postId').val(),
-            'title': $('#postTitle').val(),
-            'summary': $('#postSummary').val(),
-            'content': postEditor.codemirror.getValue(),
-            'categories': getAllSelectedOptions($('#postCategorySelect')),
-            'tags': getAllSelectedOptions($('#postTagSelect')),
-            'status': $("#postStatus").find(":checked").val()
-        });
+
+
         var targetUrl = "/api/v1/posts/" + $('#postId').val();
 
         // TODO: improve save and submit operation.
         $('#submitToPost').click(function () {
+            var postData = getPostContent();
+            console.log("postStatus ---> " + $("#postStatus").find(":checked").val());
             savePost(postData,targetUrl);
         });
         $('#savePostButton').click(function () {
+            var postData = getPostContent();
+            console.log("postStatus ---> " + $("#postStatus").find(":checked").val());
             savePost(postData,targetUrl);
         })
-    });
-    function savePost(postData,targetUrl) {
-        $.ajax({
-            type: "PUT",
-            url: targetUrl,
-            contentType: "application/json",
-            beforeSend: function(xhr) {
-                xhr.setRequestHeader(header, token);
-            },
-            data: postData,
-            success: function (data) {
-                $('#modalPostSetting').modal("hide");
-                $('#centralModalSuccess').modal("show");
-            },
-            error: function (jqXHR, textStatus, errorThrown ) {
-                console.log("error");
-                console.log(textStatus);
-                console.log(errorThrown);
-            }
-        });
-    }
 
-    function getAllSelectedOptions(select) {
-        var optionList = [];
-        $(select).find('option:selected')
-            .map(function () {
-                var item = {};
-                item.id = this.value > 0 ? this.value : null;
-                item.name = this.text;
-                optionList.push(item);
+        function savePost(postData,targetUrl) {
+            $.ajax({
+                type: "PUT",
+                url: targetUrl,
+                contentType: "application/json",
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                data: postData,
+                success: function (data) {
+                    $('#modalPostSetting').modal("hide");
+                    $('#centralModalSuccess').modal("show");
+                },
+                error: function (jqXHR, textStatus, errorThrown ) {
+                    console.log("error");
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                }
             });
-        return optionList;
-    }
+        }
+
+        function getAllSelectedOptions(select) {
+            var optionList = [];
+            $(select).find('option:selected')
+                .map(function () {
+                    var item = {};
+                    item.id = this.value > 0 ? this.value : null;
+                    item.name = this.text;
+                    optionList.push(item);
+                });
+            return optionList;
+        }
+        function getPostContent() {
+            return JSON.stringify({
+                'id': $('#postId').val(),
+                'title': $('#postTitle').val(),
+                'summary': $('#postSummary').val(),
+                'content': postEditor.codemirror.getValue(),
+                'categories': getAllSelectedOptions($('#postCategorySelect')),
+                'tags': getAllSelectedOptions($('#postTagSelect')),
+                'status': $("#postStatus").find(":checked").val()
+            });
+        }
+    });
 
 </script>
 </body>
