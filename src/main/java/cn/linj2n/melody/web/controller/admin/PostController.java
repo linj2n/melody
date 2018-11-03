@@ -5,6 +5,7 @@ import cn.linj2n.melody.service.CategoryService;
 import cn.linj2n.melody.service.PostService;
 import cn.linj2n.melody.service.TagService;
 import cn.linj2n.melody.web.dto.PostDTO;
+import cn.linj2n.melody.web.utils.ViewUtils;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,23 +37,29 @@ public class PostController {
 
     private ModelMapper modelMapper;
 
+    private ViewUtils viewUtils;
+
     @Autowired
-    public PostController(PostService postService, TagService tagService, CategoryService categoryService, ModelMapper modelMapper) {
+    public PostController(PostService postService, TagService tagService, CategoryService categoryService, ModelMapper modelMapper, ViewUtils viewUtils) {
         this.postService = postService;
         this.tagService = tagService;
         this.categoryService = categoryService;
         this.modelMapper = modelMapper;
+        this.viewUtils = viewUtils;
     }
 
-    @RequestMapping(value = {"/", "/index"}, method = GET)
+    @RequestMapping(value = {"","/", "/index"}, method = GET)
     public ModelAndView setupPostList(ModelMap modelMap) {
         List<PostDTO> allPosts=new ArrayList<PostDTO>();
         postService.listAllPosts().forEach(post -> {
             PostDTO postDTO = modelMapper.map(post,PostDTO.class);
-            postDTO.setId(post.getId());
+            postDTO.setCreatedAt(viewUtils.getFormatDate(post.getCreatedAt()));
+            postDTO.setUpdatedAt(viewUtils.getFormatDate(post.getUpdatedAt()));
+            allPosts.add(postDTO);
+            logger.info("postDTO= " + postDTO.toString());
         });
-
-//        modelMap.addAttribute("allPosts", postService.listAllPosts());
+        logger.info("allPosts.size -----------> " + allPosts.size());
+        modelMap.addAttribute("allPosts", allPosts);
         return new ModelAndView("admin/posts", modelMap);
     }
 

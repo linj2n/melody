@@ -34,6 +34,7 @@ public class PostResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updatePost(@RequestBody PostDTO postDTO) {
         Post post = modelMapper.map(postDTO,Post.class);
+        logger.info("post.content ----> {} ",post.getContent());
         postService.updatePost(post);
         return new ResponseEntity<>(HttpStatus.OK);
     }
