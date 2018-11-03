@@ -41,8 +41,14 @@ public class PostResource {
     @RequestMapping(value = "/v1/posts/{postId}",
             method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> deletePost(PostDTO postDTO) {
-        // TODO:
+    public ResponseEntity<?> deletePost(@PathVariable(value = "postId") Long postId) {
+        logger.info("request to delete post[id={}]",postId);
+        if (!postService.existsById(postId)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        postService.removePost(postId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+
 }
