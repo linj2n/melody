@@ -44,12 +44,12 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<Category> listCategories() {
+    public List<Category> listAllCategories() {
         return categoryRepository.findAll();
     }
 
     @Override
-    public List<Category> listCategoriesWithPosts() {
+    public List<Category> listAllCategoriesWithPosts() {
         return null;
     }
 }

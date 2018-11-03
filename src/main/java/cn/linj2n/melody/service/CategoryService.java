@@ -38,12 +38,12 @@ public interface CategoryService {
      * 获取所有的类别
      * @return 返回所有的类别
      */
-    List<Category> listCategories();
+    List<Category> listAllCategories();
 
     /**
      * 获取所有的类别，包括类别所对应的文章
      * @return 返回所有类别及其对应的文章
      */
-    List<Category> listCategoriesWithPosts();
+    List<Category> listAllCategoriesWithPosts();
 
 }

@@ -63,13 +63,13 @@ public class TagServiceImpl implements TagService{
     }
 
     @Override
-    public List<Tag> listTags() {
+    public List<Tag> listAllTags() {
         return tagRepository.findAll();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Tag> listTagsWithPosts() {
+    public List<Tag> listAllTagsWithPosts() {
         return tagRepository.findAll()
                 .stream()
                 .peek(tag -> tag.getPosts().size())

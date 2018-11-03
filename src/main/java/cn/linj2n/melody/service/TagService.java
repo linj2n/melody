@@ -37,12 +37,12 @@ public interface TagService {
      * 获取所有的标签
      * @return 返回所有的标签
      */
-    List<Tag> listTags();
+    List<Tag> listAllTags();
 
     /**
      * 获取所有的标签，包括标签所对应的文章
      * @return 返回所有标签及其对应的文章
      */
-    List<Tag> listTagsWithPosts();
+    List<Tag> listAllTagsWithPosts();
 
 }
