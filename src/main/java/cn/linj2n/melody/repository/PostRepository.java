@@ -13,4 +13,8 @@ public interface PostRepository extends JpaRepository<Post,Long> {
     Optional<Post> findOptionalByTitle(String title);
 
     Optional<Post> findOptionalById(Long id);
+
+    List<Post> findAllByOrderByCreatedAtDesc();
+
+    List<Post> findAllByOrderByUpdatedAtDesc();
 }
