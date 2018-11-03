@@ -191,7 +191,7 @@
                             <!-- Grid row -->
                             <div class="md-form form-sm mt-0">
                                 <i class="fa fa-file-text-o  grey-text"> 概要</i>
-                                <textarea class="md-textarea form-control mb-1" id="postSummary"></textarea>
+                                <textarea class="md-textarea form-control mb-1" id="postSummary" th:text="${post.summary}"></textarea>
                             </div>
                             <!-- Grid row -->
                             <!-- Grid row -->
@@ -294,7 +294,7 @@
                         </form>
                         <!-- Material form grid -->
 
-                        <textarea id="postEditor"></textarea>
+                        <textarea id="postEditor" th:text="${post.content}"></textarea>
                     </div>
                 </div>
             </div>
@@ -356,8 +356,10 @@
         $postCategorySelect.val(postAllCategoriesId).trigger('change');
 
         new WOW().init();
+        console.log("postEditor ---> " + document.getElementById('postEditor').value);
         var postEditor = new Editor({
             element: document.getElementById('postEditor')
+            // value: document.getElementById('postEditor').value
         });
         postEditor.render();
         $('.custom-select').select2({
