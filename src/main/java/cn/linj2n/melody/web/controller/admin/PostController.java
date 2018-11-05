@@ -66,8 +66,10 @@ public class PostController {
         List<PostDTO> allPosts=new ArrayList<>();
         postService.listAllPosts().forEach(post -> {
             PostDTO postDTO = modelMapper.map(post,PostDTO.class);
-            postDTO.setCreatedAt(viewUtils.getFormatDate(post.getCreatedAt()));
-            postDTO.setUpdatedAt(viewUtils.getFormatDate(post.getUpdatedAt()));
+            String createdTime = viewUtils.getFormatDate(post.getCreatedAt());
+            String updatedTime = post.getUpdatedAt() == null ? createdTime : viewUtils.getFormatDate(post.getUpdatedAt());
+            postDTO.setCreatedAt(createdTime);
+            postDTO.setUpdatedAt(updatedTime);
             allPosts.add(postDTO);
         });
         modelMap.addAttribute("allPosts", allPosts);
