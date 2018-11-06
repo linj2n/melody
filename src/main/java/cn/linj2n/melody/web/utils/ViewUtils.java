@@ -12,8 +12,7 @@ public class ViewUtils {
         if (dateTime == null) {
             return "";
         }
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm:ss");
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return dateTime.format(format);
     }
-
 }
