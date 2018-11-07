@@ -128,11 +128,11 @@
                    target="_blank"><strong class="blue-text">Melody</strong></a>
             </div>
             <div class="list-group list-group-flush">
-                <a href="#" class="list-group-item list-group-item-action waves-effect" th:classappend="${active_tab == 'posts' ? 'active' : ''}"><i class="fa fa-table mr-3"></i>文章</a>
-                <a href="#" class="list-group-item list-group-item-action waves-effect" th:classappend="${active_tab == 'categories' ? 'active' : ''}"><i class="fa fa-tag mr-3"></i>标签</a>
-                <a href="#" class="list-group-item list-group-item-action waves-effect" th:classappend="${active_tab == 'tags' ? 'active' : ''}"><i class="fa fa-folder mr-3"></i>分类</a>
-                <a href="#" class="list-group-item list-group-item-action waves-effect" th:classappend="${active_tab == 'setting' ? 'active' : ''}"><i class="fa fa-cog mr-3"></i>设置</a>
-                <a href="#" class="list-group-item list-group-item-action waves-effect" th:classappend="${active_tab == 'user' ? 'active' : ''}"><i class="fa fa-user mr-3"></i> 我的</a>
+                <a th:href="@{/admin/posts}" class="list-group-item list-group-item-action waves-effect" th:classappend="${active_tab == 'posts' ? 'active' : ''}"><i class="fa fa-table mr-3"></i>文章</a>
+                <a th:href="@{/admin/tags}" class="list-group-item list-group-item-action waves-effect" th:classappend="${active_tab == 'tags' ? 'active' : ''}"><i class="fa fa-tag mr-3"></i>标签</a>
+                <a th:href="@{/admin/categories}" class="list-group-item list-group-item-action waves-effect" th:classappend="${active_tab == 'categories' ? 'active' : ''}"><i class="fa fa-folder mr-3"></i>分类</a>
+                <a th:href="@{/admin/setting}" class="list-group-item list-group-item-action waves-effect" th:classappend="${active_tab == 'setting' ? 'active' : ''}"><i class="fa fa-cog mr-3"></i>设置</a>
+                <a th:href="@{/admin/user}" class="list-group-item list-group-item-action waves-effect" th:classappend="${active_tab == 'user' ? 'active' : ''}"><i class="fa fa-user mr-3"></i> 我的</a>
             </div>
         </div>
         <!-- Sidebar -->
