@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:with="title='编辑文章',styles_version='local',scripts_version='local',active_tab='edit-post'">
+      th:with="title='编辑文章',styles_version='local',scripts_version='local',active_tab='posts'">
 <head th:replace="admin/header :: common_header(${title},${styles_version})">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -170,7 +170,6 @@
                                         multiple="multiple" style="width: 100%">
                                     <option th:each="tag : ${allTags}" th:value="${tag.id}"
                                             th:text="${tag.name}"></option>
-                                    <option id="2331">testTag1</option>
                                 </select>
                             </div>
                             <!-- Grid row -->
@@ -183,7 +182,6 @@
                                         multiple="multiple" style="width: 100%">
                                     <option th:each="category : ${allCategories}" th:value="${category.id}"
                                             th:text="${category.name}"></option>
-                                    <option id="2144">testCategory1</option>
                                 </select>
                             </div>
                             <!-- Grid row -->
