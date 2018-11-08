@@ -226,7 +226,7 @@
                             <!-- Material form grid -->
                             <!-- Grid hidden row-->
                             <!-- Grid row -->
-                            <div class="row">
+                            <div class="row mb-2">
                                 <!-- Grid column -->
                                 <div class="col-md-9 col-sm-6 mb-0">
                                     <h5 class="card-title blue-text mb-2"><i class="fa fa-table"></i><a> 文章管理</a></h5>
@@ -237,19 +237,46 @@
 
                                 </div>
                                 <!-- Grid column -->
+
+                            </div>
+                            <!-- Grid row -->
+                            <div class="row">
+                                <div class="col-md-5 col-sm-12 mb-0">
+                                    <div class="md-form form-sm mt-0">
+                                        <i class="fa fa-tags grey-text"> 标签</i>
+                                        <select id="postTagSelect" class="browser-default custom-select form-control mb-1"
+                                                multiple="multiple" style="width: 100%">
+                                            <option th:each="tag : ${allTags}" th:value="${tag.id}"
+                                                    th:text="${tag.name}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-5 col-sm-12 mb-0">
+                                    <div class="md-form form-sm mt-0">
+                                        <i class="fa fa-book grey-text"> 分类</i>
+                                        <select id="postCategorySelect" class="browser-default custom-select form-control mb-1"
+                                                multiple="multiple" style="width: 100%">
+                                            <option th:each="category : ${allCategories}" th:value="${category.id}"
+                                                    th:text="${category.name}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-12 mb-0">
+                                    <button type="submit" class="btn btn-primary" id="filterButton"><i class="fa fa-filter"></i>Filter</button>
+                                </div>
+                                <!-- Grid row -->
                             </div>
                             <!-- Grid row -->
                         </form>
                         <!-- Material form grid -->
                         <table class="table table-sm table-striped table-responsive-md btn-table table-hover" id="postTable">
-
                         <thead>
                         <tr>
                             <th>ID</th>
                             <th>文章标题</th>
                             <th>创建时间</th>
                             <th>更新时间</th>
-                            <th>浏览量</th>
+                            <th>浏览</th>
                             <th>类型</th>
                             <th>操作</th>
                         </tr>
@@ -325,6 +352,8 @@
         var $postTable = $('#postTable').DataTable({
             "scrollY": "380px",
             "scrollCollapse": true,
+            "searching": false ,
+            "lengthChange": false
         });
         $('.dataTables_length').addClass('bs-select');
 
@@ -363,6 +392,22 @@
             });
         });
 
+        $('.custom-select').select2({
+            width: 'resolve',
+            tags: true,
+            createTag: function (params) {
+                var term = $.trim(params.term);
+                if (term === '') {
+                    return null;
+                }
+
+                return {
+                    id: -1,
+                    text: term,
+                    newTag: true
+                }
+            }
+        });
     });
 </script>
 </body>
