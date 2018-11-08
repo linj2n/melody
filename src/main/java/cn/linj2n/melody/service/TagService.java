@@ -14,10 +14,16 @@ public interface TagService {
     Tag createTag(String tagName);
 
     /**
-     * 删除标签
+     * 根据 tagName 删除标签
      * @param tagName 标签名称
      */
     void removeTagByName(String tagName);
+
+    /**
+     * 根据 tagId 删除标签
+     * @param tagId 标签 id
+     */
+    void removeTagById(Long tagId);
 
     /**
      * 获取标签
@@ -29,9 +35,16 @@ public interface TagService {
     /**
      * 获取标签，包括该标签所对应的文章
      * @param tagName 标签名称
-     * @return 返回标签及其文章
+     * @return 返回包含文章列表的标签
      */
     Optional<Tag> getTagWithPosts(String tagName);
+
+    /**
+     * 根据 tagId 获取标签，包括该标签所对应的文章
+     * @param tagId 标签 id
+     * @return 返回包含文章列表的标签
+     */
+    Optional<Tag> getTagWithPosts(Long tagId);
 
     /**
      * 获取所有的标签
@@ -45,4 +58,17 @@ public interface TagService {
      */
     List<Tag> listAllTagsWithPosts();
 
+    /**
+     * 更新标签
+     * @param tag 需要更新的 tag
+     * @return 更新后的 tag
+     */
+    Tag updateTag(Tag tag);
+
+    /**
+     * 查询对应 id 的标签是否存在
+     * @param tagId 标签 id
+     * @return 返回结果
+     */
+    Boolean existsById(Long tagId);
 }

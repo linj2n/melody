@@ -48,6 +48,16 @@ public class TagServiceImpl implements TagService{
     }
 
     @Override
+    @Transactional
+    public void removeTagById(Long tagId) {
+        getTagWithPosts(tagId).map(tag -> {
+            tag.getPosts().forEach(e -> e.getTags().remove(tag));
+            tagRepository.delete(tag);
+            return tag;
+        });
+    }
+
+    @Override
     public Optional<Tag> getTagByName(String tagName) {
         return tagRepository.findOptionalByName(tagName);
     }
@@ -56,6 +66,16 @@ public class TagServiceImpl implements TagService{
     @Transactional(readOnly = true)
     public Optional<Tag> getTagWithPosts(String tagName) {
         return tagRepository.findOptionalByName(tagName)
+                .map(u -> {
+                    u.getPosts().size();
+                    return u;
+                });
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<Tag> getTagWithPosts(Long tagId) {
+        return tagRepository.findOptionalById(tagId)
                 .map(u -> {
                     u.getPosts().size();
                     return u;
@@ -76,4 +96,13 @@ public class TagServiceImpl implements TagService{
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public Tag updateTag(Tag tag) {
+        return tagRepository.save(tag);
+    }
+
+    @Override
+    public Boolean existsById(Long tagId) {
+        return tagRepository.exists(tagId);
+    }
 }
