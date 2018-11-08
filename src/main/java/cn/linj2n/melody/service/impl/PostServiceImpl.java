@@ -103,7 +103,7 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public Boolean existsById(Long id) {
-        return postRepository.exists(id);
+    public Boolean existsById(Long postId) {
+        return postRepository.exists(postId);
     }
 }

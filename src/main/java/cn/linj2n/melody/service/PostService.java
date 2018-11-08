@@ -60,8 +60,8 @@ public interface PostService {
 
     /**
      * 查找对应 id 的文章是否存在
-     * @param id
+     * @param postId
      * @return 查找结果
      */
-    Boolean existsById(Long id);
+    Boolean existsById(Long postId);
 }
