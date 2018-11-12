@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -62,7 +63,7 @@ public class PostController {
     }
 
     @RequestMapping(value = {"","/", "/index"}, method = GET)
-    public ModelAndView setupPostList(ModelMap modelMap) {
+    public ModelAndView setupPostList( ModelMap modelMap) {
         List<PostDTO> allPosts=new ArrayList<>();
         postService.listAllPosts().forEach(post -> {
             PostDTO postDTO = modelMapper.map(post,PostDTO.class);
@@ -73,7 +74,8 @@ public class PostController {
             allPosts.add(postDTO);
         });
         modelMap.addAttribute("allPosts", allPosts);
-        return new ModelAndView("admin/posts", modelMap);
+//        return new ModelAndView("admin/posts", modelMap);
+        return new ModelAndView("admin/blank", modelMap);
     }
 
     @RequestMapping(value = "/new", method = GET)
