@@ -60,6 +60,7 @@ public class TagController {
             });
             return u;
         });
+        modelMap.addAttribute("selectedTagId",tagId);
         modelMap.addAttribute("allPosts", allPosts);
         return new ModelAndView("admin/posts", modelMap);
     }

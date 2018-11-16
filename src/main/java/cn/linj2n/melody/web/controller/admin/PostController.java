@@ -74,8 +74,7 @@ public class PostController {
             allPosts.add(postDTO);
         });
         modelMap.addAttribute("allPosts", allPosts);
-//        return new ModelAndView("admin/posts", modelMap);
-        return new ModelAndView("admin/blank", modelMap);
+        return new ModelAndView("admin/posts", modelMap);
     }
 
     @RequestMapping(value = "/new", method = GET)
