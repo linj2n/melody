@@ -241,31 +241,30 @@
                             </div>
                             <!-- Grid row -->
                             <div class="row">
-                                <div class="col-md-5 col-sm-12 mb-0">
-                                    <div class="md-form form-sm mt-0">
-                                        <i class="fa fa-tags grey-text mb-2"> 标签</i>
-                                        <label for="postTagSelect"></label>
-                                        <select id="postTagSelect" name="postTagSelect" class="browser-default custom-select form-control mb-1"
-                                                multiple="multiple"  style="width: 100%">
-                                            <option th:each="tag : ${allTags}" th:value="${tag.id}"
-                                                    th:text="${tag.name}" ></option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-5 col-sm-12 mb-0">
-                                    <div class="md-form form-sm mt-0">
-                                        <i class="fa fa-book grey-text mb-2"> 分类</i>
-                                        <label for="postCategorySelect"></label>
-                                        <select id="postCategorySelect" name="postCategorySelect" class="browser-default custom-select form-control mb-1"
-                                                multiple="multiple" style="width: 100%">
-                                            <option th:each="category : ${allCategories}" th:value="${category.id}"
-                                                    th:text="${category.name}" ></option>
-                                        </select>
+                                <div class="col-md-10 col-sm-12 mb-0">
+                                    <div th:switch="${selectedCategoryId == null}">
+                                        <div th:case="${false}"  class="md-form form-sm mt-0" >
+                                            <i class="fa fa-book grey-text mb-0"> 分类</i>
+                                            <label for="postCategorySelect"></label>
+                                            <select id="postCategorySelect" name="postCategorySelect" class="browser-default custom-select form-control mb-1"
+                                                    multiple="multiple" style="width: 100%">
+                                                <option th:each="category : ${allCategories}" th:value="${category.id}"
+                                                        th:text="${category.name}" ></option>
+                                            </select>
+                                        </div>
+                                        <div th:case="${true}" class="md-form form-sm mt-0">
+                                            <i class="fa fa-tags grey-text mb-0"> 标签</i>
+                                            <label for="postTagSelect"></label>
+                                            <select id="postTagSelect" name="postTagSelect" class="browser-default custom-select form-control mb-1"
+                                                    multiple="multiple"  style="width: 100%">
+                                                <option th:each="tag : ${allTags}" th:value="${tag.id}"
+                                                        th:text="${tag.name}" ></option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-2 col-sm-12 mb-0">
-                                    <!--<button type="submit" class="btn btn-primary" id="filterButton"><i class="fa fa-filter"></i>Filter</button>-->
-                                    <button type="button" class="btn btn-primary" id="filterButton"><i class="fa fa-filter"></i>Filter</button>
+                                    <button type="button" class="btn btn-primary" id="filterButton"><i class="fa fa-filter"></i>确定</button>
                                 </div>
                                 <!-- Grid row -->
                             </div>
@@ -284,23 +283,6 @@
                                 <th>操作</th>
                             </tr>
                             </thead>
-
-                            <!--<tbody>-->
-                            <!--<tr th:each="post : ${allPosts}" th:id="row- + ${post.id}">-->
-                            <!--<td scope="row" th:text="${post.id}"></td>-->
-                            <!--<td th:text="${post.title}" ></td>-->
-                            <!--<td th:text="${post.createdAt}"></td>-->
-                            <!--<td th:text="${post.updatedAt}"></td>-->
-                            <!--<td th:text="${post.views}"></td>-->
-                            <!--<td th:if="${post.status}=='draft'">草稿</td>-->
-                            <!--<td th:if="${post.status}=='post'">已发布</td>-->
-                            <!--<td>-->
-                            <!--<a th:href="@{'/admin/posts/' + ${post.id} + '/edit'}" class="trigger info-color text-white "><i class="fa fa-edit"></i>编辑</a>-->
-                            <!--<a  class="trigger danger-color text-white" th:attr="data-href=@{'/api/v1/posts/' + ${post.id}},data-post-id=${post.id}"  data-toggle="modal" data-target="#modalConfirmDelete" ><i class="fa fa-trash"></i>删除</a>-->
-                            <!--<a  class="trigger amber darken-2 text-white"><i class="fa fa-eye"></i>预览</a>-->
-                            <!--</td>-->
-                            <!--</tr>-->
-                            <!--</tbody>-->
 
                         </table>
                     </div>
@@ -357,9 +339,8 @@
 
         var $postTagSelect = $('#postTagSelect');
         var $postCategorySelect = $('#postCategorySelect');
-        $postTagSelect.val(/*[[${selectedTagIds}]]*/).trigger('change');
-        $postCategorySelect.val(/*[[${selectedCategoryIds}]]*/).trigger('change');
-
+        $postTagSelect.val(/*[[${selectedTagId}]]*/).trigger('change');
+        $postCategorySelect.val(/*[[${selectedCategoryId}]]*/).trigger('change');
 
         var $postTable = $('#postTable');
         var postTable = $postTable.DataTable({
@@ -367,8 +348,12 @@
                 "url": "/api/v1/posts/",
                 "type": "GET",
                 "data": {
-                    'tagsId': $postTagSelect.val(),
-                    'categoriesId': $postCategorySelect.val()
+                    "tagIds" :function () {
+                        return $postTagSelect.val();
+                    },
+                    "categoryIds" : function () {
+                        return $postCategorySelect.val()
+                    }
                 },
                 "dataSrc": ""
             },
@@ -402,7 +387,11 @@
         var $filterButton = $('#filterButton');
 
         $filterButton.click(function () {
-
+            $postTagSelect.find("option:selected").each(function () {
+                console.log($(this).text() + " " + $(this).val());
+            });
+            console.log("$postTagSelect.val() ----> "+ $postTagSelect.val());
+            postTable.ajax.reload();
         });
 
         var $modalConfirmDelete = $('#modalConfirmDelete');
