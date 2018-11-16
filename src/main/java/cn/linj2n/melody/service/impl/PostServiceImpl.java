@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -105,5 +106,11 @@ public class PostServiceImpl implements PostService{
     @Override
     public Boolean existsById(Long postId) {
         return postRepository.exists(postId);
+    }
+
+    @Override
+    @Transactional
+    public List<Post> getPostsByTags(List<Long> tagIds) {
+        return postRepository.findAllByTags(tagIds,Long.valueOf(tagIds.size()));
     }
 }

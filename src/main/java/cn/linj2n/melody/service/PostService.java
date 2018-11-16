@@ -66,10 +66,10 @@ public interface PostService {
     Boolean existsById(Long postId);
 
     /**
-     * 给定 tag 与 category 的 Id 列表, 查询 post
-     * @param tagIdList tag id 列表
-     * @param categoryIdList category id 列表
-     * @return
+     * 给定 tag id 列表, 查询 post
+     * @param tagIds tag id 列表
+     * @return post 列表
      */
-    List<Post> getPostsByTagsAndCategories(List<Long> tagIdList, List<Long> categoryIdList);
+    List<Post> getPostsByTags(List<Long> tagIds);
+
 }

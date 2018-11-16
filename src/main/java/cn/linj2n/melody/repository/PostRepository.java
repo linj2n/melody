@@ -1,8 +1,11 @@
 package cn.linj2n.melody.repository;
 
+import cn.linj2n.melody.domain.Category;
 import cn.linj2n.melody.domain.Post;
 import cn.linj2n.melody.domain.Tag;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,4 +20,9 @@ public interface PostRepository extends JpaRepository<Post,Long> {
     List<Post> findAllByOrderByCreatedAtDesc();
 
     List<Post> findAllByOrderByUpdatedAtDesc();
+
+    @Query("select post from Post post join post.tags tag " +
+            "where tag.id in :tagIds " +
+            "group by post.id having count(post.id) = :tagCount")
+    List<Post> findAllByTags(@Param("tagIds") List<Long> tagIds, @Param("tagCount") Long tagCount);
 }
