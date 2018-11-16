@@ -367,10 +367,22 @@
             });
         });
 
-        function createOrUpdateTagElement(tagId, tagName,needToCreate) {
+        function createOrUpdateTagElement(tagId,tagName,needToCreate) {
             if (needToCreate) {
-                // TODO: add a new tag element
-                $(".tags").append("");
+                var tagItem = '<div class="tag light-blue lighten-4 hoverable" data-tag-id="' + tagId + '" data-tag-name="' + tagName + '" id="tag' + tagId + '">\n' +
+                    '                    <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"\n' +
+                    '                aria-expanded="false"><span>' + tagName + '</span>\n' +
+                    '                    <span class="ml-2 mr-2" >0</span></a>\n' +
+                    '                <div class="dropdown-menu" aria-labelledby="dropdownMenuMenu">\n' +
+                    '                    <a class="dropdown-item text-sm-left" href="/admin/tags/' + tagId + '/posts">查看文章</a>\n' +
+                    '                    <a class="dropdown-item text-sm-left" data-toggle="modal"\n' +
+                    '                data-target="#tagSettingModal">重命名</a>\n' +
+                    '                    <div class="dropdown-divider"></div>\n' +
+                    '                    <a class="dropdown-item" data-toggle="modal"\n' +
+                    '                data-target="#modalConfirmDelete">删除</a>\n' +
+                    '                    </div>\n' +
+                    '            </div>';
+                $(".tags").append(tagItem);
             } else {
                 console.log("update node");
                 $targetTag = $("#tag" + tagId);
