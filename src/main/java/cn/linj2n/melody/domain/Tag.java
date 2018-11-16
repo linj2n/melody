@@ -14,7 +14,11 @@ import java.util.Set;
 @Table(name = "tag")
 @Getter
 @Setter
-public class Tag extends AbstractModel{
+public class Tag {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(nullable = false,unique = true)
     private String name;

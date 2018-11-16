@@ -18,7 +18,11 @@ import java.util.Set;
 @Table(name = "user")
 @Getter
 @Setter
-public class User extends AbstractTimedModel {
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     /**
      * 用户登录名
