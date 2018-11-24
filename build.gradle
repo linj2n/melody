@@ -100,4 +100,7 @@ dependencies {
 	compileOnly "org.projectlombok:lombok:1.16.16"
 	compile group: 'org.modelmapper', name: 'modelmapper', version: '2.3.0'
 
+	// https://mvnrepository.com/artifact/com.atlassian.commonmark/commonmark
+	compile group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.12.1'
+
 }
