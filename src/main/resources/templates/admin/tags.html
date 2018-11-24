@@ -26,270 +26,246 @@
 
 <body class="grey lighten-4">
 
-<!--Main Navigation-->
-<header th:replace="admin/header :: common_nav(${active_tab})">
-
-    <!-- Navbar -->
-    <nav class="navbar fixed-top navbar-expand-sm navbar-light white" id="none-item-nav">
-        <div class="container-fluid">
-            <!-- Collapse -->
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <!-- Links -->
-            <div class="collapse navbar-collapse" id="#">
-
-                <!-- Left -->
-                <ul class="navbar-nav mr-auto"></ul>
-
-                <!-- Right -->
-                <ul class="navbar-nav nav-flex-icons">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                           aria-haspopup="true"
-                           aria-expanded="false">
-                            <i class="fa fa-user"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-default"
-                             aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <!-- Navbar -->
-    <!-- Navbar -->
-    <nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar" id="item-nav">
-        <div class="container-fluid">
-            <!-- Brand -->
-            <a class="navbar-brand waves-effect" href="#"
-               target="_blank">
-                <strong class="blue-text">Melody</strong>
-            </a>
-
-            <!-- Collapse -->
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <!-- Links -->
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-                <!-- Left -->
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link waves-effect" href="#"
-                           target="_blank"><strong>发布文章</strong></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link waves-effect" href="#"
-                           target="_blank"><strong>文章管理</strong></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link waves-effect" href="#"
-                           target="_blank"><strong>分类/标签</strong></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link waves-effect" href="#"
-                           target="_blank"><strong>我的账号</strong></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link waves-effect" href="#"
-                           target="_blank"><strong>系统设置</strong></a>
-                    </li>
-                </ul>
-
-                <!-- Right -->
-                <ul class="navbar-nav nav-flex-icons">
-                    <li class="nav-item">
-                        <a href="#" class="nav-link border border-light rounded waves-effect"
-                           target="_blank">
-                            <i class="fa fa-user mr-2"></i></a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <!-- Navbar -->
-
-
+<!-- Wrapper -->
+<div class="wrapper">
     <!-- Sidebar -->
-    <div class="sidebar-fixed position-fixed">
-        <div class="logo-wrapper waves-effect text-center">
-            <a class="navbar-brand" href="#"
-               target="_blank"><strong class="blue-text">Melody</strong></a>
+    <nav class="side-navbar" th:replace="admin/header :: side-navbar(${active_tab})">
+        <!-- Sidebar Header-->
+        <div class="sidebar-header d-flex align-items-center"><a href="#">
+            <div class="avatar"><img src="#" alt="..." class="img-fluid rounded-circle"></div></a>
+            <div class="title">
+                <h1 class="h4">Melody</h1>
+                <p>linj2n</p>
+            </div>
         </div>
-        <div class="list-group list-group-flush">
-            <a href="#" class="list-group-item waves-effect">
-                <i class="fa fa-pie-chart mr-3"></i>发布文章
-            </a>
-            <a href="#" class="list-group-item list-group-item-action waves-effect">
-                <i class="fa fa-table mr-3"></i>文章管理</a>
-            <a href="#" class="list-group-item list-group-item-action waves-effect">
-                <i class="fa fa-map mr-3"></i>分类与标签</a>
-            <a href="#" class="list-group-item list-group-item-action waves-effect">
-                <i class="fa fa-money mr-3"></i>系统设置</a>
-            <a href="#" class="list-group-item list-group-item-action waves-effect">
-                <i class="fa fa-user mr-3"></i> 我的账号</a>
-        </div>
-    </div>
+        <!-- Sidebar Navidation Menus-->
+        <span class="heading">Main</span>
+        <ul class="list-unstyled">
+            <li><a href="index.html" > <i class="fa fa-home"></i>Home </a></li>
+            <li><a href="#tablesDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-list-ul"></i>文章</a>
+                <ul id="tablesDropdown" class="collapse">
+                    <li><a href="#">Demo</a></li>
+                    <li><a href="#">Demo</a></li>
+                </ul>
+            </li>
+            <li><a href="#chartsDropdown" aria-expanded="false" data-toggle="collapse" > <i class="fa fa-tag"></i>标签</a>
+                <ul id="chartsDropdown" class="collapse list-unstyled ">
+                    <li><a href="#">Demo</a></li>
+                    <li><a href="#">Demo</a></li>
+                </ul>
+            </li>
+            <li><a href="#formsDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-folder"></i>分类</a>
+                <ul id="formsDropdown" class="collapse list-unstyled ">
+                    <li><a href="#">Demo</a></li>
+                    <li><a href="#">Demo</a></li>
+                    <li><a href="#">Demo</a></li>
+                </ul>
+            </li>
+            <li class="active"><a href="#componentsDropdown" aria-expanded="false" data-toggle="collapse" class="collapsed"> <i class="fa fa-cog"></i>设置 </a>
+                <ul id="componentsDropdown" class="list-unstyled collapse" style="">
+                    <li><a href="#">Demo</a></li>
+                    <li><a href="#">Demo</a></li>
+                    <li><a href="#">Demo</a></li>
+                </ul>
+            </li>
+            <li><a href="#pagesDropdown" aria-expanded="true" data-toggle="collapse" class=""> <i class="fa fa-user-circle"></i>我的</a>
+                <ul id="pagesDropdown" class="list-unstyled collapse show" style="">
+                    <li><a href="pages-contacts.html">Contacts</a></li>
+                    <li><a href="login.html">Login page</a></li>
+                    <li><a href="pages-profile.html">Profile</a></li>
+                    <li><a href="pages-pricing.html">Pricing table</a></li>
+                </ul>
+            </li>
+        </ul><span class="heading">Extras</span>
+        <ul class="list-unstyled">
+            <li> <a href="#"> <i class="icon-flask"></i>Demo </a></li>
+            <li> <a href="#"> <i class="icon-screen"></i>Demo </a></li>
+            <li> <a href="#"> <i class="icon-mail"></i>Demo </a></li>
+            <li> <a href="#"> <i class="icon-picture"></i>Demo </a></li>
+        </ul>
+    </nav>
     <!-- Sidebar -->
 
-</header>
-<!--Main Navigation-->
+    <!-- main content-->
+    <div class="main">
+        <!-- th:replace fix top nav bar-->
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-sm navbar-light white" th:replace="admin/header :: fix-top-navbar" >
+            <div class="container-fluid">
+                <!-- Collapse -->
 
-<!--Main layout-->
-<main class="pt-5 mx-lg-3">
-    <div class="container-fluid mt-1">
-        <!-- Heading -->
-        <!-- Heading -->
-        <!--Section: Modals-->
-        <section>
-            <div class="modal fade" id="tagSettingModal" tabindex="-1" role="dialog" aria-labelledby="tagSettingModal"
-                 aria-hidden="true">
-                <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title blue-text">标签</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="md-form form-sm mt-0">
-                            <input type="text" id="tagName" class="form-control" placeholder="输入标签名">
-                            <label for="tagName"></label>
-                        </div>
-                    </div>
-                    <div class="modal-footer d-flex">
-                        <button class="btn btn-primary" id="saveButton">确定</button>
-                    </div>
-                </div>
+                <a href="#" id="sidebarCollapse" class="button-collapse"><i class="fa fa-bars"></i><span class="sr-only" aria-hidden="true">Toggle side navigation</span></a>
+                <!-- Links -->
+                <div class="collapse navbar-collapse" id="#">
+
+                    <!-- Left -->
+                    <ul class="navbar-nav mr-auto"></ul>
+                    <!-- Right -->
+                    <ul class="navbar-nav nav-flex-icons">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                               aria-haspopup="true"
+                               aria-expanded="false">
+                                <i class="fa fa-user"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right dropdown-default"
+                                 aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
-            <div class="modal fade" id="centralModalSuccess" tabindex="-1" role="dialog" aria-labelledby="centralModalSuccess" aria-hidden="true">
-                <div class="modal-dialog modal-notify modal-success" role="document">
-                    <!--Content-->
-                    <div class="modal-content">
-                        <!--Header-->
-                        <div class="modal-header">
-                            <p class="heading lead">消息</p>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true" class="white-text">&times;</span>
-                            </button>
-                        </div>
-                        <!--Body-->
-                        <div class="modal-body">
-                            <div class="text-center">
-                                <i class="fa fa-check fa-4x mb-3 animated rotateIn"></i>
-                                <p><strong>操作成功！</strong></p>
+        </nav>
+        <!-- Navbar -->
+
+        <main class="pt-1">
+            <div class="container-fluid mt-1">
+                <!-- Heading -->
+                <!-- Heading -->
+                <!--Section: Modals-->
+                <section>
+                    <div class="modal fade" id="tagSettingModal" tabindex="-1" role="dialog" aria-labelledby="tagSettingModal"
+                         aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title blue-text">标签</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="md-form form-sm mt-0">
+                                        <input type="text" id="tagName" class="form-control" placeholder="输入标签名">
+                                        <label for="tagName"></label>
+                                    </div>
+                                </div>
+                                <div class="modal-footer d-flex">
+                                    <button class="btn btn-primary" id="saveButton">确定</button>
+                                </div>
                             </div>
                         </div>
-
-                        <!--Footer-->
-                        <div class="modal-footer justify-content-center">
-                            <button type="button" class="btn btn-success waves-effect" data-dismiss="modal">确定</button>
-                        </div>
                     </div>
-                    <!--/.Content-->
-                </div>
-            </div>
-            <!-- Central Modal Medium Success-->
-            <!--Modal: modalConfirmDelete-->
-            <div class="modal fade" id="modalConfirmDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                 aria-hidden="true">
-                <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
-                    <!--Content-->
-                    <div class="modal-content text-center">
-                        <!--Header-->
-                        <div class="modal-header d-flex justify-content-center">
-                            <p class="heading">确定删除 ？</p>
-                        </div>
-
-                        <!--Body-->
-                        <div class="modal-body">
-
-                            <i class="fa fa-times fa-4x animated rotateIn"></i>
-
-                        </div>
-
-                        <!--Footer-->
-                        <div class="modal-footer flex-center">
-                            <a class="btn  btn-outline-danger btn-ok">确定</a>
-                            <a class="btn btn-danger waves-effect" data-dismiss="modal">取消</a>
-                        </div>
-                    </div>
-                    <!--/.Content-->
-                </div>
-            </div>
-            <!--Modal: modalConfirmDelete-->
-        </section>
-        <!--Section: Modals-->
-
-        <!--Section: Main panel-->
-        <!--Grid row-->
-        <div class="row wow fadeIn">
-            <!--Grid column-->
-            <div class="col-md-12 mb-12">
-                <div class="card">
-                    <div class="card-body">
-                        <!-- Material form grid -->
-                        <form>
-                            <!-- Material form grid -->
-                            <!-- Grid hidden row-->
-                            <!-- Grid row -->
-                            <div class="row">
-                                <!-- Grid column -->
-                                <div class="col-md-9 col-sm-6 mb-0">
-                                    <h5 class="card-title blue-text mb-2"><i class="fa fa-table"></i><a> 所有标签</a></h5>
+                    <div class="modal fade" id="centralModalSuccess" tabindex="-1" role="dialog" aria-labelledby="centralModalSuccess" aria-hidden="true">
+                        <div class="modal-dialog modal-notify modal-success" role="document">
+                            <!--Content-->
+                            <div class="modal-content">
+                                <!--Header-->
+                                <div class="modal-header">
+                                    <p class="heading lead">消息</p>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true" class="white-text">&times;</span>
+                                    </button>
                                 </div>
-                                <!-- Grid column -->
-                                <!-- Grid column -->
-                                <div class="col-md-3 col-sm-6 mb-0">
-                                    <button type="button" class="btn btn-primary" id="newTagsButton" data-toggle="modal"
-                                            data-target="#tagSettingModal"><i class="fa fa-plus"></i>新增标签</button>
+                                <!--Body-->
+                                <div class="modal-body">
+                                    <div class="text-center">
+                                        <i class="fa fa-check fa-4x mb-3 animated rotateIn"></i>
+                                        <p><strong>操作成功！</strong></p>
+                                    </div>
                                 </div>
-                                <!-- Grid column -->
+
+                                <!--Footer-->
+                                <div class="modal-footer justify-content-center">
+                                    <button type="button" class="btn btn-success waves-effect" data-dismiss="modal">确定</button>
+                                </div>
                             </div>
-                            <br>
-                            <!-- Grid row -->
-                            <div class="row tagsRow ml-1">
-                                <div class="tags">
-                                    <div th:each="tag : ${allTags}" class="tag light-blue lighten-4 hoverable" th:attr="data-tag-id=${tag.id},data-tag-name=${tag.name}" th:id="tag + ${tag.id}">
-                                        <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                                           aria-expanded="false"><span th:text="${tag.name}"></span>
-                                            <span class="ml-2 mr-2" th:text="${tag.posts.size()}">9</span></a>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuMenu">
-                                            <a class="dropdown-item text-sm-left" th:href="@{'/admin/tags/' + ${tag.id} + '/posts'}">查看文章</a>
-                                            <a class="dropdown-item text-sm-left" data-toggle="modal"
-                                               data-target="#tagSettingModal">重命名</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" data-toggle="modal"
-                                               data-target="#modalConfirmDelete">删除</a>
+                            <!--/.Content-->
+                        </div>
+                    </div>
+                    <!-- Central Modal Medium Success-->
+                    <!--Modal: modalConfirmDelete-->
+                    <div class="modal fade" id="modalConfirmDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+                            <!--Content-->
+                            <div class="modal-content text-center">
+                                <!--Header-->
+                                <div class="modal-header d-flex justify-content-center">
+                                    <p class="heading">确定删除 ？</p>
+                                </div>
+
+                                <!--Body-->
+                                <div class="modal-body">
+
+                                    <i class="fa fa-times fa-4x animated rotateIn"></i>
+
+                                </div>
+
+                                <!--Footer-->
+                                <div class="modal-footer flex-center">
+                                    <a class="btn  btn-outline-danger btn-ok">确定</a>
+                                    <a class="btn btn-danger waves-effect" data-dismiss="modal">取消</a>
+                                </div>
+                            </div>
+                            <!--/.Content-->
+                        </div>
+                    </div>
+                    <!--Modal: modalConfirmDelete-->
+                </section>
+                <!--Section: Modals-->
+
+                <!--Section: Main panel-->
+                <!--Grid row-->
+                <div class="row wow fadeIn">
+                    <!--Grid column-->
+                    <div class="col-md-12 mb-12">
+                        <div class="card">
+                            <!-- Card-header-->
+                            <div class="card-header" role="tab" id="headingOne">
+                                <!--Options-->
+
+                                <!-- Heading -->
+
+                                <div class="dropdown pull-right">
+                                    <button type="button" class="btn btn-primary btn-md btn-rounded m-0 mr-3 p-2 waves-effect waves-light" id="newTagsButton"
+                                            data-toggle="modal"
+                                            data-target="#tagSettingModal">
+                                        <i class="fa fa-plus mx-3"><span class="mx-2">新增标签</span></i>
+                                    </button>
+                                </div>
+                                <h4 class="card-header-title blue-text">标签列表</h4>
+                            </div>
+                            <!-- Card-header-->
+                            <div class="card-body">
+                                <div class="row tagsRow ml-1">
+                                    <div class="tags">
+                                        <div th:each="tag : ${allTags}" class="tag light-blue lighten-4 hoverable"
+                                             th:attr="data-tag-id=${tag.id},data-tag-name=${tag.name}"
+                                             th:id="tag + ${tag.id}">
+                                            <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                               aria-expanded="false"><span th:text="${tag.name}"></span>
+                                                <span class="ml-2 mr-2" th:text="${tag.posts.size()}">9</span></a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuMenu">
+                                                <a class="dropdown-item text-sm-left"
+                                                   th:href="@{'/admin/tags/' + ${tag.id} + '/posts'}">查看文章</a>
+                                                <a class="dropdown-item text-sm-left" data-toggle="modal"
+                                                   data-target="#tagSettingModal">重命名</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" data-toggle="modal"
+                                                   data-target="#modalConfirmDelete">删除</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </form>
+                        </div>
                     </div>
+                    <!--Grid column-->
                 </div>
+                <!--Grid row-->
+                <!--Section: Main panel-->
             </div>
-            <!--Grid column-->
-        </div>
-        <!--Grid row-->
-        <!--Section: Main panel-->
+        </main>
+        <!--Main layout-->
+
     </div>
-</main>
-<!--Main layout-->
-
-
+    <!-- main content-->
+</div>
+<!-- Wrapper -->
 <!--Footer-->
 <footer class="page-footer text-center font-small mt-4" th:replace="admin/footer :: common_footer(${scripts_version})">
     <!--Copyright-->

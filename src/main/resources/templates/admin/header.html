@@ -39,7 +39,7 @@
     <nav th:fragment="side-navbar(active_tab)" class="side-navbar">
 
         <!-- Sidebar Header-->
-        <div class="sidebar-header d-flex align-items-center"><a href="#">
+        <div class="sidebar-header d-flex align-items-center "><a href="#">
             <div class="avatar"><img th:src="@{/admin/images/logo.png}" alt="..." class="img-fluid rounded-circle"></div></a>
             <div class="title">
                 <h1 class="h4">Melody</h1>
@@ -52,8 +52,8 @@
             <li th:classappend="${active_tab == 'home' ? 'active' : ''}"><a href="index.html" > <i class="fa fa-home"></i>Home </a></li>
             <li th:classappend="${active_tab == 'posts' ? 'active' : ''}"><a href="#tablesDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-list-ul"></i>文章</a>
                 <ul id="tablesDropdown" class="collapse">
-                    <li><a href="#">新建文章</a></li>
-                    <li><a href="#">文章列表</a></li>
+                    <li><a th:href="@{/admin/posts/new}">新建文章</a></li>
+                    <li><a th:href="@{/admin/posts}">文章列表</a></li>
                 </ul>
             </li>
             <li th:classappend="${active_tab == 'tags' ? 'active' : ''}"><a th:href="@{/admin/tags}"> <i class="fa fa-tag"></i>标签</a></li>
