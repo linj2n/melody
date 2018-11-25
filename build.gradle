@@ -75,6 +75,8 @@ dependencies {
 
 	// 添加   Thymeleaf Spring Security 依赖，与 Thymeleaf 版本一致都是 3.x
 	compile('org.thymeleaf.extras:thymeleaf-extras-springsecurity4:3.0.2.RELEASE')
+	// https://mvnrepository.com/artifact/org.thymeleaf.extras/thymeleaf-extras-java8time
+	compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-java8time', version: '3.0.1.RELEASE'
 
 	// 添加  Apache Commons Lang 依赖
 	compile('org.apache.commons:commons-lang3:3.5')
@@ -84,6 +86,7 @@ dependencies {
 
 	// 添加 Jackson 依赖
 	compile("com.fasterxml.jackson.core:jackson-databind")
+	compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.8.8'
 
 
 	// 添加 Validator 依赖
