@@ -6,6 +6,7 @@ import org.commonmark.node.*;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -13,12 +14,11 @@ import java.time.format.DateTimeFormatter;
 @Component
 public class ViewUtils {
 
-    public String getFormatDate(ZonedDateTime dateTime) {
+    public LocalDateTime getFormatDate(ZonedDateTime dateTime) {
         if (dateTime == null) {
-            return "";
+            return null;
         }
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return dateTime.format(format);
+        return dateTime.toLocalDateTime();
     }
 
     public String renderToHtml(String markdown) {

@@ -52,10 +52,10 @@ public class TagController {
         tagService.getTagWithPosts(tagId).map(u -> {
             u.getPosts().forEach(post -> {
                 PostDTO postDTO = modelMapper.map(post,PostDTO.class);
-                String createdTime = viewUtils.getFormatDate(post.getCreatedAt());
-                String updatedTime = post.getUpdatedAt() == null ? createdTime : viewUtils.getFormatDate(post.getUpdatedAt());
-                postDTO.setCreatedAt(createdTime);
-                postDTO.setUpdatedAt(updatedTime);
+//                String createdTime = viewUtils.getFormatDate(post.getCreatedAt());
+//                String updatedTime = post.getUpdatedAt() == null ? createdTime : viewUtils.getFormatDate(post.getUpdatedAt());
+                postDTO.setCreatedAt(viewUtils.getFormatDate(post.getCreatedAt()));
+                postDTO.setUpdatedAt(viewUtils.getFormatDate(post.getUpdatedAt()));
                 allPosts.add(postDTO);
             });
             return u;

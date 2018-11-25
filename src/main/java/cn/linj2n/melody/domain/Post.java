@@ -8,6 +8,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -97,12 +98,14 @@ public class Post {
 
     @PrePersist
     public void prePersist() {
-        createdAt = updatedAt = ZonedDateTime.now();
+        createdAt = updatedAt = ZonedDateTime.now(ZoneId.of("Asia/Shanghai"));
+        System.out.println("createAt -------> " + createdAt);
     }
 
     @PreUpdate
     public void preUpdate() {
-        updatedAt = ZonedDateTime.now();
+        updatedAt = ZonedDateTime.now(ZoneId.of("Asia/Shanghai"));
+        System.out.println("updatedAt -------> " + updatedAt);
     }
 
     public ZonedDateTime getCreatedAt() {
