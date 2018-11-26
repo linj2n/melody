@@ -3,6 +3,7 @@ package cn.linj2n.melody.service;
 import cn.linj2n.melody.domain.Post;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface PostService {
@@ -44,6 +45,10 @@ public interface PostService {
      * @return 返回文章列表
      */
     List<Post> listAllPostsWithDetails();
+
+    Map<String, List<Post>> listAllPostsGroupByMonth();
+
+    Map<String, List<Post>> listAllPostsGroupByCategory();
 
     /**
      * 新建文章

@@ -13,10 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -112,5 +110,39 @@ public class PostServiceImpl implements PostService{
     @Transactional
     public List<Post> getPostsByTags(List<Long> tagIds) {
         return postRepository.findAllByTags(tagIds,Long.valueOf(tagIds.size()));
+    }
+
+    @Override
+    public Map<String, List<Post>> listAllPostsGroupByMonth() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+        TreeMap<String, List<Post>> postsMap = new TreeMap<>();
+        postRepository.findAllByOrderByCreatedAtDesc().forEach(post -> {
+            String month = post.getCreatedAt().format(formatter);
+            List<Post> posts = postsMap.get(month);
+            if (posts == null) {
+                posts = new ArrayList<>();
+            }
+            posts.add(post);
+            postsMap.put(month, posts);
+        });
+        return postsMap.descendingMap();
+    }
+
+    @Override
+    public Map<String, List<Post>> listAllPostsGroupByCategory() {
+//        TreeMap<String, List<Post>> postsMap = new TreeMap<>();
+//        postRepository.findAllByOrderByCreatedAtDesc().forEach(post -> {
+//            String categoryName = post.getCreatedAt().format(formatter);
+//            List<Post> posts = postsMap.get(categoryName);
+//            if (posts == null) {
+//                posts = new ArrayList<>();
+//            }
+//            posts.add(post);
+//            postsMap.put(month, posts);
+//        });
+//
+//        return postsMap.descendingMap();
+
+        return null;
     }
 }
