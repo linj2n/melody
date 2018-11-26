@@ -7,6 +7,7 @@ import cn.linj2n.melody.service.CategoryService;
 import cn.linj2n.melody.service.PostService;
 import cn.linj2n.melody.service.TagService;
 import cn.linj2n.melody.web.dto.PostDTO;
+import cn.linj2n.melody.web.utils.DTOModelMapper;
 import cn.linj2n.melody.web.utils.ViewUtils;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -39,17 +40,14 @@ public class PostController {
 
     private CategoryService categoryService;
 
-    private ModelMapper modelMapper;
-
-    private ViewUtils viewUtils;
+    private DTOModelMapper dtoModelMapper;
 
     @Autowired
-    public PostController(PostService postService, TagService tagService, CategoryService categoryService, ModelMapper modelMapper, ViewUtils viewUtils) {
+    public PostController(PostService postService, TagService tagService, CategoryService categoryService, DTOModelMapper dtoModelMapper, ViewUtils viewUtils) {
         this.postService = postService;
         this.tagService = tagService;
         this.categoryService = categoryService;
-        this.modelMapper = modelMapper;
-        this.viewUtils = viewUtils;
+        this.dtoModelMapper = dtoModelMapper;
     }
 
     @ModelAttribute("allTags")
@@ -66,12 +64,7 @@ public class PostController {
     public ModelAndView setupPostList( ModelMap modelMap) {
         List<PostDTO> allPosts=new ArrayList<>();
         postService.listAllPosts().forEach(post -> {
-            PostDTO postDTO = modelMapper.map(post,PostDTO.class);
-//            String createdTime = viewUtils.getFormatDate(post.getCreatedAt());
-//            String updatedTime = post.getUpdatedAt() == null ? createdTime : viewUtils.getFormatDate(post.getUpdatedAt());
-            postDTO.setCreatedAt(viewUtils.getFormatDate(post.getCreatedAt()));
-            postDTO.setUpdatedAt(viewUtils.getFormatDate(post.getUpdatedAt()));
-            allPosts.add(postDTO);
+            allPosts.add(dtoModelMapper.convertToDTO(post));
         });
         modelMap.addAttribute("allPosts", allPosts);
         return new ModelAndView("admin/posts", modelMap);

@@ -3,6 +3,7 @@ package cn.linj2n.melody.web.controller.admin;
 import cn.linj2n.melody.domain.Tag;
 import cn.linj2n.melody.service.TagService;
 import cn.linj2n.melody.web.dto.PostDTO;
+import cn.linj2n.melody.web.utils.DTOModelMapper;
 import cn.linj2n.melody.web.utils.ViewUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,15 +25,12 @@ public class TagController {
 
     private TagService tagService;
 
-    private ModelMapper modelMapper;
-
-    private ViewUtils viewUtils;
+    private DTOModelMapper dtoModelMapper;
 
     @Autowired
-    public TagController(TagService tagService, ModelMapper modelMapper,ViewUtils viewUtils) {
+    public TagController(TagService tagService, ModelMapper modelMapper,ViewUtils viewUtils, DTOModelMapper dtoModelMapper) {
         this.tagService = tagService;
-        this.modelMapper = modelMapper;
-        this.viewUtils = viewUtils;
+        this.dtoModelMapper = dtoModelMapper;
     }
 
     @ModelAttribute("allTags")
@@ -51,12 +49,7 @@ public class TagController {
         List<PostDTO> allPosts=new ArrayList<>();
         tagService.getTagWithPosts(tagId).map(u -> {
             u.getPosts().forEach(post -> {
-                PostDTO postDTO = modelMapper.map(post,PostDTO.class);
-//                String createdTime = viewUtils.getFormatDate(post.getCreatedAt());
-//                String updatedTime = post.getUpdatedAt() == null ? createdTime : viewUtils.getFormatDate(post.getUpdatedAt());
-                postDTO.setCreatedAt(viewUtils.getFormatDate(post.getCreatedAt()));
-                postDTO.setUpdatedAt(viewUtils.getFormatDate(post.getUpdatedAt()));
-                allPosts.add(postDTO);
+                allPosts.add(dtoModelMapper.convertToDTO(post));
             });
             return u;
         });

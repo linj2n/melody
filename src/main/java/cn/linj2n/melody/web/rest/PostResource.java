@@ -3,8 +3,8 @@ package cn.linj2n.melody.web.rest;
 import cn.linj2n.melody.domain.Post;
 import cn.linj2n.melody.service.PostService;
 import cn.linj2n.melody.web.dto.PostDTO;
+import cn.linj2n.melody.web.utils.DTOModelMapper;
 import cn.linj2n.melody.web.utils.ViewUtils;
-import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +25,14 @@ public class PostResource {
 
     private PostService postService;
 
-    private ModelMapper modelMapper;
+    private DTOModelMapper dtoModelMapper;
 
     private ViewUtils viewUtils;
 
     @Autowired
-    public PostResource(PostService postService, ModelMapper modelMapper,ViewUtils viewUtils) {
+    public PostResource(PostService postService, DTOModelMapper dtoModelMapper,ViewUtils viewUtils) {
         this.postService = postService;
-        this.modelMapper = modelMapper;
+        this.dtoModelMapper = dtoModelMapper;
         this.viewUtils = viewUtils;
     }
 
@@ -40,7 +40,7 @@ public class PostResource {
             method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updatePost(@RequestBody PostDTO postDTO) {
-        Post post = modelMapper.map(postDTO,Post.class);
+        Post post = dtoModelMapper.convertToEntity(postDTO);
         logger.info("post.content ----> {} ",post.getContent());
         postService.updatePost(post);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -68,22 +68,12 @@ public class PostResource {
         if (tagIds == null || tagIds.isEmpty()) {
             logger.info("get all posts --------------> ");
             postService.listAllPosts().forEach(post -> {
-                PostDTO postDTO = modelMapper.map(post,PostDTO.class);
-//                String createdTime = viewUtils.getFormatDate(post.getCreatedAt());
-//                String updatedTime = post.getUpdatedAt() == null ? createdTime : viewUtils.getFormatDate(post.getUpdatedAt());
-                postDTO.setCreatedAt(viewUtils.getFormatDate(post.getCreatedAt()));
-                postDTO.setUpdatedAt(viewUtils.getFormatDate(post.getUpdatedAt()));
-                allPosts.add(postDTO);
+                allPosts.add(dtoModelMapper.convertToDTO(post));
             });
         } else {
             logger.info("get all posts by specific tags --------------> ");
             postService.getPostsByTags(tagIds).forEach(post -> {
-                PostDTO postDTO = modelMapper.map(post,PostDTO.class);
-//                String createdTime = viewUtils.getFormatDate(post.getCreatedAt());
-//                String updatedTime = post.getUpdatedAt() == null ? createdTime : viewUtils.getFormatDate(post.getUpdatedAt());
-                postDTO.setCreatedAt(viewUtils.getFormatDate(post.getCreatedAt()));
-                postDTO.setUpdatedAt(viewUtils.getFormatDate(post.getUpdatedAt()));
-                allPosts.add(postDTO);
+                allPosts.add(dtoModelMapper.convertToDTO(post));
             });
         }
         return allPosts;
