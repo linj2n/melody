@@ -1,6 +1,8 @@
 package cn.linj2n.melody.service;
 
 import cn.linj2n.melody.domain.Post;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Map;
@@ -40,6 +42,8 @@ public interface PostService {
      */
     List<Post> listAllPosts();
 
+    Page<Post> listPostByPage(Pageable pageable);
+
     /**
      * 获取所有的文章，包含标签与分类等信息
      * @return 返回文章列表
@@ -76,5 +80,4 @@ public interface PostService {
      * @return post 列表
      */
     List<Post> getPostsByTags(List<Long> tagIds);
-
 }
