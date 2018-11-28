@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -50,6 +51,11 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> listAllCategoriesWithPosts() {
-        return null;
+        return categoryRepository.findAllByOrderByNameAsc()
+                .stream()
+                .peek(e -> {
+                    e.getPosts().size();
+                })
+                .collect(Collectors.toList());
     }
 }
