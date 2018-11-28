@@ -69,6 +69,7 @@ dependencies {
 
 	// 添加 Spring Data JPA 的依赖
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+	compile("org.springframework.boot:spring-boot-starter-hateoas")
 
 	// 添加 MySQL连接驱动 的依赖
 	compile('mysql:mysql-connector-java:6.0.5')
