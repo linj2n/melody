@@ -414,7 +414,7 @@
                     "render": function ( id, type, row, meta ) {
                         var editButton = '<a href="/admin/posts/' + id + '/edit" class="trigger info-color text-white "><i class="fa fa-edit"></i>编辑</a>';
                         var deleteButton = '<a class="trigger danger-color text-white" id="deleteButton-' + id + '" data-post-id="' + id + '" data-toggle="modal"' + ' data-target="#modalConfirmDelete" ><i class="fa fa-trash"></i>删除</a>';
-                        var previewButton = '<a href="#"' + 'class="trigger amber darken-2 text-white"><i class="fa fa-eye"></i>预览</a>';
+                        var previewButton = '<a href="/posts/' + id + '" class="trigger amber darken-2 text-white"><i class="fa fa-eye"></i>预览</a>';
                         return editButton + deleteButton + previewButton;
                     }
                 }
