@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:with="title='#',styles_version='local',scripts_version='local',active_tab='posts'">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Material Design Bootstrap</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap core CSS -->
+    <link href="../../../static/admin/plugins/md-bootstrap-blog/css/bootstrap.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="../../../static/admin/plugins/md-bootstrap-blog/css/mdb.min.css" rel="stylesheet">
+    <link href="../../../static/admin/plugins/md-bootstrap-blog/css/addons/datatables.css" rel="stylesheet">
+    <link href="../../../static/admin/plugins/md-bootstrap-blog/css/toc.css" rel="stylesheet">
+
+    <style type="text/css">
+        p {
+            /*font-size: 16px;*/
+        }
+        #post-directory-module {
+            font-size: 0.8rem;
+        }
+        #post-directory-module .nav-item {
+            width: 100%;
+        }
+
+    </style>
+</head>
+<body>
+<header>
+
+    <!--Navigation-->
+    <nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar pt-1 pb-1">
+        <div class="container-fluid">
+
+            <!-- Brand -->
+            <a class="navbar-brand waves-effect " href="#" target="_blank">
+                <strong class="blue-text">LN</strong>
+            </a>
+
+            <!-- Collapse -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Links -->
+            <div class="collapse navbar-collapse justify-content-center collapse" id="navbarSupportedContent">
+
+                <!-- Left -->
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link waves-effect font-weight-normal text-muted" href="#">首页
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item ml-4">
+                        <a class="nav-link waves-effect font-weight-normal text-muted" href="#" target="_blank">归档</a>
+                    </li>
+                    <li class="nav-item ml-4">
+                        <a class="nav-link waves-effect font-weight-normal text-muted" href="#" target="_blank">分类</a>
+                    </li>
+                    <li class="nav-item ml-4">
+                        <a class="nav-link waves-effect font-weight-normal text-muted" href="#" target="_blank">链接</a>
+                    </li>
+                    <li class="nav-item ml-4">
+                        <a class="nav-link waves-effect font-weight-normal text-muted" href="#" target="_blank">关于</a>
+                    </li>
+                </ul>
+
+                <!-- Right -->
+                <ul class="navbar-nav nav-flex-icons">
+                    <!--<li class="nav-item">-->
+                    <!--<a href="https://twitter.com/MDBootstrap" class="nav-link waves-effect" target="_blank">-->
+                    <!--<i class="fa fa-github"></i>-->
+                    <!--</a>-->
+                    <!--</li>-->
+                </ul>
+                <a class="navbar-brand waves-effect " href="#" target="_blank">
+                    <i class="fa fa-github"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+    <!--Navigation-->
+</header>
+<main>
+    <div class="container-fluid mt-5 pt-3">
+        <div class="row mb-5">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-7 col-md-12">
+                <section class="mt-5" data-spy="scroll" data-target="#navbar-example3" data-offset="0">
+                    <h2 id="概述">概述</h2>
+                    <p>以区块链为底层技术的比特币近年来被炒得沸沸扬扬，区块链技术也逐渐为人熟知，不少人甚至认为这是改变现代社会人类信任体系的革命性技术，其应用场景将十分广泛。作为区块链技术的准从业人员，现决定发起成立<strong>“区块链理论与应用研究小组”</strong>，招募全国各地区块链技术爱好者、学习者、开发者，以组织的形式开展区块链技术的学习与研究工作。学习与研究的内容将包含两个方面：
+                    </p>
+                    <h3><strong>学术性研究1</strong></h3>
+                    <h4>学术性研究1.1</h4>
+                    <h4><strong>学术性研究1.2</strong></h4>
+                    <h5><strong>学术性研究</strong></h5>
+                    <h6><strong>学术性研究</strong></h6>
+                    <p>学习与研究区块链技术相关的理论知识，并为在实际开发应用中遇到的问题提供解决方案，对区块链技术的底层提供理论上的鲁棒性。<strong>研究内容包括但不限于分布式、隐私保护、智能合约、用户行为规范等可能涉及的问题。</strong>，用到的理论包括分布式系统设计、密码学、算法博弈论等多智能体系统。
+                    </p>
+                    <h3><strong>应用性开发</strong></h3>
+                    <p>结合理论知识，研究并开发可以应用于各行业的区块链应用，包括但不限于政务、医疗、交通、供应链、代币等行业领域。</p>
+                    <h2 id="组织愿景">组织愿景</h2>
+                    <p>我们希望将组织打造为一个<strong>极具影响力的区块链技术研究组织</strong>。</p>
+                    <h2 id="加入条件">加入条件</h2>
+                    <p>不要求您有任何区块链技术的基础，但您必须是区块链技术爱好者或准从业人员，高校大三及以上本科、硕士研究生、博士研究生或同等学力及以上人员；区块链相关技术从业人员。且至少具备以下条件：</p>
+                    <ul>
+                        <li>扎实的高等数学基础（微积分、线性代数、概率论）。修习过近世代数、密码学、信息论等更佳。</li>
+                        <li>良好的英文技术书籍与文档阅读能力。</li>
+                        <li>具有一定的科研能力和学术素养（学术性研究必备）。</li>
+                        <li>具有较好的编程能力（应用性开发必备）。</li>
+                    </ul>
+                    <h2 id="能得到的福利">能得到的福利</h2>
+                    <p>本组织为志愿者类型组织，运营经费来自于组织成员和社会各界人士及企业的捐赠，组织不为非全职成员提供薪酬待遇，但作为组织成员将有以下显而易见的好处：</p>
+                    <ul>
+                        <li>和来自全国各地的优秀区块链技术学习者更加高效地学习和研究区块链技术。</li>
+                        <li>乘着区块链技术的浪潮，依托组织越来越大的影响力，获得猎头的青睐，找到区块链技术相关的高薪工作岗位。</li>
+                        <li>未来与政府、企业、社会组织等合作而获得相应的报酬和社会声望。</li>
+                        <li>基于对区块链技术的了解而投资获益。</li>
+                        <li>...</li>
+                    </ul>
+                    <h2 id="组织前期任务">组织前期任务</h2>
+                    <ul>
+                        <li>撰写区块链技术国内外理论研究和应用研究进展综述</li>
+                        <li>编写一本区块链技术理论教材</li>
+                        <li>开发一款基于区块链技术的示范性应用</li>
+                    </ul>
+                    <p>目前计划招募组织成员5人，有意者请发送个人简历到邮箱：zmrenwu_blog@163.com</p>
+                    <p>若简历通过筛选，我们将和你进行一个简单的在线交流，最终决定成员资格的认定。</p>
+                    <p>我的博客即将搬运同步至腾讯云+社区，邀请大家一同入驻：https://cloud.tencent.com/developer/support-plan</p>
+                    <p>Django学习小组成立1年多，目前QQ群内人数达上千人，知乎专栏关注人数超过4000人。为了进一步促进小组发展，为 django
+                        学习者和开发者提供更好学习交流平台，现小组计划招募若干名项目组核心开发人员。</p>
+                    <h2>微信公众号开发（1人）</h2>
+                    <p>负责Django学习小组微信平台的开发与探索。要求：</p>
+                    <ul>
+                        <li>熟悉微信公众号开发流程及相关API</li>
+                        <li>了解Django web开发框架</li>
+                        <li>熟悉Git与GitHub的使用</li>
+                        <li>积极的学习热情与良好的团队合作精神</li>
+                    </ul>
+                    <h2>Django后台开发（2人）</h2>
+                    <p>负责django学习小组官方网站的后台开发。要求：</p>
+                    <ul>
+                        <li>熟悉Django web开发框架</li>
+                        <li>良好的英语文档阅读能力</li>
+                        <li>熟悉Git与GitHub的使用</li>
+                        <li>积极的学习热情与良好的团队合作精神</li>
+                    </ul>
+                    <h2>成为项目组核心开发成员的福利：</h2>
+                    <ul>
+                        <li>良好的学习氛围，不断激励成员学习与进步</li>
+                        <li>提交的代码将由经验丰富的开发者review，在交流中不断提升代码编写水平</li>
+                        <li>遇到问题小组成员积极深入探讨，并有经验丰富的开发者指导解决，迅速提高自身解决问题的能力</li>
+                        <li>实战项目开发，为自己的简历增添精彩的一笔，对未来个人发展大有好处</li>
+                        <li>享受因小组的发展而带来的一切福利（例如内推面试机会、流量增长带来的广告收入、由我本人为小组核心成员提供的小福利等等。）</li>
+                    </ul>
+                    <p>招募说明：
+                        Django学习小组目前为开源性质的组织，所有运营费用来源于个人捐赠。目前小组没有能力提供相关的薪酬待遇。但所有小组核心成员将享受因未来小组的发展而带来的一切福利，付出终会有回报。</p>
+                    <p>如有意向，欢迎投递个人简历至
+                        djangostudyteam@163.com。若简历通过筛选，我们将和你进行一个简单的在线交流，最终决定成员资格的认定。邮件或者简历中请注明开发方向，邮件标题统一为【Django学习小组核心成员申请】【开发方向】</p>
+                    <h2 id="概述">概述1</h2>
+                    <p>以区块链为底层技术的比特币近年来被炒得沸沸扬扬，区块链技术也逐渐为人熟知，不少人甚至认为这是改变现代社会人类信任体系的革命性技术，其应用场景将十分广泛。作为区块链技术的准从业人员，现决定发起成立<strong>“区块链理论与应用研究小组”</strong>，招募全国各地区块链技术爱好者、学习者、开发者，以组织的形式开展区块链技术的学习与研究工作。学习与研究的内容将包含两个方面：
+                    </p>
+                    <h3><strong>学术性研究1</strong></h3>
+                    <h4><strong>学术性研究2</strong></h4>
+                    <h5><strong>学术性研究3</strong></h5>
+                    <h6><strong>学术性研究4</strong></h6>
+                    <p>学习与研究区块链技术相关的理论知识，并为在实际开发应用中遇到的问题提供解决方案，对区块链技术的底层提供理论上的鲁棒性。<strong>研究内容包括但不限于分布式、隐私保护、智能合约、用户行为规范等可能涉及的问题。</strong>，用到的理论包括分布式系统设计、密码学、算法博弈论等多智能体系统。
+                    </p>
+                    <h3><strong>应用性开发1</strong></h3>
+                    <p>结合理论知识，研究并开发可以应用于各行业的区块链应用，包括但不限于政务、医疗、交通、供应链、代币等行业领域。</p>
+                    <h2 id="组织愿景">组织愿景1</h2>
+                    <p>我们希望将组织打造为一个<strong>极具影响力的区块链技术研究组织</strong>。</p>
+                    <h2 id="加入条件">加入条件1</h2>
+                    <p>不要求您有任何区块链技术的基础，但您必须是区块链技术爱好者或准从业人员，高校大三及以上本科、硕士研究生、博士研究生或同等学力及以上人员；区块链相关技术从业人员。且至少具备以下条件：</p>
+                    <ul>
+                        <li>扎实的高等数学基础（微积分、线性代数、概率论）。修习过近世代数、密码学、信息论等更佳。</li>
+                        <li>良好的英文技术书籍与文档阅读能力。</li>
+                        <li>具有一定的科研能力和学术素养（学术性研究必备）。</li>
+                        <li>具有较好的编程能力（应用性开发必备）。</li>
+                    </ul>
+                    <h2 id="能得到的福利">能得到的福利1</h2>
+                    <p>本组织为志愿者类型组织，运营经费来自于组织成员和社会各界人士及企业的捐赠，组织不为非全职成员提供薪酬待遇，但作为组织成员将有以下显而易见的好处：</p>
+                    <ul>
+                        <li>和来自全国各地的优秀区块链技术学习者更加高效地学习和研究区块链技术。</li>
+                        <li>乘着区块链技术的浪潮，依托组织越来越大的影响力，获得猎头的青睐，找到区块链技术相关的高薪工作岗位。</li>
+                        <li>未来与政府、企业、社会组织等合作而获得相应的报酬和社会声望。</li>
+                        <li>基于对区块链技术的了解而投资获益。</li>
+                        <li>...</li>
+                    </ul>
+                    <h2 id="组织前期任务">组织前期任务1</h2>
+                    <ul>
+                        <li>撰写区块链技术国内外理论研究和应用研究进展综述</li>
+                        <li>编写一本区块链技术理论教材</li>
+                        <li>开发一款基于区块链技术的示范性应用</li>
+                    </ul>
+                    <p>目前计划招募组织成员5人，有意者请发送个人简历到邮箱：zmrenwu_blog@163.com</p>
+                    <p>若简历通过筛选，我们将和你进行一个简单的在线交流，最终决定成员资格的认定。</p>
+                    <p>我的博客即将搬运同步至腾讯云+社区，邀请大家一同入驻：https://cloud.tencent.com/developer/support-plan</p>
+                    <p>Django学习小组成立1年多，目前QQ群内人数达上千人，知乎专栏关注人数超过4000人。为了进一步促进小组发展，为 django
+                        学习者和开发者提供更好学习交流平台，现小组计划招募若干名项目组核心开发人员。</p>
+                    <h2>微信公众号开发1（1人）</h2>
+                    <p>负责Django学习小组微信平台的开发与探索。要求：</p>
+                    <ul>
+                        <li>熟悉微信公众号开发流程及相关API</li>
+                        <li>了解Django web开发框架</li>
+                        <li>熟悉Git与GitHub的使用</li>
+                        <li>积极的学习热情与良好的团队合作精神</li>
+                    </ul>
+                    <h2>Django后台开发1（2人）</h2>
+                    <p>目前计划招募组织成员5人，有意者请发送个人简历到邮箱：zmrenwu_blog@163.com</p>
+                    <p>若简历通过筛选，我们将和你进行一个简单的在线交流，最终决定成员资格的认定。</p>
+                    <p>我的博客即将搬运同步至腾讯云+社区，邀请大家一同入驻：https://cloud.tencent.com/developer/support-plan</p>
+                    <p>Django学习小组成立1年多，目前QQ群内人数达上千人，知乎专栏关注人数超过4000人。为了进一步促进小组发展，为 django
+                        学习者和开发者提供更好学习交流平台，现小组计划招募若干名项目组核心开发人员。</p><p>目前计划招募组织成员5人，有意者请发送个人简历到邮箱：zmrenwu_blog@163.com</p>
+                    <p>若简历通过筛选，我们将和你进行一个简单的在线交流，最终决定成员资格的认定。</p>
+                    <p>我的博客即将搬运同步至腾讯云+社区，邀请大家一同入驻：https://cloud.tencent.com/developer/support-plan</p>
+                    <p>Django学习小组成立1年多，目前QQ群内人数达上千人，知乎专栏关注人数超过4000人。为了进一步促进小组发展，为 django
+                        学习者和开发者提供更好学习交流平台，现小组计划招募若干名项目组核心开发人员。</p><p>目前计划招募组织成员5人，有意者请发送个人简历到邮箱：zmrenwu_blog@163.com</p>
+                    <p>若简历通过筛选，我们将和你进行一个简单的在线交流，最终决定成员资格的认定。</p>
+                    <p>我的博客即将搬运同步至腾讯云+社区，邀请大家一同入驻：https://cloud.tencent.com/developer/support-plan</p>
+                    <p>Django学习小组成立1年多，目前QQ群内人数达上千人，知乎专栏关注人数超过4000人。为了进一步促进小组发展，为 django
+                        学习者和开发者提供更好学习交流平台，现小组计划招募若干名项目组核心开发人员。</p><p>目前计划招募组织成员5人，有意者请发送个人简历到邮箱：zmrenwu_blog@163.com</p>
+                    <p>若简历通过筛选，我们将和你进行一个简单的在线交流，最终决定成员资格的认定。</p>
+                    <p>我的博客即将搬运同步至腾讯云+社区，邀请大家一同入驻：https://cloud.tencent.com/developer/support-plan</p>
+                    <p>Django学习小组成立1年多，目前QQ群内人数达上千人，知乎专栏关注人数超过4000人。为了进一步促进小组发展，为 django
+                        学习者和开发者提供更好学习交流平台，现小组计划招募若干名项目组核心开发人员。</p><p>目前计划招募组织成员5人，有意者请发送个人简历到邮箱：zmrenwu_blog@163.com</p>
+                    <p>若简历通过筛选，我们将和你进行一个简单的在线交流，最终决定成员资格的认定。</p>
+                    <p>我的博客即将搬运同步至腾讯云+社区，邀请大家一同入驻：https://cloud.tencent.com/developer/support-plan</p>
+                    <p>Django学习小组成立1年多，目前QQ群内人数达上千人，知乎专栏关注人数超过4000人。为了进一步促进小组发展，为 django
+                        学习者和开发者提供更好学习交流平台，现小组计划招募若干名项目组核心开发人员。</p><p>目前计划招募组织成员5人，有意者请发送个人简历到邮箱：zmrenwu_blog@163.com</p>
+                    <p>若简历通过筛选，我们将和你进行一个简单的在线交流，最终决定成员资格的认定。</p>
+                    <p>我的博客即将搬运同步至腾讯云+社区，邀请大家一同入驻：https://cloud.tencent.com/developer/support-plan</p>
+                    <p>Django学习小组成立1年多，目前QQ群内人数达上千人，知乎专栏关注人数超过4000人。为了进一步促进小组发展，为 django
+                        学习者和开发者提供更好学习交流平台，现小组计划招募若干名项目组核心开发人员。</p><p>目前计划招募组织成员5人，有意者请发送个人简历到邮箱：zmrenwu_blog@163.com</p>
+                    <p>若简历通过筛选，我们将和你进行一个简单的在线交流，最终决定成员资格的认定。</p>
+                    <p>我的博客即将搬运同步至腾讯云+社区，邀请大家一同入驻：https://cloud.tencent.com/developer/support-plan</p>
+                    <p>Django学习小组成立1年多，目前QQ群内人数达上千人，知乎专栏关注人数超过4000人。为了进一步促进小组发展，为 django
+                        学习者和开发者提供更好学习交流平台，现小组计划招募若干名项目组核心开发人员。</p><p>目前计划招募组织成员5人，有意者请发送个人简历到邮箱：zmrenwu_blog@163.com</p>
+                    <p>若简历通过筛选，我们将和你进行一个简单的在线交流，最终决定成员资格的认定。</p>
+                    <p>我的博客即将搬运同步至腾讯云+社区，邀请大家一同入驻：https://cloud.tencent.com/developer/support-plan</p>
+                    <p>Django学习小组成立1年多，目前QQ群内人数达上千人，知乎专栏关注人数超过4000人。为了进一步促进小组发展，为 django
+                        学习者和开发者提供更好学习交流平台，现小组计划招募若干名项目组核心开发人员。</p><p>目前计划招募组织成员5人，有意者请发送个人简历到邮箱：zmrenwu_blog@163.com</p>
+                    <p>若简历通过筛选，我们将和你进行一个简单的在线交流，最终决定成员资格的认定。</p>
+                    <p>我的博客即将搬运同步至腾讯云+社区，邀请大家一同入驻：https://cloud.tencent.com/developer/support-plan</p>
+                    <p>Django学习小组成立1年多，目前QQ群内人数达上千人，知乎专栏关注人数超过4000人。为了进一步促进小组发展，为 django
+                        学习者和开发者提供更好学习交流平台，现小组计划招募若干名项目组核心开发人员。</p><p>目前计划招募组织成员5人，有意者请发送个人简历到邮箱：zmrenwu_blog@163.com</p>
+                    <p>若简历通过筛选，我们将和你进行一个简单的在线交流，最终决定成员资格的认定。</p>
+                    <p>我的博客即将搬运同步至腾讯云+社区，邀请大家一同入驻：https://cloud.tencent.com/developer/support-plan</p>
+                    <p>Django学习小组成立1年多，目前QQ群内人数达上千人，知乎专栏关注人数超过4000人。为了进一步促进小组发展，为 django
+                        学习者和开发者提供更好学习交流平台，现小组计划招募若干名项目组核心开发人员。</p><p>目前计划招募组织成员5人，有意者请发送个人简历到邮箱：zmrenwu_blog@163.com</p>
+                    <p>若简历通过筛选，我们将和你进行一个简单的在线交流，最终决定成员资格的认定。</p>
+                    <p>我的博客即将搬运同步至腾讯云+社区，邀请大家一同入驻：https://cloud.tencent.com/developer/support-plan</p>
+                    <p>Django学习小组成立1年多，目前QQ群内人数达上千人，知乎专栏关注人数超过4000人。为了进一步促进小组发展，为 django
+                        学习者和开发者提供更好学习交流平台，现小组计划招募若干名项目组核心开发人员。</p><p>目前计划招募组织成员5人，有意者请发送个人简历到邮箱：zmrenwu_blog@163.com</p>
+                    <p>若简历通过筛选，我们将和你进行一个简单的在线交流，最终决定成员资格的认定。</p>
+                    <p>我的博客即将搬运同步至腾讯云+社区，邀请大家一同入驻：https://cloud.tencent.com/developer/support-plan</p>
+                    <p>Django学习小组成立1年多，目前QQ群内人数达上千人，知乎专栏关注人数超过4000人。为了进一步促进小组发展，为 django
+                        学习者和开发者提供更好学习交流平台，现小组计划招募若干名项目组核心开发人员。</p><p>目前计划招募组织成员5人，有意者请发送个人简历到邮箱：zmrenwu_blog@163.com</p>
+                    <p>若简历通过筛选，我们将和你进行一个简单的在线交流，最终决定成员资格的认定。</p>
+                    <p>我的博客即将搬运同步至腾讯云+社区，邀请大家一同入驻：https://cloud.tencent.com/developer/support-plan</p>
+                    <p>Django学习小组成立1年多，目前QQ群内人数达上千人，知乎专栏关注人数超过4000人。为了进一步促进小组发展，为 django
+                        学习者和开发者提供更好学习交流平台，现小组计划招募若干名项目组核心开发人员。</p><p>目前计划招募组织成员5人，有意者请发送个人简历到邮箱：zmrenwu_blog@163.com</p>
+                    <p>若简历通过筛选，我们将和你进行一个简单的在线交流，最终决定成员资格的认定。</p>
+                    <p>我的博客即将搬运同步至腾讯云+社区，邀请大家一同入驻：https://cloud.tencent.com/developer/support-plan</p>
+                    <p>Django学习小组成立1年多，目前QQ群内人数达上千人，知乎专栏关注人数超过4000人。为了进一步促进小组发展，为 django
+                        学习者和开发者提供更好学习交流平台，现小组计划招募若干名项目组核心开发人员。</p><p>目前计划招募组织成员5人，有意者请发送个人简历到邮箱：zmrenwu_blog@163.com</p>
+                    <p>若简历通过筛选，我们将和你进行一个简单的在线交流，最终决定成员资格的认定。</p>
+                    <p>我的博客即将搬运同步至腾讯云+社区，邀请大家一同入驻：https://cloud.tencent.com/developer/support-plan</p>
+                    <p>Django学习小组成立1年多，目前QQ群内人数达上千人，知乎专栏关注人数超过4000人。为了进一步促进小组发展，为 django
+                        学习者和开发者提供更好学习交流平台，现小组计划招募若干名项目组核心开发人员。</p><p>目前计划招募组织成员5人，有意者请发送个人简历到邮箱：zmrenwu_blog@163.com</p>
+                    <p>若简历通过筛选，我们将和你进行一个简单的在线交流，最终决定成员资格的认定。</p>
+                    <p>我的博客即将搬运同步至腾讯云+社区，邀请大家一同入驻：https://cloud.tencent.com/developer/support-plan</p>
+                    <p>Django学习小组成立1年多，目前QQ群内人数达上千人，知乎专栏关注人数超过4000人。为了进一步促进小组发展，为 django
+                        学习者和开发者提供更好学习交流平台，现小组计划招募若干名项目组核心开发人员。</p><p>目前计划招募组织成员5人，有意者请发送个人简历到邮箱：zmrenwu_blog@163.com</p>
+                    <p>若简历通过筛选，我们将和你进行一个简单的在线交流，最终决定成员资格的认定。</p>
+                    <p>我的博客即将搬运同步至腾讯云+社区，邀请大家一同入驻：https://cloud.tencent.com/developer/support-plan</p>
+                    <p>Django学习小组成立1年多，目前QQ群内人数达上千人，知乎专栏关注人数超过4000人。为了进一步促进小组发展，为 django
+                        学习者和开发者提供更好学习交流平台，现小组计划招募若干名项目组核心开发人员。</p><p>目前计划招募组织成员5人，有意者请发送个人简历到邮箱：zmrenwu_blog@163.com</p>
+                    <p>若简历通过筛选，我们将和你进行一个简单的在线交流，最终决定成员资格的认定。</p>
+                    <p>我的博客即将搬运同步至腾讯云+社区，邀请大家一同入驻：https://cloud.tencent.com/developer/support-plan</p>
+                    <p>Django学习小组成立1年多，目前QQ群内人数达上千人，知乎专栏关注人数超过4000人。为了进一步促进小组发展，为 django
+                        学习者和开发者提供更好学习交流平台，现小组计划招募若干名项目组核心开发人员。</p><p>目前计划招募组织成员5人，有意者请发送个人简历到邮箱：zmrenwu_blog@163.com</p>
+                    <p>若简历通过筛选，我们将和你进行一个简单的在线交流，最终决定成员资格的认定。</p>
+                    <p>我的博客即将搬运同步至腾讯云+社区，邀请大家一同入驻：https://cloud.tencent.com/developer/support-plan</p>
+                    <p>Django学习小组成立1年多，目前QQ群内人数达上千人，知乎专栏关注人数超过4000人。为了进一步促进小组发展，为 django
+                        学习者和开发者提供更好学习交流平台，现小组计划招募若干名项目组核心开发人员。</p><p>目前计划招募组织成员5人，有意者请发送个人简历到邮箱：zmrenwu_blog@163.com</p>
+                    <p>若简历通过筛选，我们将和你进行一个简单的在线交流，最终决定成员资格的认定。</p>
+                    <p>我的博客即将搬运同步至腾讯云+社区，邀请大家一同入驻：https://cloud.tencent.com/developer/support-plan</p>
+                    <p>Django学习小组成立1年多，目前QQ群内人数达上千人，知乎专栏关注人数超过4000人。为了进一步促进小组发展，为 django
+                        学习者和开发者提供更好学习交流平台，现小组计划招募若干名项目组核心开发人员。</p><p>目前计划招募组织成员5人，有意者请发送个人简历到邮箱：zmrenwu_blog@163.com</p>
+                    <p>若简历通过筛选，我们将和你进行一个简单的在线交流，最终决定成员资格的认定。</p>
+                    <p>我的博客即将搬运同步至腾讯云+社区，邀请大家一同入驻：https://cloud.tencent.com/developer/support-plan</p>
+                    <p>Django学习小组成立1年多，目前QQ群内人数达上千人，知乎专栏关注人数超过4000人。为了进一步促进小组发展，为 django
+                        学习者和开发者提供更好学习交流平台，现小组计划招募若干名项目组核心开发人员。</p>
+                </section>
+            </div>
+            <div class="col-lg-3 col-md-2">
+                <div class="mt-5">
+                    <div id="post-directory-module" class="mobile-hidden">
+                        <div class="post-directory sticky">
+                            <!-- Links that trigger the jumping -->
+                            <!-- Added by javascript below -->
+                            <dl></dl>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!--<div class="row">-->
+        <!--<div class="col mx-5 px-5">-->
+        <!--<div class="card">-->
+        <!--<div class="card-body">-->
+        <!--<h2 id="概述">概述</h2>-->
+        <!--<p>以区块链为底层技术的比特币近年来被炒得沸沸扬扬，区块链技术也逐渐为人熟知，不少人甚至认为这是改变现代社会人类信任体系的革命性技术，其应用场景将十分广泛。作为区块链技术的准从业人员，现决定发起成立<strong>“区块链理论与应用研究小组”</strong>，招募全国各地区块链技术爱好者、学习者、开发者，以组织的形式开展区块链技术的学习与研究工作。学习与研究的内容将包含两个方面：</p>-->
+        <!--<p><strong>学术性研究</strong></p>-->
+        <!--<p>学习与研究区块链技术相关的理论知识，并为在实际开发应用中遇到的问题提供解决方案，对区块链技术的底层提供理论上的鲁棒性。<strong>研究内容包括但不限于分布式、隐私保护、智能合约、用户行为规范等可能涉及的问题。</strong>，用到的理论包括分布式系统设计、密码学、算法博弈论等多智能体系统。</p>-->
+        <!--<p><strong>应用性开发</strong></p>-->
+        <!--<p>结合理论知识，研究并开发可以应用于各行业的区块链应用，包括但不限于政务、医疗、交通、供应链、代币等行业领域。</p>-->
+        <!--<h2 id="组织愿景">组织愿景</h2>-->
+        <!--<p>我们希望将组织打造为一个<strong>极具影响力的区块链技术研究组织</strong>。</p>-->
+        <!--<h2 id="加入条件">加入条件</h2>-->
+        <!--<p>不要求您有任何区块链技术的基础，但您必须是区块链技术爱好者或准从业人员，高校大三及以上本科、硕士研究生、博士研究生或同等学力及以上人员；区块链相关技术从业人员。且至少具备以下条件：</p>-->
+        <!--<ul>-->
+        <!--<li>扎实的高等数学基础（微积分、线性代数、概率论）。修习过近世代数、密码学、信息论等更佳。</li>-->
+        <!--<li>良好的英文技术书籍与文档阅读能力。</li>-->
+        <!--<li>具有一定的科研能力和学术素养（学术性研究必备）。</li>-->
+        <!--<li>具有较好的编程能力（应用性开发必备）。</li>-->
+        <!--</ul>-->
+        <!--<h2 id="能得到的福利">能得到的福利</h2>-->
+        <!--<p>本组织为志愿者类型组织，运营经费来自于组织成员和社会各界人士及企业的捐赠，组织不为非全职成员提供薪酬待遇，但作为组织成员将有以下显而易见的好处：</p>-->
+        <!--<ul>-->
+        <!--<li>和来自全国各地的优秀区块链技术学习者更加高效地学习和研究区块链技术。</li>-->
+        <!--<li>乘着区块链技术的浪潮，依托组织越来越大的影响力，获得猎头的青睐，找到区块链技术相关的高薪工作岗位。</li>-->
+        <!--<li>未来与政府、企业、社会组织等合作而获得相应的报酬和社会声望。</li>-->
+        <!--<li>基于对区块链技术的了解而投资获益。</li>-->
+        <!--<li>...</li>-->
+        <!--</ul>-->
+        <!--<h2 id="组织前期任务">组织前期任务</h2>-->
+        <!--<ul>-->
+        <!--<li>撰写区块链技术国内外理论研究和应用研究进展综述</li>-->
+        <!--<li>编写一本区块链技术理论教材</li>-->
+        <!--<li>开发一款基于区块链技术的示范性应用</li>-->
+        <!--</ul>-->
+        <!--<p>目前计划招募组织成员5人，有意者请发送个人简历到邮箱：zmrenwu_blog@163.com</p>-->
+        <!--<p>若简历通过筛选，我们将和你进行一个简单的在线交流，最终决定成员资格的认定。</p>-->
+        <!--<p>我的博客即将搬运同步至腾讯云+社区，邀请大家一同入驻：https://cloud.tencent.com/developer/support-plan</p>-->
+        <!--<p class="text-center">-->
+
+
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--</div>-->
+        <!--</div>-->
+
+    </div>
+</main>
+
+<script type="text/javascript" src="../../../static/admin/plugins/md-bootstrap-blog/js/jquery-3.3.1.min.js"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="../../../static/admin/plugins/md-bootstrap-blog/js/popper.min.js"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="../../../static/admin/plugins/md-bootstrap-blog/js/bootstrap.min.js"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="../../../static/admin/plugins/md-bootstrap-blog/js/mdb.min.js"></script>
+
+<script type="text/javascript" src="../../../static/admin/plugins/md-bootstrap-blog/js/addons/datatables.js"></script>
+<!-- Simplemde-Markdown-Editor -->
+<script type="text/javascript" src="../../../static/admin/plugins/lepture-markdown-editor/editor/editor.js"></script>
+<script type="text/javascript" src="../../../static/admin/plugins/lepture-markdown-editor/editor/marked.js"></script>
+
+<!-- Select2 -->
+<script type="text/javascript" src="../../../static/admin/plugins/select2/js/select2.js"></script>
+<script>
+    $(document).ready(function () {
+        // Animations initialization
+        new WOW().init();
+        $('p').addClass("dark-grey-text");
+
+        $('main :header').each(function () {
+            $(this).addClass("font-weight-normal");
+            var title = $(this).text();
+            console.log(title);
+            $(this).attr('id', title);
+        })
+    });
+
+</script>
+<script th:src="@{/blog/themes/default/js/jquery.toc.js}"
+        src="../../../static/admin/plugins/md-bootstrap-blog/js/jquery.toc.js"></script>
+</body>
+</html>
