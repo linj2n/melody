@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:with="title='linj2n\'s Notes',sources_version='local'">
+<head th:replace="themes/material-design/header :: common_header(${title},${sources_version})">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Material Design Bootstrap</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap core CSS -->
+    <link href="../../../static/blog/themes/md-bootstrap-blog/css/bootstrap.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="../../../static/blog/themes/md-bootstrap-blog/css/mdb.css" rel="stylesheet">
+    <link href="../../../static/blog/themes/md-bootstrap-blog/css/addons/datatables.css" rel="stylesheet">
+    <link href="../../../static/blog/themes/md-bootstrap-blog/css/toc.css" rel="stylesheet">
+    <link href="../../../static/blog/themes/md-bootstrap-blog/css/styles.css" rel="stylesheet">
+    <link href="../../../static/blog/themes/md-bootstrap-blog/css/page.css" rel="stylesheet">
+    <style type="text/css">
+        .archives {
+            margin: 1rem;
+            padding: 1rem;
+        }
+        .archives ul li {
+            color: #4f4f4f;
+            margin-bottom: 1rem;
+            border-bottom: 1px dashed #ccc;
+        }
+        .archives ul li:hover {
+            color: #4285f4;
+            border-bottom: 1px dashed #4285f4;
+        }
+        .archives ul li:hover > a{
+            color: #4285f4;
+        }
+
+        .archives ul li a {
+            color: #4f4f4f;
+            margin-left: 1rem;
+        }
+
+        /*.archives ul li a:hover {*/
+            /*color: #4285f4;*/
+        /*}*/
+
+        /*.post-directory {*/
+            /*position: fixed;*/
+            /*top: 200px;*/
+            /*right: 80px;*/
+            /*width: 150px;*/
+        /*}*/
+
+    </style>
+</head>
+<body>
+<header>
+
+    <!--Navigation-->
+    <nav class="navbar  navbar-expand-lg navbar-light scrolling-navbar custom-navbar pt-1 pb-1 ">
+        <div class="container-fluid">
+
+            <!-- Brand -->
+            <!--<a class="navbar-brand waves-effect " href="#" target="_blank">-->
+            <!--<strong class="blue-text">LN</strong>-->
+            <!--</a>-->
+
+            <!-- Collapse -->
+            <button class="navbar-toggler custom-navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"><i class="fa fa-menu"></i></span>
+            </button>
+
+            <!-- Links -->
+            <div class="collapse navbar-collapse justify-content-center collapse " id="navbarSupportedContent">
+
+                <!-- Left -->
+                <ul class="navbar-nav mr-auto ">
+                    <li class="nav-item ">
+                        <a class="nav-link waves-effect blue-text " href="#">首页
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item ml-4">
+                        <a class="nav-link waves-effect blue-text " href="#" target="_blank">归档</a>
+                    </li>
+                    <li class="nav-item ml-4">
+                        <a class="nav-link waves-effect blue-text " href="#" target="_blank">分类</a>
+                    </li>
+                    <li class="nav-item ml-4">
+                        <a class="nav-link waves-effect blue-text " href="#" target="_blank">链接</a>
+                    </li>
+                    <li class="nav-item ml-4">
+                        <a class="nav-link waves-effect blue-text " href="#" target="_blank">关于</a>
+                    </li>
+                </ul>
+
+                <!-- Right -->
+                <ul class="navbar-nav nav-flex-icons">
+                    <!--<li class="nav-item">-->
+                    <!--<a href="https://twitter.com/MDBootstrap" class="nav-link waves-effect" target="_blank">-->
+                    <!--<i class="fa fa-github"></i>-->
+                    <!--</a>-->
+                    <!--</li>-->
+                </ul>
+
+                <!--<button type="button" class="btn nav-btn-outline-blue nav-btn-rounded nav-btn-radius btn-sm">LN</button>-->
+                <a class="navbar-brand waves-effect " href="#" target="_blank">
+                    <i class="fa fa-2x fa-github"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+    <!--Navigation-->
+</header>
+<main>
+    <div class="container-fluid mt-1 pt-3">
+
+        <div class="row">
+            <div class="col"><h2 class="font-weight-normal text-center">归 档</h2></div>
+        </div>
+        <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-8 col-md-8" th:if="${post != null}">
+                <header>
+                    <p class="text-center header-line mt-2 pt-2"></p>
+                </header>
+                <div class="archives-list">
+                    <h3 class="mb-0">2018</h3>
+                    <div class="archives">
+                        <h4 >十二月</h4>
+                        <ul>
+                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                        </ul>
+                    </div>
+                    <div class="archives">
+                        <h4 >十一月</h4>
+                        <ul>
+                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                        </ul>
+                    </div>
+                    <div class="archives">
+                        <h4 >十月</h4>
+                        <ul>
+                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                        </ul>
+                    </div>
+                    <h3 class="mb-0">2018</h3>
+                    <div class="archives">
+                        <h4 >十二月</h4>
+                        <ul>
+                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                        </ul>
+                    </div>
+                    <div class="archives">
+                        <h4 >十一月</h4>
+                        <ul>
+                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                        </ul>
+                    </div>
+                    <div class="archives">
+                        <h4 >十月</h4>
+                        <ul>
+                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-2 pl-0 toc-wrapper">
+                <div class="mt-5 ">
+                    <div id="post-directory-module">
+                        <div class="post-directory sticky d-none d-md-block">
+                            <!-- Links that trigger the jumping -->
+                            <!-- Added by javascript below -->
+                            <dl></dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-7 col-md-1">
+                <!--<div class="row ">-->
+                    <!--<div class="col px-0 ">-->
+                        <!--<nav class="navbar  navbar-expand-lg scrolling-navbar post-nav px-0">-->
+                            <!--<div class="container-fluid px-0 ">-->
+                                <!--&lt;!&ndash; Left &ndash;&gt;-->
+                                <!--<ul class="navbar-nav mr-auto ">-->
+                                    <!--<li class="nav-item" th:if="${prePost != null}">-->
+                                        <!--<a class="nav-link " th:href="@{'/posts/' + ${prePost.id}}">-->
+                                            <!--<i class="fa fa-chevron-left mr-2 "></i>-->
+                                            <!--<th:block th:text="${prePost.title}">Markdown 概念</th:block>-->
+                                        <!--</a>-->
+                                    <!--</li>-->
+
+                                <!--</ul>-->
+                                <!--&lt;!&ndash; Right &ndash;&gt;-->
+                                <!--<ul class="navbar-nav nav-flex-icons">-->
+                                    <!--<li class="nav-item" th:if="${nextPost != null}">-->
+                                        <!--<a class="nav-link " th:href="@{'/posts/' + ${nextPost.id}}">-->
+                                            <!--<th:block th:text="${nextPost.title}">Markdown 概念</th:block>-->
+                                            <!--<i class="fa fa-chevron-right ml-2 "></i>-->
+                                        <!--</a>-->
+                                    <!--</li>-->
+                                    <!--&lt;!&ndash;<li class="nav-item">&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<a href="https://twitter.com/MDBootstrap" class="nav-link waves-effect" target="_blank">&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<i class="fa fa-github"></i>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;</a>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;</li>&ndash;&gt;-->
+                                <!--</ul>-->
+                            <!--</div>-->
+                        <!--</nav>-->
+                    <!--</div>-->
+                <!--</div>-->
+            </div>
+            <div class="col-lg-3"></div>
+        </div>
+    </div>
+</main>
+
+<th:block th:replace="themes/material-design/footer :: common_footer(${sources_version})">
+    <!-- Footer -->
+    <footer class="page-footer font-small white">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-2"></div>
+                <div class="col-7">
+                    <div class="custom-footer-copyright text-center pt-3 mt-3">
+                        <a href="https://github.com/linj2n"><i class="fa fa-2x fa-github" aria-hidden="true"></i></a>
+                    </div>
+                    <div class="custom-footer-copyright text-center pt-3">© Copyright 2018
+                        <a href="https://github.com/linj2n" class="blue-text">linj2n</a>
+                    </div>
+                    <div class="custom-footer-copyright text-center pt-2 mb-3 pb-3">Powered by <a href="https://github.com/linj2n/melody" class="blue-text">Melody</a> Theme By <a href="https://github.com/linj2n/" class="blue-text">LN</a>
+
+                    </div>
+                </div>
+                <div class="col-3"></div>
+            </div>
+        </div>
+        <!-- Copyright -->
+
+
+        <!-- Copyright -->
+
+    </footer>
+    <!-- Footer -->
+
+    <script type="text/javascript" src="../../../static/blog/themes/md-bootstrap-blog/js/jquery-3.3.1.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="../../../static/blog/themes/md-bootstrap-blog/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="../../../static/blog/themes/md-bootstrap-blog/js/mdb.min.js"></script>
+
+</th:block>
+
+<!-- Select2 -->
+<script>
+    $(document).ready(function () {
+        // Animations initialization
+        new WOW().init();
+
+        $('.archives-list :header').each(function () {
+            $(this).addClass("font-weight-normal pb-2");
+            var title = $(this).text();
+            console.log(title);
+            $(this).attr('id', title);
+        })
+
+        $('img').each(function () {
+            $(this).addClass("img-fluid");
+        });
+
+        $('blockquote').each(function () {
+            $(this).addClass("blockquote bq-primary custom-blockquote");
+        });
+    });
+
+</script>
+<script th:src="@{/blog/themes/md-bootstrap-blog/js/jquery.toc.js}"
+        src="../../../static/blog/themes/md-bootstrap-blog/js/jquery.toc.js"></script>
+</body>
+</html>
