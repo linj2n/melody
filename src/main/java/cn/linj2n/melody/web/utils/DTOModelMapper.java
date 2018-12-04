@@ -17,9 +17,16 @@ public class DTOModelMapper {
     }
 
     public PostDTO convertToDTO(Post post) {
+        if (post == null) {
+            return null;
+        }
         PostDTO postDTO = modelMapper.map(post,PostDTO.class);
-        postDTO.setCreatedAt(post.getCreatedAt().toLocalDateTime());
-        postDTO.setUpdatedAt(post.getUpdatedAt().toLocalDateTime());
+        if (post.getCreatedAt() != null) {
+            postDTO.setCreatedAt(post.getCreatedAt().toLocalDateTime());
+        }
+        if (post.getUpdatedAt() != null) {
+            postDTO.setUpdatedAt(post.getUpdatedAt().toLocalDateTime());
+        }
         return postDTO;
     }
 
