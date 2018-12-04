@@ -332,41 +332,42 @@
         </main>
         <!--Main layout-->
 
+        <!--Footer-->
+        <div class="row mt-5 pl-5">
+            <div class="col">
+                <footer class="page-footer text-center font-small mt-4" th:replace="admin/footer :: common_footer(${scripts_version})">
+                    <!--Copyright-->
+                    <div class="footer-copyright">
+                        © 2018 Copyright:
+                        <a href="#" target="_blank"> linj2n.cn </a>
+                    </div>
+                    <!--/.Copyright-->
+
+                    <!--/.Footer-->
+                    <!-- SCRIPTS -->
+                    <!-- JQuery -->
+                    <script type="text/javascript" src="../../static/admin/plugins/md-bootstrap/js/jquery-3.3.1.min.js"></script>
+                    <!-- Bootstrap tooltips -->
+                    <script type="text/javascript" src="../../static/admin/plugins/md-bootstrap/js/popper.min.js"></script>
+                    <!-- Bootstrap core JavaScript -->
+                    <script type="text/javascript" src="../../static/admin/plugins/md-bootstrap/js/bootstrap.min.js"></script>
+                    <!-- MDB core JavaScript -->
+                    <script type="text/javascript" src="../../static/admin/plugins/md-bootstrap/js/mdb.min.js"></script>
+                    <!-- Simplemde-Markdown-Editor -->
+                    <script type="text/javascript" src="../../static/admin/plugins/lepture-markdown-editor/editor/editor.js"></script>
+                    <script type="text/javascript" src="../../static/admin/plugins/lepture-markdown-editor/editor/marked.js"></script>
+
+                    <!-- Select2 -->
+                    <script type="text/javascript" src="../../static/admin/plugins/select2/js/select2.js"></script>
+                </footer>
+            </div>
+        </div>
+        <!--Footer-->
+
     </div>
     <!-- main content-->
 </div>
 <!-- Wrapper -->
-
-<!--Footer-->
-<footer class="page-footer text-center font-small mt-4 " th:replace="admin/footer :: common_footer(${scripts_version})">
-    <!--Copyright-->
-    <div class="footer-copyright">
-        © 2018 Copyright:
-        <a href="#" target="_blank"> linj2n.cn </a>
-    </div>
-    <!--/.Copyright-->
-
-    <!--/.Footer-->
-    <!-- SCRIPTS -->
-    <!-- JQuery -->
-    <script type="text/javascript" src="../../static/admin/plugins/md-bootstrap/js/jquery-3.3.1.min.js"></script>
-    <!-- Bootstrap tooltips -->
-    <script type="text/javascript" src="../../static/admin/plugins/md-bootstrap/js/popper.min.js"></script>
-    <!-- Bootstrap core JavaScript -->
-    <script type="text/javascript" src="../../static/admin/plugins/md-bootstrap/js/bootstrap.min.js"></script>
-    <!-- MDB core JavaScript -->
-    <script type="text/javascript" src="../../static/admin/plugins/md-bootstrap/js/mdb.min.js"></script>
-
-    <script type="text/javascript" src="../../static/admin/plugins/md-bootstrap/js/addons/datatables.js"></script>
-    <!-- Simplemde-Markdown-Editor -->
-    <script type="text/javascript" src="../../static/admin/plugins/lepture-markdown-editor/editor/editor.js"></script>
-    <script type="text/javascript" src="../../static/admin/plugins/lepture-markdown-editor/editor/marked.js"></script>
-
-    <!-- Select2 -->
-    <script type="text/javascript" src="../../static/admin/plugins/select2/js/select2.js"></script>
-
-</footer>
-
 
 <!-- Initializations -->
 <script th:inline="javascript">

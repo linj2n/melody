@@ -231,13 +231,13 @@
                             </div>
                             <!-- Card-header-->
                             <div class="card-body">
-                                <div class="row tagsRow ml-1">
-                                    <div class="tags">
+                                <div class="row tagsRow ml-1 mt-2">
+                                    <div class="tags text-center">
                                         <div th:each="tag : ${allTags}" class="tag light-blue lighten-4 hoverable"
                                              th:attr="data-tag-id=${tag.id},data-tag-name=${tag.name}"
                                              th:id="tag + ${tag.id}">
                                             <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                                               aria-expanded="false"><span th:text="${tag.name}"></span>
+                                               aria-expanded="false"><span th:text="'# ' + ${tag.name}"></span>
                                                 <span class="ml-2 mr-2" th:text="${tag.posts.size()}">9</span></a>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuMenu">
                                                 <a class="dropdown-item text-sm-left"
@@ -262,37 +262,44 @@
         </main>
         <!--Main layout-->
 
+        <!--Footer-->
+        <div class="row mt-5 pl-5">
+            <div class="col">
+                <footer class="page-footer text-center font-small mt-4" th:replace="admin/footer :: common_footer(${scripts_version})">
+                    <!--Copyright-->
+                    <div class="footer-copyright">
+                        © 2018 Copyright:
+                        <a href="#" target="_blank"> linj2n.cn </a>
+                    </div>
+                    <!--/.Copyright-->
+
+                    <!--/.Footer-->
+                    <!-- SCRIPTS -->
+                    <!-- JQuery -->
+                    <script type="text/javascript" src="../../static/admin/plugins/md-bootstrap/js/jquery-3.3.1.min.js"></script>
+                    <!-- Bootstrap tooltips -->
+                    <script type="text/javascript" src="../../static/admin/plugins/md-bootstrap/js/popper.min.js"></script>
+                    <!-- Bootstrap core JavaScript -->
+                    <script type="text/javascript" src="../../static/admin/plugins/md-bootstrap/js/bootstrap.min.js"></script>
+                    <!-- MDB core JavaScript -->
+                    <script type="text/javascript" src="../../static/admin/plugins/md-bootstrap/js/mdb.min.js"></script>
+                    <!-- Simplemde-Markdown-Editor -->
+                    <script type="text/javascript" src="../../static/admin/plugins/lepture-markdown-editor/editor/editor.js"></script>
+                    <script type="text/javascript" src="../../static/admin/plugins/lepture-markdown-editor/editor/marked.js"></script>
+
+                    <!-- Select2 -->
+                    <script type="text/javascript" src="../../static/admin/plugins/select2/js/select2.js"></script>
+                </footer>
+            </div>
+        </div>
+        <!--Footer-->
+
     </div>
     <!-- main content-->
 </div>
 <!-- Wrapper -->
-<!--Footer-->
-<footer class="page-footer text-center font-small mt-4" th:replace="admin/footer :: common_footer(${scripts_version})">
-    <!--Copyright-->
-    <div class="footer-copyright">
-        © 2018 Copyright:
-        <a href="#" target="_blank"> linj2n.cn </a>
-    </div>
-    <!--/.Copyright-->
 
-    <!--/.Footer-->
-    <!-- SCRIPTS -->
-    <!-- JQuery -->
-    <script type="text/javascript" src="../../static/admin/plugins/md-bootstrap/js/jquery-3.3.1.min.js"></script>
-    <!-- Bootstrap tooltips -->
-    <script type="text/javascript" src="../../static/admin/plugins/md-bootstrap/js/popper.min.js"></script>
-    <!-- Bootstrap core JavaScript -->
-    <script type="text/javascript" src="../../static/admin/plugins/md-bootstrap/js/bootstrap.min.js"></script>
-    <!-- MDB core JavaScript -->
-    <script type="text/javascript" src="../../static/admin/plugins/md-bootstrap/js/mdb.min.js"></script>
-    <!-- Simplemde-Markdown-Editor -->
-    <script type="text/javascript" src="../../static/admin/plugins/lepture-markdown-editor/editor/editor.js"></script>
-    <script type="text/javascript" src="../../static/admin/plugins/lepture-markdown-editor/editor/marked.js"></script>
 
-    <!-- Select2 -->
-    <script type="text/javascript" src="../../static/admin/plugins/select2/js/select2.js"></script>
-
-</footer>
 
 
 <!-- Initializations -->
