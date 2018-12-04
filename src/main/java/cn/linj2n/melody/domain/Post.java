@@ -87,13 +87,13 @@ public class Post {
     /**
      * 文章创建时间
      */
-    @Column(name = "created_at")
+    @Column(name = "created_at",nullable = false)
     private ZonedDateTime createdAt;
 
     /**
      * 文章最后的更新时间
      */
-    @Column(name = "updated_at")
+    @Column(name = "updated_at",nullable = false)
     private ZonedDateTime updatedAt;
 
     @PrePersist
