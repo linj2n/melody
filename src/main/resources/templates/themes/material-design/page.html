@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:with="title='#',styles_version='local',scripts_version='local',active_tab='posts'">
-<head>
+      th:with="title='linj2n\'s Notes',sources_version='local'">
+<head th:replace="themes/material-design/header :: common_header(${title},${sources_version})">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -10,73 +9,15 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Bootstrap core CSS -->
-    <link href="../../../static/admin/plugins/md-bootstrap-blog/css/bootstrap.css" rel="stylesheet">
+    <link href="../../../static/blog/themes/md-bootstrap-blog/css/bootstrap.css" rel="stylesheet">
     <!-- Material Design Bootstrap -->
-    <link href="../../../static/admin/plugins/md-bootstrap-blog/css/mdb.css" rel="stylesheet">
-    <link href="../../../static/admin/plugins/md-bootstrap-blog/css/addons/datatables.css" rel="stylesheet">
-    <link href="../../../static/admin/plugins/md-bootstrap-blog/css/toc.css" rel="stylesheet">
-    <link href="../../../static/admin/plugins/md-bootstrap-blog/css/styles.css" rel="stylesheet">
-
+    <link href="../../../static/blog/themes/md-bootstrap-blog/css/mdb.css" rel="stylesheet">
+    <link href="../../../static/blog/themes/md-bootstrap-blog/css/addons/datatables.css" rel="stylesheet">
+    <link href="../../../static/blog/themes/md-bootstrap-blog/css/toc.css" rel="stylesheet">
+    <link href="../../../static/blog/themes/md-bootstrap-blog/css/styles.css" rel="stylesheet">
+    <link href="../../../static/blog/themes/md-bootstrap-blog/css/page.css" rel="stylesheet">
     <style type="text/css">
-        .custom-navbar {
-            box-shadow: 0 2px 5px 0 #ffffff, 0 2px 10px 0 #ffffff;
-            font-size: 0.9rem;
-        }
 
-        .custom-blockquote {
-            font-size: 1rem !important;
-        }
-
-        .custom-blockquote p {
-            padding: 1rem 0;
-            font-size: 1rem;
-            color: #6c757d !important;
-        }
-
-        .header-line {
-            color: #b2b9be;
-            font-size: 0.9rem;
-        }
-
-        .article-tags {
-            border-top: 0;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-
-        .article-categories {
-            border-top: 0;
-            padding-bottom: 0;
-            margin-bottom: 0.5rem;
-        }
-
-        .post-nav {
-            box-shadow: 0 2px 5px 0 #ffffff, 0 2px 10px 0 #ffffff;
-            font-size: 1rem;
-            border-top: 1px solid #eeeeee;
-        }
-
-        .post-nav a {
-            color: black;
-        }
-
-        .post-nav a:hover {
-            /*-webkit-transition: all 0.3s linear;*/
-            /*-o-transition: all 0.3s linear;*/
-            /*transition: all 0.3s linear;*/
-            /*background-color: #e0e0e0; */
-            color: #2196f3;
-            /*border-bottom: 1px solid #007bff;*/
-        }
-
-        .custom-footer-copyright {
-            overflow: hidden;
-            background-color: white;
-            color: #b2b9be;
-        }
-        a > i {
-            color: #cdd4da;
-        }
 
     </style>
 </head>
@@ -134,7 +75,7 @@
 
                 <!--<button type="button" class="btn nav-btn-outline-blue nav-btn-rounded nav-btn-radius btn-sm">LN</button>-->
                 <a class="navbar-brand waves-effect " href="#" target="_blank">
-                    <i class="fa fa-github"></i>
+                    <i class="fa fa-2x fa-github"></i>
                 </a>
             </div>
         </div>
@@ -145,14 +86,28 @@
     <div class="container-fluid mt-1 pt-3">
         <div class="row">
             <div class="col-lg-2"></div>
-            <div class="col-lg-7 col-md-12">
+            <div class="col-lg-7 col-md-12" th:if="${post != null}">
                 <header>
-                    <h1 class="font-weight-normal text-center">认识与入门 Markdown</h1>
-                    <p class="text-center header-line mt-2 pt-2">Oct 7, 2018 01:03 · 3143 words · 7 minutes read <i
-                            class="fa fa-book ml-2 mr-2"></i><a href="#">MarkDown 入门与帮助</a> </p>
-                    <p class="text-center header-line"></p>
+                    <h2 class="font-weight-normal text-center" th:text="${post.title}">认识与入门 Markdown</h2>
+                    <p class="text-center header-line mt-2 pt-2">
+                        <th:block th:text="${#temporals.monthNameShort(post.createdAt) + #temporals.format(post.createdAt, ' dd, yyyy HH:mm ')}">
+                            Oct 7, 2018 01:03 · 3143 words · 7 minutes read
+                        </th:block>
+                        <th:block th:if="${post.views != null}">
+                            <i class="fa fa-eye ml-2"></i>
+                            <th:block th:text="${post.views}">
+                                31
+                            </th:block>
+                        </th:block>
+                        <th:block th:if="${post.categories != null}">
+                            <i class="fa fa-book ml-2"></i>
+                            <a class="mr-2" th:each="category : ${post.categories}" th:href="@{'/categories/' + ${category.id}}" th:text="${category.name}">
+                                MarkDown 入门与帮助
+                            </a>
+                        </th:block>
+                    </p>
                 </header>
-                <article class="mt-5 px-5" data-spy="scroll" data-target="#navbar-example3" data-offset="0">
+                <article class="mt-5 px-5" data-spy="scroll" data-target="#navbar-example3" data-offset="0" th:utext="${post.content}">
                     <blockquote>
                         <p>
                             <a href="http://zh.wikipedia.org/wiki/Markdown">Markdown</a>
@@ -406,28 +361,28 @@
                         到这里，Markdown 的基本语法在日常的使用中基本就没什么大问题了，只要多加练习，配合好用的工具，写起东西来肯定会行云流水。更多的语法规则，其实 Mou 的 Help
                         文档例子很好，当你第一次使用 Mou 时，就会显示该文档，其次，你也可在撰写过程中，使用 <code>CMD+R</code> 快捷键来快速打开文档，以随时查阅和学习语法。
                     </p>
-                    <!--<p>-->
-                    <!--<img src="https://cdn.sspai.com/attachment/origin/2014/04/15/69497.jpg?imageView2/2/w/1120/q/90/interlace/1/ignore-error/1" alt="" data-original="https://cdn.sspai.com/attachment/origin/2014/04/15/69497.jpg"/>-->
-                    <!--</p>-->
-                    <!--<h2><strong>与 Markdown 相关的一些推荐</strong></h2>-->
-                    <!--<h3><strong>可配套使用的工具</strong></h3>-->
-                    <!--<ul>-->
-                    <!--<li><a href="http://droplr.com" target="_blank">Droplr</a></li>-->
-                    <!--<li><a href="http://www.getcloudapp.com" target="_blank">Cloudapp</a></li>-->
-                    <!--<li><a href="https://itunes.apple.com/cn/app/yi-xiang/id672522335?mt=12&amp;uo=4" target="_blank">ezShare for Mac</a></li>-->
-                    <!--<li><a href="http://weibotuchuang.sinaapp.com" target="_blank">围脖图床修复计划</a></li>-->
-                    <!--<li><a href="http://maxiang.info" target="_blank">马克飞象，专为印象笔记打造的 Markdown 编辑器，非常推荐</a></li>-->
-                    <!--</ul>-->
-                    <!--<h3><strong>相关文章阅读</strong></h3>-->
-                    <!--<ul>-->
-                    <!--<li><a href="http://apple4us.com/2012/02/why-writers-should-use-markdown.html" target="_blank">为什么作家应该用 Markdown 保存自己的文稿</a></li>-->
-                    <!--<li><a href="http://www.yangzhiping.com/tech/r-markdown-knitr.html" target="_blank">Markdown 写作浅谈</a></li>-->
-                    <!--<li><a href="http://www.appinn.com/markdown-tools/" target="_blank">Markdown 工具补完</a></li>-->
-                    <!--<li><a href="http://jianshu.io/p/63HYZ6" target="_blank">Drafts + Scriptogr.am + Dropbox 打造移动端 Markdown 风格博客</a></li>-->
-                    <!--<li><a href="http://www.ituring.com.cn/article/23" target="_blank">图灵社区 - 怎样使用 Markdown</a></li>-->
-                    <!--<li><a href="http://news.cnblogs.com/n/139649/" target="_blank">为什么我们要学习 Markdown 的三个理由</a></li>-->
-                    <!--<li><a href="http://ibuick.me/?p=4093" target="_blank">Markdown 语法写作入门指南 by ibuick</a></li>-->
-                    <!--</ul>-->
+                    <p>
+                    <img src="https://cdn.sspai.com/attachment/origin/2014/04/15/69497.jpg?imageView2/2/w/1120/q/90/interlace/1/ignore-error/1" alt="" data-original="https://cdn.sspai.com/attachment/origin/2014/04/15/69497.jpg"/>
+                    </p>
+                    <h2><strong>与 Markdown 相关的一些推荐</strong></h2>
+                    <h3><strong>可配套使用的工具</strong></h3>
+                    <ul>
+                    <li><a href="http://droplr.com" target="_blank">Droplr</a></li>
+                    <li><a href="http://www.getcloudapp.com" target="_blank">Cloudapp</a></li>
+                    <li><a href="https://itunes.apple.com/cn/app/yi-xiang/id672522335?mt=12&amp;uo=4" target="_blank">ezShare for Mac</a></li>
+                    <li><a href="http://weibotuchuang.sinaapp.com" target="_blank">围脖图床修复计划</a></li>
+                    <li><a href="http://maxiang.info" target="_blank">马克飞象，专为印象笔记打造的 Markdown 编辑器，非常推荐</a></li>
+                    </ul>
+                    <h3><strong>相关文章阅读</strong></h3>
+                    <ul>
+                    <li><a href="http://apple4us.com/2012/02/why-writers-should-use-markdown.html" target="_blank">为什么作家应该用 Markdown 保存自己的文稿</a></li>
+                    <li><a href="http://www.yangzhiping.com/tech/r-markdown-knitr.html" target="_blank">Markdown 写作浅谈</a></li>
+                    <li><a href="http://www.appinn.com/markdown-tools/" target="_blank">Markdown 工具补完</a></li>
+                    <li><a href="http://jianshu.io/p/63HYZ6" target="_blank">Drafts + Scriptogr.am + Dropbox 打造移动端 Markdown 风格博客</a></li>
+                    <li><a href="http://www.ituring.com.cn/article/23" target="_blank">图灵社区 - 怎样使用 Markdown</a></li>
+                    <li><a href="http://news.cnblogs.com/n/139649/" target="_blank">为什么我们要学习 Markdown 的三个理由</a></li>
+                    <li><a href="http://ibuick.me/?p=4093" target="_blank">Markdown 语法写作入门指南 by ibuick</a></li>
+                    </ul>
                     <p>
 
                     </p>
@@ -450,16 +405,9 @@
             <div class="col-lg-7 col-md-12">
                 <div class="row">
                     <div class="col">
-                        <div class="tags article-tags mt-5 mb-5">
+                        <div th:if="${post.tags != null}" class="tags article-tags mt-5 mb-5">
                             <!--<div class="tag mx-0 px-0" style="border-bottom: 0px;"><i class="fa fa-tags"></i></div>-->
-                            <div class="tag"># Markdown 入门</div>
-                            <div class="tag"># Markdown 帮助</div>
-                            <div class="tag"># 写作</div>
-                            <div class="tag"># Markdown 帮助</div>
-                            <div class="tag"># Markdown 帮助</div>
-                            <div class="tag"># Markdown 帮助</div>
-                            <div class="tag"># Markdown 帮助</div>
-                            <div class="tag"># Markdown 帮助</div>
+                            <a class="tag" th:each="tag : ${post.tags}" th:href="@{'/tags/' + ${tag.id}}" th:text="'#' + ${tag.name}"># Markdown 入门</a>
                         </div>
                         <!--<div class="tags article-categories">-->
                         <!--<div class="tag mx-0 px-0"><i class="fa fa-book"></i></div>-->
@@ -468,23 +416,25 @@
                     </div>
                 </div>
                 <div class="row ">
-                    <div class="col px-0">
+                    <div class="col px-0 ">
                         <nav class="navbar  navbar-expand-lg scrolling-navbar post-nav px-0">
-                            <div class="container-fluid px-0">
+                            <div class="container-fluid px-0 ">
                                 <!-- Left -->
                                 <ul class="navbar-nav mr-auto ">
-                                    <li class="nav-item ">
-                                        <a class="nav-link waves-effect" href="#"><i
-                                                class="fa fa-chevron-left mr-2"></i>Markdown 概念
+                                    <li class="nav-item" th:if="${prePost != null}">
+                                        <a class="nav-link " th:href="@{'/posts/' + ${prePost.id}}">
+                                            <i class="fa fa-chevron-left mr-2 "></i>
+                                            <th:block th:text="${prePost.title}">Markdown 概念</th:block>
                                         </a>
                                     </li>
 
                                 </ul>
                                 <!-- Right -->
                                 <ul class="navbar-nav nav-flex-icons">
-                                    <li class="nav-item ">
-                                        <a class="nav-link waves-effect  " href="#">Markdown 写作
-                                            <i class="fa fa-chevron-right ml-2"></i>
+                                    <li class="nav-item" th:if="${nextPost != null}">
+                                        <a class="nav-link " th:href="@{'/posts/' + ${nextPost.id}}">
+                                            <th:block th:text="${nextPost.title}">Markdown 概念</th:block>
+                                            <i class="fa fa-chevron-right ml-2 "></i>
                                         </a>
                                     </li>
                                     <!--<li class="nav-item">-->
@@ -503,6 +453,7 @@
     </div>
 </main>
 
+<th:block th:replace="themes/material-design/footer :: common_footer(${sources_version})">
 <!-- Footer -->
 <footer class="page-footer font-small white">
     <div class="container-fluid">
@@ -530,21 +481,15 @@
 </footer>
 <!-- Footer -->
 
-<script type="text/javascript" src="../../../static/admin/plugins/md-bootstrap-blog/js/jquery-3.3.1.min.js"></script>
-<!-- Bootstrap tooltips -->
-<script type="text/javascript" src="../../../static/admin/plugins/md-bootstrap-blog/js/popper.min.js"></script>
+<script type="text/javascript" src="../../../static/blog/themes/md-bootstrap-blog/js/jquery-3.3.1.min.js"></script>
 <!-- Bootstrap core JavaScript -->
-<script type="text/javascript" src="../../../static/admin/plugins/md-bootstrap-blog/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../../static/blog/themes/md-bootstrap-blog/js/bootstrap.min.js"></script>
 <!-- MDB core JavaScript -->
-<script type="text/javascript" src="../../../static/admin/plugins/md-bootstrap-blog/js/mdb.min.js"></script>
+<script type="text/javascript" src="../../../static/blog/themes/md-bootstrap-blog/js/mdb.min.js"></script>
 
-<script type="text/javascript" src="../../../static/admin/plugins/md-bootstrap-blog/js/addons/datatables.js"></script>
-<!-- Simplemde-Markdown-Editor -->
-<script type="text/javascript" src="../../../static/admin/plugins/lepture-markdown-editor/editor/editor.js"></script>
-<script type="text/javascript" src="../../../static/admin/plugins/lepture-markdown-editor/editor/marked.js"></script>
+</th:block>
 
 <!-- Select2 -->
-<script type="text/javascript" src="../../../static/admin/plugins/select2/js/select2.js"></script>
 <script>
     $(document).ready(function () {
         // Animations initialization
@@ -568,7 +513,7 @@
     });
 
 </script>
-<script th:src="@{/blog/themes/default/js/jquery.toc.js}"
-        src="../../../static/admin/plugins/md-bootstrap-blog/js/jquery.toc.js"></script>
+<script th:src="@{/blog/themes/md-bootstrap-blog/js/jquery.toc.js}"
+        src="../../../static/blog/themes/md-bootstrap-blog/js/jquery.toc.js"></script>
 </body>
 </html>

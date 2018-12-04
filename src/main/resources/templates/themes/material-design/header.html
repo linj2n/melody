@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="common_header(title,styles_version)">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title th:text="${title}">This is an title for current page</title>
+
+    <th:block th:if="${styles_version} == 'cdn'">
+        <!-- Common styles from CDN-->
+    </th:block>
+    <th:block th:if="${styles_version} == 'local'">
+        <!-- Common styles from local repository-->
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <!-- Bootstrap core CSS -->
+        <link th:href="@{/blog/themes/md-bootstrap-blog/css/bootstrap.css}" rel="stylesheet">
+        <!-- Material Design Bootstrap -->
+        <link th:href="@{/blog/themes/md-bootstrap-blog/css/mdb.css}" rel="stylesheet">
+        <link th:href="@{/blog/themes/md-bootstrap-blog/css/addons/datatables.css}" rel="stylesheet">
+        <link th:href="@{/blog/themes/md-bootstrap-blog/css/toc.css}" rel="stylesheet">
+        <link th:href="@{/blog/themes/md-bootstrap-blog/css/styles.css}" rel="stylesheet">
+        <link th:href="@{/blog/themes/md-bootstrap-blog/css/page.css}" rel="stylesheet">
+
+    </th:block>
+</head>
+<body>
+<header th:fragment="top-nav" class="site-header">
+    <div class="container">
+        <h1><a href="linj2n.cn" title="linj2n"><span class="octicon octicon-mark-github"></span> linj2n's Notes</a></h1>
+        <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <nav class="site-header-nav" role="navigation">
+
+            <a href="/" th:href="@{/}" class=" site-header-nav-item" target="" title="首页">首页</a>
+
+            <a th:href="@{/archives}" class=" site-header-nav-item" target="" title="分类">归档</a>
+
+            <a th:href="@{/categories}" class=" site-header-nav-item" target="" title="">分类</a>
+
+            <a th:href="@{/links}" class=" site-header-nav-item" target="" title="链接">链接</a>
+
+            <a th:href="@{/about}" class=" site-header-nav-item" target="" title="关于">关于</a>
+        </nav>
+    </div>
+</header>
+
+
+</body>
+</html>
