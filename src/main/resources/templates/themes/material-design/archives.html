@@ -16,41 +16,7 @@
     <link href="../../../static/blog/themes/md-bootstrap-blog/css/toc.css" rel="stylesheet">
     <link href="../../../static/blog/themes/md-bootstrap-blog/css/styles.css" rel="stylesheet">
     <link href="../../../static/blog/themes/md-bootstrap-blog/css/page.css" rel="stylesheet">
-    <style type="text/css">
-        .archives {
-            margin: 1rem;
-            padding: 1rem;
-        }
-        .archives ul li {
-            color: #4f4f4f;
-            margin-bottom: 1rem;
-            border-bottom: 1px dashed #ccc;
-        }
-        .archives ul li:hover {
-            color: #4285f4;
-            border-bottom: 1px dashed #4285f4;
-        }
-        .archives ul li:hover > a{
-            color: #4285f4;
-        }
-
-        .archives ul li a {
-            color: #4f4f4f;
-            margin-left: 1rem;
-        }
-
-        /*.archives ul li a:hover {*/
-            /*color: #4285f4;*/
-        /*}*/
-
-        /*.post-directory {*/
-            /*position: fixed;*/
-            /*top: 200px;*/
-            /*right: 80px;*/
-            /*width: 150px;*/
-        /*}*/
-
-    </style>
+    <link href="../../../static/blog/themes/md-bootstrap-blog/css/archives.css" rel="stylesheet">
 </head>
 <body>
 <header>
@@ -116,112 +82,28 @@
 <main>
     <div class="container-fluid mt-1 pt-3">
 
-        <div class="row">
+        <div class="row ml-5">
             <div class="col"><h2 class="font-weight-normal text-center">归 档</h2></div>
         </div>
         <div class="row">
             <div class="col-lg-2"></div>
-            <div class="col-lg-8 col-md-8" th:if="${post != null}">
+            <div class="col-lg-8 col-md-8">
                 <header>
                     <p class="text-center header-line mt-2 pt-2"></p>
                 </header>
                 <div class="archives-list">
-                    <h3 class="mb-0">2018</h3>
-                    <div class="archives">
-                        <h4 >十二月</h4>
-                        <ul>
-                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                        </ul>
-                    </div>
-                    <div class="archives">
-                        <h4 >十一月</h4>
-                        <ul>
-                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                        </ul>
-                    </div>
-                    <div class="archives">
-                        <h4 >十月</h4>
-                        <ul>
-                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                        </ul>
-                    </div>
-                    <h3 class="mb-0">2018</h3>
-                    <div class="archives">
-                        <h4 >十二月</h4>
-                        <ul>
-                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十二月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                        </ul>
-                    </div>
-                    <div class="archives">
-                        <h4 >十一月</h4>
-                        <ul>
-                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十一月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                        </ul>
-                    </div>
-                    <div class="archives">
-                        <h4 >十月</h4>
-                        <ul>
-                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
-                            <li>十月 2, 2018 <a href="#">Spring学习总结（4）理解 DI 与 AOP</a></li>
+                    <!--<h3 class="mb-0">2018</h3>-->
+                    <div th:each="postList : ${allPosts}" class="archives">
+                        <h4 th:text="${#temporals.format(postList[0].createdAt, 'MMM, yyyy',locale)}">2018-</h4>
+                        <ul th:each="post : ${postList}">
+                            <li>
+                                <!--<th:block th:text="${#temporals.format(post.createdAt,'yyyy-MM-dd',locale)}">2018-11-2</th:block>-->
+                                <a th:text="${#temporals.format(post.createdAt,'yyyy-MM-dd  ',locale) + post.title}" th:href="@{'/posts/' + ${post.id}}"></a>
+                            </li>
+                            <li>
+                                <!--<th:block th:text="${#temporals.format(post.createdAt,'yyyy-MM-dd',locale)}">2018-11-2</th:block>-->
+                                <a th:text="${#temporals.format(post.createdAt,'yyyy/MM/dd  ',locale) + post.title}" th:href="@{'/posts/' + ${post.id}}"></a>
+                            </li>
                         </ul>
                     </div>
                 </div>
