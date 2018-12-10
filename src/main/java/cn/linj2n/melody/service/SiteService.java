@@ -12,4 +12,6 @@ public interface SiteService {
     Map<String, List<Archive>> getArchivesGroupByYear();
 
     Map<String, List<Archive>> getArchivesByTagId(Long tagId);
+
+    Map<String, List<Archive>> getArchivesByCategoryId(Long categoryId);
 }

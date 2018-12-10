@@ -58,6 +58,11 @@ public class TagServiceImpl implements TagService{
     }
 
     @Override
+    public Optional<Tag> getTagById(Long tagId) {
+        return tagRepository.findOptionalById(tagId);
+    }
+
+    @Override
     public Optional<Tag> getTagByName(String tagName) {
         return tagRepository.findOptionalByName(tagName);
     }

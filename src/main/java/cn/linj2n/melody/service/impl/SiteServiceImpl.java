@@ -2,6 +2,7 @@ package cn.linj2n.melody.service.impl;
 
 import cn.linj2n.melody.domain.Post;
 import cn.linj2n.melody.domain.Tag;
+import cn.linj2n.melody.repository.CategoryRepository;
 import cn.linj2n.melody.repository.PostRepository;
 import cn.linj2n.melody.repository.TagRepository;
 import cn.linj2n.melody.service.SiteService;
@@ -29,11 +30,14 @@ public class SiteServiceImpl implements SiteService{
 
     private TagRepository tagRepository;
 
+    private CategoryRepository categoryRepository;
+
     @Autowired
-    public SiteServiceImpl(PostRepository postRepository, DTOModelMapper dtoModelMapper, TagRepository tagRepository) {
+    public SiteServiceImpl(PostRepository postRepository, DTOModelMapper dtoModelMapper, TagRepository tagRepository,CategoryRepository categoryRepository) {
         this.postRepository = postRepository;
         this.dtoModelMapper = dtoModelMapper;
         this.tagRepository = tagRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
@@ -51,6 +55,17 @@ public class SiteServiceImpl implements SiteService{
     public Map<String, List<Archive>> getArchivesByTagId(Long tagId) {
         return tagRepository.findOptionalById(tagId).map(t -> {
             List<Post> posts = t.getPosts()
+                    .stream()
+                    .filter(post -> post.getStatus().equals("post"))
+                    .collect(Collectors.toList());
+            return groupArchivesByYear(groupPostsByMonth(posts));
+        }).orElse(null);
+    }
+
+    @Override
+    public Map<String, List<Archive>> getArchivesByCategoryId(Long categoryId) {
+        return tagRepository.findOptionalById(categoryId).map(c -> {
+            List<Post> posts = c.getPosts()
                     .stream()
                     .filter(post -> post.getStatus().equals("post"))
                     .collect(Collectors.toList());
