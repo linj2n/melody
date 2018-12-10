@@ -26,29 +26,67 @@
     </th:block>
 </head>
 <body>
-<header th:fragment="top-nav" class="site-header">
-    <div class="container">
-        <h1><a href="linj2n.cn" title="linj2n"><span class="octicon octicon-mark-github"></span> linj2n's Notes</a></h1>
-        <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
+
+<!--Navigation-->
+<nav th:fragment="top-nav" class="navbar  navbar-expand-lg navbar-light scrolling-navbar custom-navbar pt-1 pb-1 ">
+    <div class="container-fluid">
+
+        <!-- Brand -->
+        <!--<a class="navbar-brand waves-effect " href="#" target="_blank">-->
+        <!--<strong class="blue-text">LN</strong>-->
+        <!--</a>-->
+
+        <!-- Collapse -->
+        <button class="navbar-toggler custom-navbar-toggler" type="button" data-toggle="collapse"
+                data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"><i class="fa fa-menu"></i></span>
         </button>
-        <nav class="site-header-nav" role="navigation">
 
-            <a href="/" th:href="@{/}" class=" site-header-nav-item" target="" title="首页">首页</a>
+        <!-- Links -->
+        <div class="collapse navbar-collapse justify-content-center collapse " id="navbarSupportedContent">
 
-            <a th:href="@{/archives}" class=" site-header-nav-item" target="" title="分类">归档</a>
+            <!-- Left -->
+            <ul class="navbar-nav mr-auto ">
+                <li class="nav-item">
+                    <a class="nav-link  " href="#" th:href="@{/index}">首页
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item ml-4">
+                    <a class="nav-link" href="#" th:href="@{/archives}" target="_blank">归档</a>
+                </li>
+                <li class="nav-item ml-4">
+                    <a class="nav-link" href="#" th:href="@{/categories}" target="_blank">分类</a>
+                </li>
+                <li class="nav-item ml-4">
+                    <a class="nav-link " href="#" th:href="@{/tags}" target="_blank">分类</a>
+                </li>
+                <li class="nav-item ml-4">
+                    <a class="nav-link " href="#" th:href="@{/links}" target="_blank">链接</a>
+                </li>
+                <li class="nav-item ml-4">
+                    <a class="nav-link" href="#" th:href="@{/about}" target="_blank">关于</a>
+                </li>
+            </ul>
 
-            <a th:href="@{/categories}" class=" site-header-nav-item" target="" title="">分类</a>
+            <!-- Right -->
+            <ul class="navbar-nav nav-flex-icons">
+                <!--<li class="nav-item">-->
+                <!--<a href="https://twitter.com/MDBootstrap" class="nav-link waves-effect" target="_blank">-->
+                <!--<i class="fa fa-github"></i>-->
+                <!--</a>-->
+                <!--</li>-->
+            </ul>
 
-            <a th:href="@{/links}" class=" site-header-nav-item" target="" title="链接">链接</a>
-
-            <a th:href="@{/about}" class=" site-header-nav-item" target="" title="关于">关于</a>
-        </nav>
+            <!--<button type="button" class="btn nav-btn-outline-blue nav-btn-rounded nav-btn-radius btn-sm">LN</button>-->
+            <a class="navbar-brand waves-effect " href="#" target="_blank">
+                <i class="fa fa-2x fa-github"></i>
+            </a>
+        </div>
     </div>
-</header>
-
+</nav>
+<!--Navigation-->
 
 </body>
 </html>
