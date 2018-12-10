@@ -40,6 +40,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public Optional<Category> getCategoryById(Long categoryId) {
+        return categoryRepository.findOptionalById(categoryId);
+    }
+
+    @Override
     public Optional<Category> getCategoryWithPosts(String categoryName) {
         return Optional.empty();
     }
