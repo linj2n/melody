@@ -1,9 +1,6 @@
 package cn.linj2n.melody.service.impl;
 
-import cn.linj2n.melody.domain.Category;
 import cn.linj2n.melody.domain.Post;
-import cn.linj2n.melody.domain.Tag;
-import cn.linj2n.melody.repository.CategoryRepository;
 import cn.linj2n.melody.repository.PostRepository;
 import cn.linj2n.melody.repository.TagRepository;
 import cn.linj2n.melody.service.PostService;
@@ -15,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -26,14 +22,10 @@ public class PostServiceImpl implements PostService{
 
     private PostRepository postRepository;
 
-    private TagRepository tagRepository;
-
-    CategoryRepository categoryRepository;
 
     @Autowired
-    public PostServiceImpl(PostRepository postRepository, TagRepository tagRepository) {
+    public PostServiceImpl(PostRepository postRepository) {
         this.postRepository = postRepository;
-        this.tagRepository = tagRepository;
     }
 
     @Override
@@ -114,40 +106,6 @@ public class PostServiceImpl implements PostService{
         return postRepository.findAllByTags(tagIds,Long.valueOf(tagIds.size()));
     }
 
-    @Override
-    public Map<String, List<Post>> listAllPostsGroupByMonth() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
-        TreeMap<String, List<Post>> postsMap = new TreeMap<>();
-        postRepository.findAllByOrderByCreatedAtDesc().forEach(post -> {
-            String month = post.getCreatedAt().format(formatter);
-            List<Post> posts = postsMap.get(month);
-            if (posts == null) {
-                posts = new ArrayList<>();
-            }
-            posts.add(post);
-            postsMap.put(month, posts);
-        });
-        return postsMap.descendingMap();
-    }
-
-    @Override
-    public Map<String, List<Post>> listAllPostsGroupByCategory() {
-//        TreeMap<String, List<Post>> postsMap = new TreeMap<>();
-//        postRepository.findAllByOrderByCreatedAtDesc().forEach(post -> {
-//            String categoryName = post.getCreatedAt().format(formatter);
-//            List<Post> posts = postsMap.get(categoryName);
-//            if (posts == null) {
-//                posts = new ArrayList<>();
-//            }
-//            posts.add(post);
-//            postsMap.put(month, posts);
-//        });
-//
-//        return postsMap.descendingMap();
-
-
-        return null;
-    }
 
     @Override
     public Page<Post> listPostByPage(Pageable pageable) {

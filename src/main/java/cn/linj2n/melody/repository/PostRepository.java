@@ -19,8 +19,6 @@ public interface PostRepository extends JpaRepository<Post,Long> {
 
     List<Post> findAllByOrderByCreatedAtDesc();
 
-    List<Post> findAllByOrderByUpdatedAtDesc();
-
     @Query("select post from Post post join post.tags tag " +
             "where tag.id in :tagIds " +
             "group by post.id having count(post.id) = :tagCount")
