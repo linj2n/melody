@@ -20,9 +20,9 @@
 </head>
 <body>
 <header>
-
     <!--Navigation-->
-    <nav class="navbar  navbar-expand-lg navbar-light scrolling-navbar custom-navbar pt-1 pb-1 ">
+    <nav th:replace="themes/material-design/header :: top-nav"
+         class="navbar  navbar-expand-lg navbar-light scrolling-navbar custom-navbar pt-1 pb-1 ">
         <div class="container-fluid">
 
             <!-- Brand -->
@@ -83,31 +83,48 @@
     <div class="container-fluid mt-1 pt-3">
 
         <div class="row">
-            <div class="col-lg-2"></div>
+            <div class="col-lg-1"></div>
             <div class="col-lg-8 col-md-8">
-                <header>
-                    <h2 class="font-weight-normal text-center">归 档</h2>
-                </header>
-                <div class="archives-list">
-                    <th:block th:each="archivesEntrySet : ${archivesByYear}">
-                        <h3 class="my-2 py-2 grey-text" th:text="${archivesEntrySet.getKey()}">2018</h3>
-                        <div class="archives" th:each="archive : ${archivesEntrySet.getValue()}">
-                            <h4 class="my-3" th:text="${#temporals.format(archive.postDTOs[0].createdAt,'MMMM',locale)}"> November</h4>
-                            <ul>
-                                <li class="grey-text" th:each="post : ${archive.postDTOs}">
-                                    <th:block th:text="${#temporals.format(post.createdAt,'MMM dd, yyyy',locale)}">Nov 12</th:block>
-                                    <a th:href="@{'/posts/' + ${post.id}}" th:text="${post.title}">Spring学习总结（4）理解 DI 与 AOP</a>
-                               </li>
-                            </ul>
-                        </div>
+                <header th:switch="${archivesType}">
+                    <th:block th:case="'tag'">
+                        <h2 th:inline="text" class="font-weight-normal text-center">
+                            [[${archivesTitle}]]
+                            <small class="grey-text">Tag</small>
+                        </h2>
                     </th:block>
+                    <th:block th:case="'category'">
+                        <h2 th:inline="text" class="font-weight-normal text-center">
+                            [[${archivesTitle}]]
+                            <small class="grey-text">Category</small>
+                        </h2>
+                    </th:block>
+                    <th:block th:case="*">
+                        <h2 class="font-weight-normal text-center">归档</h2>
+                    </th:block>
+                </header>
+                <div class="archives-list mx-5 px-3 pt-5">
+                    <div class="archives" th:each="archivesEntrySet : ${archivesByYear}">
+                        <h3 class="my-2 py-2 grey-text archive" th:text="${archivesEntrySet.getKey()}">2018</h3>
+                        <ul class="list-group">
+                            <th:block th:each="archive : ${archivesEntrySet.getValue()}">
+                                <!--<h5 class="my-3 grey-text" th:text="${#temporals.format(archive.postDTOs[0].createdAt,'MMMM',locale)}"> November</h5>-->
+                                <li class="list-group-item d-flex justify-content-start align-items-center" th:each="post : ${archive.postDTOs}" th:inline="text">
+                                    <span >[[${#temporals.format(post.createdAt,'MMM dd',locale)}]]</span>
+                                    <a th:href="@{'/posts/' + ${post.id}}" th:text="${post.title}">Spring学习总结（4）理解 DI 与
+                                        AOP
+                                    </a>
+                                </li>
+                            </th:block>
+                        </ul>
+                    </div>
                 </div>
+
             </div>
 
-            <div class="col-lg-2 pl-0 toc-wrapper">
+            <div class="col-lg-3 pl-2 toc-wrapper">
                 <div class="mt-5 ">
                     <div id="post-directory-module">
-                        <div class="post-directory sticky d-none d-md-block">
+                        <div class="post-directory sticky">
                             <!-- Links that trigger the jumping -->
                             <!-- Added by javascript below -->
                             <dl></dl>
@@ -132,8 +149,9 @@
                     <div class="custom-footer-copyright text-center pt-3">© Copyright 2018
                         <a href="https://github.com/linj2n" class="blue-text">linj2n</a>
                     </div>
-                    <div class="custom-footer-copyright text-center pt-2 mb-3 pb-3">Powered by <a href="https://github.com/linj2n/melody" class="blue-text">Melody</a> Theme By <a href="https://github.com/linj2n/" class="blue-text">LN</a>
-
+                    <div class="custom-footer-copyright text-center pt-2 mb-3 pb-3">Powered by <a
+                            href="https://github.com/linj2n/melody" class="blue-text">Melody</a> Theme By <a
+                            href="https://github.com/linj2n/" class="blue-text">LN</a>
                     </div>
                 </div>
                 <div class="col-3"></div>
@@ -166,7 +184,7 @@
             var title = $(this).text();
             console.log(title);
             $(this).attr('id', title);
-        })
+        });
 
         $('img').each(function () {
             $(this).addClass("img-fluid");
