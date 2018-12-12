@@ -16,4 +16,11 @@ public class Archive {
     public void addPost(PostDTO postDTO) {
         this.postDTOs.add(postDTO);
     }
+
+    public Archive () {
+
+    }
+    public Archive(String name) {
+        this.name = name;
+    }
 }

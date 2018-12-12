@@ -1,5 +1,6 @@
 package cn.linj2n.melody.service.impl;
 
+import cn.linj2n.melody.domain.Category;
 import cn.linj2n.melody.domain.Post;
 import cn.linj2n.melody.domain.Tag;
 import cn.linj2n.melody.repository.CategoryRepository;
@@ -18,7 +19,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class SiteServiceImpl implements SiteService{
 
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(SiteServiceImpl.class);
@@ -38,6 +39,24 @@ public class SiteServiceImpl implements SiteService{
         this.dtoModelMapper = dtoModelMapper;
         this.tagRepository = tagRepository;
         this.categoryRepository = categoryRepository;
+    }
+
+    @Override
+    public List<Tag> listAllTagsWithPosts() {
+        return tagRepository.findAll();
+//        return tagRepository.findAll()
+//                .stream()
+//                .peek(tag -> tag.getPosts().size())
+//                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Category> listAllCategoriesWithPosts() {
+        return categoryRepository.findAll();
+//        return categoryRepository.findAll()
+//                .stream()
+//                .peek(category -> category.getPosts().size())
+//                .collect(Collectors.toList());
     }
 
     @Override
@@ -64,13 +83,28 @@ public class SiteServiceImpl implements SiteService{
 
     @Override
     public Map<String, List<Archive>> getArchivesByCategoryId(Long categoryId) {
-        return tagRepository.findOptionalById(categoryId).map(c -> {
+        return categoryRepository.findOptionalById(categoryId).map(c -> {
             List<Post> posts = c.getPosts()
                     .stream()
                     .filter(post -> post.getStatus().equals("post"))
                     .collect(Collectors.toList());
             return groupArchivesByYear(groupPostsByMonth(posts));
         }).orElse(null);
+    }
+
+    @Override
+    public List<Archive> getArchivesGroupByCategory() {
+        List<Archive> archives = new ArrayList<>();
+        for (Category category : categoryRepository.findAll()) {
+            if (!category.getPosts().isEmpty()) {
+                Archive archive = new Archive(category.getName());
+                for (Post post : category.getPosts()) {
+                    archive.addPost(dtoModelMapper.convertToDTO(post));
+                }
+                archives.add(archive);
+            }
+        }
+        return archives;
     }
 
     private Map<String,List<Archive>> groupArchivesByYear(List<Archive> archives) {
