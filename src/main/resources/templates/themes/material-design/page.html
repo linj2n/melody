@@ -424,7 +424,7 @@
                         <nav class="navbar  navbar-expand-lg scrolling-navbar post-nav px-0">
                             <div class="container-fluid px-0 ">
                                 <!-- Left -->
-                                <ul class="navbar-nav mx-auto dark-grey-text ">
+                                <ul class="navbar-nav ml-0 mr-auto dark-grey-text ">
                                     <li class="nav-item" th:if="${prePost != null}">
                                         <a class="nav-link " th:href="@{'/posts/' + ${prePost.id}}">
                                             <i class="fa fa-chevron-left mr-2 "></i>
@@ -434,7 +434,7 @@
 
                                 </ul>
                                 <!-- Right -->
-                                <ul class="navbar-nav navbar-nav mx-auto dark-grey-text">
+                                <ul class="navbar-nav navbar-nav ml-auto mr-0 dark-grey-text">
                                     <li class="nav-item" th:if="${nextPost != null}">
                                         <a class="nav-link " th:href="@{'/posts/' + ${nextPost.id}}">
                                             <th:block th:text="${nextPost.title}">Markdown 概念</th:block>
