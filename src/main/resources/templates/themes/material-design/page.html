@@ -503,9 +503,8 @@
         $('article :header').each(function () {
             $(this).addClass("font-weight-normal pt-3 pb-3");
             var title = $(this).text();
-            console.log(title);
             $(this).attr('id', title);
-        })
+        });
 
         $('img').each(function () {
             $(this).addClass("img-fluid");
