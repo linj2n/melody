@@ -99,7 +99,7 @@
                         </h2>
                     </th:block>
                     <th:block th:case="*">
-                        <h2 class="font-weight-normal text-center">归档</h2>
+                        <h2 class="font-weight-bold text-center">归 档</h2>
                     </th:block>
                 </header>
                 <div class="archives-list">
@@ -109,8 +109,8 @@
                             <th:block th:each="archive : ${archivesEntrySet.getValue()}">
                                 <!--<h5 class="my-3 grey-text" th:text="${#temporals.format(archive.postDTOs[0].createdAt,'MMMM',locale)}"> November</h5>-->
                                 <li class="list-group-item d-flex justify-content-start align-items-center" th:each="post : ${archive.postDTOs}" th:inline="text">
-                                    <span >[[${#temporals.format(post.createdAt,'MMM dd',locale)}]]</span>
-                                    <a th:href="@{'/posts/' + ${post.id}}" th:text="${post.title}">Spring学习总结（4）理解 DI 与
+                                    <span>[[${#temporals.format(post.createdAt,'MMM dd,',locale)}]]</span>
+                                    <a th:href="@{'/posts/' + ${post.id}}"  th:text="${post.title}">Spring学习总结（4）理解 DI 与
                                         AOP
                                     </a>
                                 </li>
@@ -120,28 +120,16 @@
                 </div>
             </div>
 
-            <div class="col-lg-2 mt-5 px-0">
-                <header class="mb-5 pb-2" ></header>
-                <p class="mb-1 font-weight-bold category-group-title">分 类</p>
-                <ul class="list-group category-group pt-1">
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <a>Spring Data Jpa & thymeleaf</a>
-                        <span class="tag">14</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <a>Java</a>
-                        <span class="tag">2</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <a>C++</a>
-                        <span class="tag">1</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <a>Spring Security </a>
-                        <span class="tag">1</span>
-                    </li>
-                </ul>
-            </div>
+            <!--<div class="col-lg-2 mt-5 px-0">-->
+                <!--<header class="mb-5 pb-2" ></header>-->
+                <!--<p class="mb-1 font-weight-bold category-group-title">分 类</p>-->
+                <!--<ul class="list-group category-group pt-1">-->
+                    <!--<li th:each="category : ${allCategories}" class="list-group-item ">-->
+                        <!--<a th:href="@{'/categories/' + ${category.id}}" th:text="${category.name}">Thymeleaf</a>-->
+                        <!--<span class="tag" th:text="${#sets.size(category.posts)}">14</span>-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</div>-->
         </div>
     </div>
 </main>
@@ -199,7 +187,7 @@
     });
 
 </script>
-<!--<script th:src="@{/blog/themes/md-bootstrap-blog/js/jquery.toc.js}"-->
-        <!--src="../../../static/blog/themes/md-bootstrap-blog/js/jquery.toc.js"></script>-->
+<script th:src="@{/blog/themes/md-bootstrap-blog/js/jquery.toc.js}"
+        src="../../../static/blog/themes/md-bootstrap-blog/js/jquery.toc.js"></script>
 </body>
 </html>
