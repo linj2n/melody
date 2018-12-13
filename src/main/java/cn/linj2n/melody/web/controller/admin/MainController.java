@@ -1,5 +1,7 @@
 package cn.linj2n.melody.web.controller.admin;
 
+import cn.linj2n.melody.domain.Category;
+import cn.linj2n.melody.domain.Tag;
 import cn.linj2n.melody.domain.User;
 import cn.linj2n.melody.service.UserService;
 import org.slf4j.Logger;
@@ -8,10 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
 import java.util.Locale;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
