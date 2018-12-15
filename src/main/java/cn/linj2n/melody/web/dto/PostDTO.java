@@ -2,6 +2,7 @@ package cn.linj2n.melody.web.dto;
 
 import cn.linj2n.melody.domain.Category;
 import cn.linj2n.melody.domain.Tag;
+import cn.linj2n.melody.domain.enumeration.PostStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDateTime;
@@ -32,7 +33,7 @@ public class PostDTO {
     /**
      * 文章状态
      */
-    private String status;
+    private PostStatus status;
 
     /**
      * 文章 url
@@ -97,11 +98,11 @@ public class PostDTO {
         this.content = content;
     }
 
-    public String getStatus() {
+    public PostStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(PostStatus status) {
         this.status = status;
     }
 

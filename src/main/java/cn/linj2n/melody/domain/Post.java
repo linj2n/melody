@@ -1,5 +1,6 @@
 package cn.linj2n.melody.domain;
 
+import cn.linj2n.melody.domain.enumeration.PostStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
@@ -46,7 +48,9 @@ public class Post {
     /**
      * 文章状态
      */
-    private String status;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private PostStatus status = PostStatus.DRAFT;
 
     /**
      * 文章 url
@@ -148,18 +152,21 @@ public class Post {
         this.title = title;
     }
 
-    public Post(String title, String content, String status, String url, Long views) {
+    public Post(String title, String content, String url, Long views) {
         this.title = title;
         this.content = content;
-        this.status = status;
         this.url = url;
         this.views = views;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (! (o instanceof Post)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (! (o instanceof Post)) {
+            return false;
+        }
         Post post = (Post) o;
         return getId() != null && post.getId().equals(getId());
     }

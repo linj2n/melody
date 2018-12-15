@@ -1,6 +1,7 @@
 package cn.linj2n.melody.web.rest;
 
 import cn.linj2n.melody.domain.Post;
+import cn.linj2n.melody.domain.enumeration.PostStatus;
 import cn.linj2n.melody.service.PostService;
 import cn.linj2n.melody.web.dto.PostDTO;
 import cn.linj2n.melody.web.utils.DTOModelMapper;
@@ -8,6 +9,7 @@ import cn.linj2n.melody.web.utils.ViewUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +42,8 @@ public class PostResource {
             method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updatePost(@RequestBody PostDTO postDTO) {
+        // TODO: complete the post status setting
+        postDTO.setStatus(PostStatus.PUBLISHED);
         Post post = dtoModelMapper.convertToEntity(postDTO);
         logger.info("post.content ----> {} ",post.getContent());
         postService.updatePost(post);
@@ -58,7 +62,7 @@ public class PostResource {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/v1/posts/",
+    @RequestMapping(value = "/v1/posts",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public List<PostDTO> getListByTagsAndCategories(@RequestParam(value = "tagIds",required = false) List<Long> tagIds,
@@ -79,4 +83,11 @@ public class PostResource {
         return allPosts;
     }
 
+    @RequestMapping(value = "v1/posts/page",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> testPage(Pageable pageable) {
+        logger.info("pageable -----------> ",pageable.toString());
+        return new ResponseEntity<>(postService.listPostByPage(pageable), HttpStatus.OK);
+    }
 }
