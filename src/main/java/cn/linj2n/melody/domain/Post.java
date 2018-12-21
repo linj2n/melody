@@ -10,6 +10,7 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.Month;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
@@ -157,6 +158,14 @@ public class Post {
         this.content = content;
         this.url = url;
         this.views = views;
+    }
+
+    public Integer getYearOfCreation () {
+        return this.createdAt.getYear();
+    }
+
+    public Month getMonthOfCreation() {
+        return this.createdAt.getMonth();
     }
 
     @Override
