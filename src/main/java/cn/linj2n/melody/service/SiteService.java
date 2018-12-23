@@ -9,6 +9,7 @@ import cn.linj2n.melody.web.dto.PostDTO;
 import java.time.Month;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public interface SiteService {
 
@@ -20,9 +21,9 @@ public interface SiteService {
 
     Map<String, List<Archive>> getArchivesGroupByYear();
 
-    Map<String, List<Archive>> getArchivesByTagId(Long tagId);
+    Map<String, List<Archive>> getArchivesByTagId(long tagId);
 
-    Map<String, List<Archive>> getArchivesByCategoryId(Long categoryId);
+    Map<String, List<Archive>> getArchivesByCategoryId(long categoryId);
 
     List<Archive> getArchivesGroupByCategory();
 
@@ -30,9 +31,15 @@ public interface SiteService {
 
     Map<Integer, List<PostDTO>> groupPostsByYear(List<Post> posts);
 
-    Map<Integer, Map<Month,List<PostDTO>>> groupPostsByYearMonth(List<Post> posts);
+    Map<Integer, Map<Month, List<PostDTO>>> groupPostsByYearMonth(List<Post> posts);
 
-    Map<Integer, Map<Month,List<PostDTO>>> groupAllPostsByYearMonth();
+    Map<Integer, Map<Month, List<PostDTO>>> groupAllPostsByYearMonth();
 
-    Map<String,List<PostDTO>>  groupAllPostsByCategory();
+    Map<String, List<PostDTO>> groupAllPostsByCategory();
+
+    Optional<Tag> getTagWithPostsById(long tagId);
+
+    Optional<Archive> getArchiveByTagId(long tagId);
+
+    Optional<Category> getCategoryWithPostsById(long categoryId);
 }

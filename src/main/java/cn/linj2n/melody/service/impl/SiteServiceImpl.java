@@ -51,19 +51,11 @@ public class SiteServiceImpl implements SiteService {
     @Override
     public List<Tag> listAllTagsWithPosts() {
         return tagRepository.findAll();
-//        return tagRepository.findAll()
-//                .stream()
-//                .peek(tag -> tag.getPosts().size())
-//                .collect(Collectors.toList());
     }
 
     @Override
     public List<Category> listAllCategoriesWithPosts() {
         return categoryRepository.findAll();
-//        return categoryRepository.findAll()
-//                .stream()
-//                .peek(category -> category.getPosts().size())
-//                .collect(Collectors.toList());
     }
 
     @Override
@@ -78,22 +70,22 @@ public class SiteServiceImpl implements SiteService {
     }
 
     @Override
-    public Map<String, List<Archive>> getArchivesByTagId(Long tagId) {
+    public Map<String, List<Archive>> getArchivesByTagId(long tagId) {
         return tagRepository.findOptionalById(tagId).map(t -> {
             List<Post> posts = t.getPosts()
                     .stream()
-                    .filter(post -> post.getStatus().equals("post"))
+                    .filter(post -> post.getStatus().equals(PostStatus.PUBLISHED))
                     .collect(toList());
             return groupArchivesByYear(groupPostsByMonth(posts));
         }).orElse(null);
     }
 
     @Override
-    public Map<String, List<Archive>> getArchivesByCategoryId(Long categoryId) {
+    public Map<String, List<Archive>> getArchivesByCategoryId(long categoryId) {
         return categoryRepository.findOptionalById(categoryId).map(c -> {
             List<Post> posts = c.getPosts()
                     .stream()
-                    .filter(post -> post.getStatus().equals("post"))
+                    .filter(post -> post.getStatus().equals(PostStatus.PUBLISHED))
                     .collect(toList());
             return groupArchivesByYear(groupPostsByMonth(posts));
         }).orElse(null);
@@ -145,7 +137,7 @@ public class SiteServiceImpl implements SiteService {
 
     @Override
     public Map<String, List<PostDTO>> groupAllPostsByCategory() {
-        Map<String,List<PostDTO>> postsByCategoryName = categoryRepository
+        Map<String, List<PostDTO>> postsByCategoryName = categoryRepository
                 .findAll()
                 .stream()
                 .collect(
@@ -153,7 +145,8 @@ public class SiteServiceImpl implements SiteService {
                                 mapping(category -> category.getPosts()
                                                 .stream()
                                                 .filter(post -> post.getStatus().equals(PostStatus.PUBLISHED))
-                                                .map(dtoModelMapper::convertToDTO).collect(toList()),
+                                                .map(dtoModelMapper::convertToDTO)
+                                                .collect(toList()),
                                         Collector.of(ArrayList::new,
                                                 List::addAll,
                                                 (x, y) -> {
@@ -163,13 +156,41 @@ public class SiteServiceImpl implements SiteService {
                                 )
                         )
                 );
-        for (Iterator<Map.Entry<String,List<PostDTO>>> it = postsByCategoryName.entrySet().iterator(); it.hasNext(); ) {
-            List<PostDTO> posts = it.next().getValue();
-            if (posts.isEmpty()) {
-                it.remove();
-            }
-        }
+        postsByCategoryName
+                .entrySet()
+                .removeIf(categoryNameEntry -> categoryNameEntry.getValue().isEmpty());
+
         return postsByCategoryName;
+    }
+
+    @Override
+    public Optional<Tag> getTagWithPostsById(long tagId) {
+        return tagRepository.findOptionalById(tagId).map(tag -> {
+            tag.getPosts().stream().sorted(Comparator.comparing(Post::getCreatedAt).reversed());
+            tag.getPosts().size();
+            return tag;
+        });
+    }
+
+    @Override
+    public Optional<Archive> getArchiveByTagId(long tagId) {
+        return tagRepository.findOptionalById(tagId)
+                .map(tag -> {
+                    return Optional.of(new Archive(tag.getName(), tag.getPosts()
+                            .stream()
+                            .map(dtoModelMapper::convertToDTO)
+                            .sorted(Comparator.comparing(PostDTO::getCreatedAt).reversed())
+                            .collect(toList())));
+                }).orElse(Optional.empty());
+    }
+
+    @Override
+    public Optional<Category> getCategoryWithPostsById(long categoryId) {
+        return categoryRepository.findOptionalById(categoryId).map(category -> {
+            category.getPosts().stream().sorted(Comparator.comparing(Post::getCreatedAt).reversed());
+            category.getPosts().size();
+            return category;
+        });
     }
 
     private Map<String, List<Archive>> groupArchivesByYear(List<Archive> archives) {
