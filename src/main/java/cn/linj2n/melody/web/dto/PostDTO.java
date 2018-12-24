@@ -6,6 +6,7 @@ import cn.linj2n.melody.domain.enumeration.PostStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.Set;
 
 
@@ -138,9 +139,17 @@ public class PostDTO {
         this.tags = tags;
     }
 
+    public Integer getYearOfCreation () {
+        return this.createdAt.getYear();
+    }
+
+    public Month getMonthOfCreation() {
+        return this.createdAt.getMonth();
+    }
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public LocalDateTime getCreatedAt() {
-        return createdAt;
+        return this.createdAt;
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {
