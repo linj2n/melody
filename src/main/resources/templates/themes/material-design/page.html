@@ -90,7 +90,7 @@
                 <header>
                     <h2 class="font-weight-normal text-center" th:text="${post.title}">认识与入门 Markdown</h2>
                     <p class="text-center header-line mt-2 pt-2">
-                        <th:block th:text="${#temporals.format(post.createdAt, 'MMM dd, yyyy HH:mm ',locale)}">
+                        <th:block th:text="${#temporals.format(post.createdAt, 'MMM dd, yyyy HH:mm ',localeOfUsingEnglish)}">
                             Oct 7, 2018 01:03 · 3143 words · 7 minutes read
                         </th:block>
                         <th:block th:if="${post.views != null}">
