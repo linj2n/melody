@@ -92,12 +92,11 @@
                     <h2 class="font-weight-bold text-center">分类</h2>
                 </header>
                 <div class="archives-list">
-                    <div class="archives" th:each="archive : ${archives}">
-                        <h4 class="archive font-weight-bold" th:text="${archive.name}">2018</h4>
+                    <div class="archives" th:each="postsEntrySet: ${postsByCategoryName}">
+                        <h4 class="archive font-weight-bold" th:text="${postsEntrySet.getKey()}">2018</h4>
                         <ul class="list-group">
-                            <!--<h5 class="my-3 grey-text" th:text="${#temporals.format(archive.postDTOs[0].createdAt,'MMMM',locale)}"> November</h5>-->
-                            <li class="list-group-item d-flex justify-content-start align-items-center" th:each="post : ${archive.postDTOs}" th:inline="text">
-                                <span>[[${#temporals.format(post.createdAt,'MMM dd, yyyy',locale)}]]</span>
+                            <li class="list-group-item d-flex justify-content-start align-items-center" th:each="post : ${postsEntrySet.getValue()}" th:inline="text">
+                                <span>[[${#temporals.format(post.createdAt,'MMM dd, yyyy',localeOfUsingEnglish)}]]</span>
                                 <a th:href="@{'/posts/' + ${post.id}}"  th:text="${post.title}">Spring学习总结（4）理解 DI 与
                                     AOP
                                 </a>
