@@ -44,16 +44,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+//        http
+//                .authorizeRequests()
+//                .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+//                .and()
+//                .formLogin()
+//                .loginPage("/admin/login")
+//                .loginProcessingUrl("/api/v1/account/authentication")
+//                .failureHandler(ajaxAuthenticationFailureHandler)
+//                .defaultSuccessUrl("/admin/index")
+//                .permitAll();
         http
                 .authorizeRequests()
-                .antMatchers("/blank").permitAll()
-                .antMatchers("/register").permitAll()
-                .antMatchers("/api/register").permitAll()
-                .antMatchers("/api/activate").permitAll()
-                .antMatchers("/api/v1/account/authentication").permitAll()
-                .antMatchers("/account/activate").permitAll()
-                .antMatchers("/admin/*").hasAuthority("ROLE_ADMIN")
-                .antMatchers("/admin/login").permitAll()
+                .antMatchers("/admin/**").permitAll()
+                .antMatchers("/api/**").permitAll()
+                .antMatchers("/posts/**").permitAll()
                 .and()
                 .formLogin()
                 .loginPage("/admin/login")
