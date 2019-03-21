@@ -61,7 +61,6 @@ public class MainController {
         model.addAttribute("resetKey", resetKey);
         return new ModelAndView("/admin/password-reset", model);
     }
-
     @RequestMapping(value = "/blank", method = GET)
     public String blank() {
         return "admin/blank";
