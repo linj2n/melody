@@ -173,13 +173,14 @@
                                         <!-- Default inline 1-->
                                         <div class="custom-control custom-radio custom-control-inline pr-3">
                                             <input type="radio" class="custom-control-input" id="radio1"
-                                                   name="statusRadio" value="draft" th:checked="${post.status} == 'draft'">
+                                                   name="statusRadio" th:value="DRAFT" th:checked="${post.status} == 'DRAFT'">
                                             <label class="custom-control-label" for="radio1" >草稿</label>
+                                            <!--nnnnnnnnnnn-->
                                         </div>
                                         <!-- Default inline 2-->
                                         <div class="custom-control custom-radio custom-control-inline pr-3">
-                                            <input type="radio" class="custom-control-input" id="radio2" value="post"
-                                                   name="statusRadio" th:checked="${post.status} == 'post'">
+                                            <input type="radio" class="custom-control-input" id="radio2" th:value="PUBLISHED"
+                                                   name="statusRadio" th:checked="${post.status} == 'PUBLISHED'">
                                             <label class="custom-control-label" for="radio2" >文章</label>
                                         </div>
                                     </div>
