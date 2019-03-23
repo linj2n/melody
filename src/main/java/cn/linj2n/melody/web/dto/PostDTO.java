@@ -7,7 +7,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 public class PostDTO {
@@ -145,6 +147,14 @@ public class PostDTO {
 
     public Month getMonthOfCreation() {
         return this.createdAt.getMonth();
+    }
+
+    public List<String> getAllTagName() {
+        return tags.stream().map(Tag::getName).sorted().collect(Collectors.toList());
+    }
+
+    public List<String> getAllCategoryName() {
+        return categories.stream().map(Category::getName).sorted().collect(Collectors.toList());
     }
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

@@ -44,6 +44,8 @@ public class SiteController {
     private SiteService siteService;
 
     private ViewUtils viewUtils;
+    
+    private static String themes = "/themes/default/";
 
     @Autowired
     public SiteController(PostService postService, DTOModelMapper dtoModelMapper,  ViewUtils viewUtils, SiteService siteService) {
@@ -78,19 +80,25 @@ public class SiteController {
 
         modelMap.addAttribute("prePost", dtoModelMapper.convertToDTO(postService.getPost(post.getId() - 1L).orElse(null)));
         modelMap.addAttribute("nextPost", dtoModelMapper.convertToDTO(postService.getPost(post.getId() + 1L).orElse(null)));
-        return "/themes/material-design/page";
+        return themes + "posts";
     }
 
     @RequestMapping(value = "/archives")
     public String getArchives(ModelMap modelMap) {
-        Map<Integer, List<PostDTO>> postsByYear = siteService.groupAllPostsByYear();
+        Map<Integer, List<PostDTO>> postsByYear = siteService.groupAllPostsByYear().descendingMap();
+        modelMap.addAttribute("postNums",
+                postsByYear
+                        .values()
+                        .stream()
+                        .mapToLong(Collection::size)
+                        .sum());
         modelMap.addAttribute("postsMap", postsByYear);
-        return "/themes/material-design/archives";
+        return themes + "archives";
     }
 
     @RequestMapping(value = "/tags")
     public String getAllTagsPage() {
-        return "/themes/material-design/tags";
+        return themes + "tags";
     }
 
     @RequestMapping(value = "/tags/{tagId}")
@@ -107,9 +115,9 @@ public class SiteController {
                     modelMap.addAttribute("postsMap", postsByTagName);
                     modelMap.addAttribute("archivesTitle", tag.getName());
                     modelMap.addAttribute("archivesType", "tag");
-                    return "/themes/material-design/archives";
+                    return themes + "archives";
                 })
-                .orElse("/themes/material-design/archives/error");
+                .orElse(themes + "archives/error");
     }
 
     @RequestMapping(value = "/categories/{categoryId}")
@@ -126,16 +134,22 @@ public class SiteController {
                     modelMap.addAttribute("postsMap", postsByCategoryName);
                     modelMap.addAttribute("archivesTitle", category.getName());
                     modelMap.addAttribute("archivesType", "category");
-                    return "/themes/material-design/archives";
+                    return themes + "archives";
                 })
-                .orElse("/themes/material-design/archives/error");
+                .orElse(themes + "archives/error");
     }
 
     @RequestMapping(value = "/categories")
     public String getCategories(ModelMap modelMap) {
         Map<String,List<PostDTO>> postsByCategoryName = siteService.groupAllPostsByCategory();
+        modelMap.addAttribute("postNums",
+                postsByCategoryName
+                        .values()
+                        .stream()
+                        .mapToLong(Collection::size)
+                        .sum());
         modelMap.addAttribute("postsByCategoryName", postsByCategoryName);
-        return "/themes/material-design/categories";
+        return themes + "categories";
     }
 
     @RequestMapping(value = {"/","index"})
