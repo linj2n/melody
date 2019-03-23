@@ -50,12 +50,18 @@ public class SiteServiceImpl implements SiteService {
 
     @Override
     public List<Tag> listAllTagsWithPosts() {
-        return tagRepository.findAll();
+        return tagRepository.findAll()
+                .stream()
+                .filter(tag -> !tag.getPosts().isEmpty())
+                .collect(toList());
     }
 
     @Override
     public List<Category> listAllCategoriesWithPosts() {
-        return categoryRepository.findAll();
+        return categoryRepository.findAll()
+                .stream()
+                .filter(category -> !category.getPosts().isEmpty())
+                .collect(toList());
     }
 
     @Override
@@ -107,12 +113,12 @@ public class SiteServiceImpl implements SiteService {
     }
 
     @Override
-    public Map<Integer, List<PostDTO>> groupPostsByYear(List<Post> posts) {
+    public TreeMap<Integer, List<PostDTO>> groupPostsByYear(List<Post> posts) {
         return posts
                 .stream()
                 .filter(post -> post.getStatus().equals(PostStatus.PUBLISHED))
                 .map(dtoModelMapper::convertToDTO)
-                .collect(groupingBy(PostDTO::getYearOfCreation));
+                .collect(groupingBy(PostDTO::getYearOfCreation,TreeMap::new,Collectors.toList()));
     }
 
     @Override
@@ -126,13 +132,20 @@ public class SiteServiceImpl implements SiteService {
     }
 
     @Override
-    public Map<Integer, List<PostDTO>> groupAllPostsByYear() {
+    public TreeMap<Integer, List<PostDTO>> groupAllPostsByYear() {
         return groupPostsByYear(postRepository.findAllByOrderByCreatedAtDesc());
     }
 
     @Override
     public Map<Integer, Map<Month, List<PostDTO>>> groupAllPostsByYearMonth() {
-        return groupPostsByYearMonth(postRepository.findAllByOrderByCreatedAtDesc());
+        return groupPostsByYearMonth(postRepository.findAllByOrderByCreatedAtDesc()
+                .stream()
+                .map(post -> {
+                    post.getTags().size();
+                    post.getCategories().size();
+                    return post;
+                })
+                .collect(toList()));
     }
 
     @Override

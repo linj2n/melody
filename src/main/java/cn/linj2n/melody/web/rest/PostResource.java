@@ -43,6 +43,7 @@ public class PostResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updatePost(@RequestBody PostDTO postDTO) {
         // TODO: complete the post status setting
+        System.out.println("hit");
         postDTO.setStatus(PostStatus.PUBLISHED);
         Post post = dtoModelMapper.convertToEntity(postDTO);
         logger.info("post.content ----> {} ",post.getContent());
