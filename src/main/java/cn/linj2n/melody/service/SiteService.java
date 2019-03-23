@@ -10,6 +10,7 @@ import java.time.Month;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.TreeMap;
 
 public interface SiteService {
 
@@ -27,7 +28,7 @@ public interface SiteService {
 
     List<Archive> getArchivesGroupByCategory();
 
-    Map<Integer, List<PostDTO>> groupAllPostsByYear();
+    TreeMap<Integer, List<PostDTO>> groupAllPostsByYear();
 
     Map<Integer, List<PostDTO>> groupPostsByYear(List<Post> posts);
 
