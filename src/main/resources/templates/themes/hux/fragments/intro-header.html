@@ -11,7 +11,8 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <div class="site-heading" th:id="${short} == true ? 'tag-heading' : ''">
-                        <h1 th:text="${type}">Archive</h1>
+                        <h1 th:if="${type} == 'Archives'">归档</h1>
+                        <h1 th:if="${type} == 'Categories'">分类</h1>
                         <span class="subheading">Done beats perfect</span>
                     </div>
                 </div>
@@ -46,12 +47,27 @@
                        </div>
                        <h1 th:text="${post.title}">Post title</h1>
                        <h2 class="subheading" th:text="${post.summary}">Summary</h2>
-                       <span class="meta" th:text="${#temporals.format(post.createdAt, 'MMM dd, yyyy HH:mm ',localeOfUsingEnglish)}">February 9, 2017</span>
+                       <span class="meta" th:text="${#temporals.format(post.createdAt, 'MMM dd, yyyy ',localeOfUsingEnglish)}">February 9, 2017</span>
                    </div>
                </div>
            </div>
        </div>
    </header>
+</th:block>
+<th:block th:fragment="index-intro-header">
+
+    <header class="intro-header" th:style="'background-image: url(' + @{/blog/themes/huxpro/img/post-bg-universe.jpg} + ')'">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="site-heading">
+                        <h2 >linj2n's Blog</h2>
+                        <span class="meta">Done beats perfect</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
 </th:block>
 </body>
 </html>

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:with="type='Index',short=true, catalog=false">
+
+<head th:replace="themes/hux/fragments/head :: head">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+    <title>Archive | linj2n's Blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="../../../static/blog/themes/huxpro/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="../../../static/blog/themes/huxpro/img/favicon.ico">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://huangxuan.me/archive/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="../../../static/blog/themes/huxpro/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../../static/blog/themes/huxpro/css/hux-blog.min.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
+          type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+<!-- Navigation -->
+
+<nav th:replace="themes/hux/fragments/nav :: navbar" class="navbar navbar-default navbar-custom navbar-fixed-top">
+
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Hux Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    <li>
+                        <a href="/about/">About</a>
+                    </li>
+
+
+                    <li>
+                        <a href="/archive/">Archive</a>
+                    </li>
+
+
+                    <li>
+                        <a href="/portfolio/">Portfolio</a>
+                    </li>
+
+
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+
+<!--
+Credits: this page shamelessly borrowed a lot from:
+https://github.com/kitian616/jekyll-TeXt-theme
+-->
+<!-- Page Header -->
+
+
+<header th:replace="themes/hux/fragments/intro-header :: index-intro-header" class="intro-header"
+        style="background-image: url('../../../static/blog/themes/huxpro/img/tag-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="site-heading" id="tag-heading">
+                    <h1>Archive</h1>
+                    <span class="subheading">keep hungry keep foolish</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<!-- Main Content -->
+<div class="container">
+    <div class="row">
+        <div class="row">
+            <!-- PostList Container -->
+            <div class="
+                col-lg-8 col-lg-offset-1
+                col-md-8 col-md-offset-1
+                col-sm-12
+                col-xs-12
+                postlist-container
+            ">
+                <th:block th:each="post : ${postPage.getContent()}">
+                    <div class="post-preview">
+                        <a th:href="@{'/posts/' + ${post.id}}">
+                            <h2 class="post-title" th:text="${post.title}"></h2>
+                            <!--<h3 class="post-subtitle"></h3>-->
+                            <div th:if="${not post.content.isEmpty()}" class="post-content-preview" th:inline="text">
+                                [[${post.content}]]...
+                            </div>
+                        </a>
+                        <p class="post-meta" th:inline="text">
+                            Posted on [[${#temporals.format(post.createdAt, 'MMM dd, yyyy',localeOfUsingEnglish)}]]
+                        </p>
+                    </div>
+                    <hr>
+                </th:block>
+                <ul class="pager">
+                    <li th:if="${postPage.hasPrevious()}" class="previous">
+                        <a th:href="@{/index(size=${postPage.getSize()},page=${postPage.nextPageable().getPageNumber()})}">&larr; Newer Posts</a>
+                    </li>
+                    <li th:if="${postPage.hasNext()}" class="next">
+                        <a th:href="@{/index(size=${postPage.getSize()},page=${postPage.nextPageable().getPageNumber()})}">Older Posts &rarr;</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="
+                col-lg-3 col-lg-offset-0
+                col-md-3 col-md-offset-0
+                col-sm-12
+                col-xs-12
+                sidebar-container
+            ">
+                <!-- Featured Tags-->
+                <section>
+                    <h5><a th:href="@{/archives/}">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        <a th:each="tag : ${allTags}"
+                           th:attr="data-encode=${tag.name}"
+                           th:title="${tag.name}"
+                           th:href="@{'/archives/?tag=' + tag.name}"
+                           th:inline="text"
+                        >
+                            [[${tag.name}]]
+                        </a>
+                    </div>
+                </section>
+                <!-- Short About -->
+                <section class="visible-md visible-lg">
+                    <hr>
+                    <h5><a href="https://github.com/linj2n">ABOUT ME</a></h5>
+                    <div class="short-about">
+
+                        <img src="/img/avatar-hux-ny.jpg"/>
+
+
+                        <!-- SNS Link -->
+
+                        <ul class="list-inline">
+                            <li>
+                                <a target="_blank" href="https://weibo.com/linj2n">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+      </span>
+                                </a>
+                            </li>
+
+
+                            <li>
+                                <a target="_blank" href="https://github.com/linj2n">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+      </span>
+                                </a>
+                            </li>
+
+
+                        </ul>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="themes/hux/fragments/footer :: footer(${type}, ${catalog})">
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                        <!-- SNS Link -->
+                        <p class="copyright text-muted">
+                            Copyright &copy; 2018 linj2n
+                            <br>
+                            Theme <a href="https://github.com/Huxpro/huxpro.github.io"> Hux </a> Powered by <a
+                                href="https://github.com/linj2n/melody">Melody</a> |
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- jQuery -->
+        <script src="../../../static/blog/themes/huxpro/js/jquery.min.js"></script>
+
+        <!-- Bootstrap Core JavaScript -->
+        <!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+        <script src="../../../static/blog/themes/huxpro/js/bootstrap.min.js"></script>
+
+        <!-- Custom Theme JavaScript -->
+        <script src="../../../static/blog/themes/huxpro/js/hux-blog.min.js"></script>
+
+        <!-- Service Worker -->
+
+        <script src="../../../../static/blog/themes/huxpro/js/snackbar.js"></script>
+        <script src="../../../static/blog/themes/huxpro/js/sw-registration.js"></script>
+
+        <!-- async load function -->
+        <script>
+            function async(u, c) {
+                var d = document, t = 'script',
+                    o = d.createElement(t),
+                    s = d.getElementsByTagName(t)[0];
+                o.src = u;
+                if (c) {
+                    o.addEventListener('load', function (e) {
+                        c(null, e);
+                    }, false);
+                }
+                s.parentNode.insertBefore(o, s);
+            }
+        </script>
+
+
+        <!-- jquery.tagcloud.js -->
+        <script>
+            /*<![CDATA[*/
+            var tagCloudJsUrl = "\/blog\/themes\/huxpro\/js\/jquery.tagcloud.js";
+            /*]]>*/
+            async(tagCloudJsUrl, function () {
+                $.fn.tagcloud.defaults = {
+                    //size: {start: 1, end: 1, unit: 'em'},
+                    color: {start: '#bbbbee', end: '#2f93b4'}
+                };
+                $('#tag_cloud a').tagcloud();
+            })
+        </script>
+
+        <script src="../../../static/blog/themes/huxpro/js/archive.js"></script>
+
+        <!--fastClick.js -->
+        <script>
+            async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function () {
+                var $nav = document.querySelector("nav");
+                if ($nav) FastClick.attach($nav);
+            })
+        </script>
+    </div>
+</div>
+</body>
+
+</html>
