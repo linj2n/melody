@@ -13,6 +13,7 @@ import cn.linj2n.melody.web.dto.PostDTO;
 import cn.linj2n.melody.web.utils.DTOModelMapper;
 import cn.linj2n.melody.web.utils.ViewUtils;
 import javafx.geometry.Pos;
+import org.jsoup.Jsoup;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,15 +28,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.stream.*;
+import java.util.stream.Collectors.*;
+
+import static java.util.stream.Collectors.toList;
 
 
 @Controller
 public class SiteController {
 
-    private static int currentPage = 1;
+    private final static int DEFAULT_PAGE_NUMS = 0;
 
-    private static int pageSize = 10;
+    private final static int DEFAULT_PAGE_SIZE = 10;
+
+    private final static int DEFAULT_CONTENT_PREVIEW_SIZE = 300;
 
     private PostService postService;
 
@@ -44,8 +50,8 @@ public class SiteController {
     private SiteService siteService;
 
     private ViewUtils viewUtils;
-    
-    private static String themes = "/themes/default/";
+
+    private static String themes = "/themes/hux/";
 
     @Autowired
     public SiteController(PostService postService, DTOModelMapper dtoModelMapper,  ViewUtils viewUtils, SiteService siteService) {
@@ -75,7 +81,6 @@ public class SiteController {
         // TODO: handle the valid postId
         Post post = postService.getPost(postId).orElse(new Post());
         PostDTO postDTO = dtoModelMapper.convertToDTO(post);
-        postDTO.setContent(viewUtils.renderToHtml(post.getContent()));
         modelMap.addAttribute("post",postDTO);
 
         modelMap.addAttribute("prePost", dtoModelMapper.convertToDTO(postService.getPost(post.getId() - 1L).orElse(null)));
@@ -110,8 +115,7 @@ public class SiteController {
                             tag.getPosts()
                                     .stream()
                                     .map(dtoModelMapper::convertToDTO)
-                                    .collect(Collectors.toList()));
-
+                                    .collect(toList()));
                     modelMap.addAttribute("postsMap", postsByTagName);
                     modelMap.addAttribute("archivesTitle", tag.getName());
                     modelMap.addAttribute("archivesType", "tag");
@@ -129,8 +133,7 @@ public class SiteController {
                             category.getPosts()
                                     .stream()
                                     .map(dtoModelMapper::convertToDTO)
-                                    .collect(Collectors.toList()));
-
+                                    .collect(toList()));
                     modelMap.addAttribute("postsMap", postsByCategoryName);
                     modelMap.addAttribute("archivesTitle", category.getName());
                     modelMap.addAttribute("archivesType", "category");
@@ -153,10 +156,17 @@ public class SiteController {
     }
 
     @RequestMapping(value = {"/","index"})
-    public String listPosts(ModelMap modelMap,  @RequestParam(name = "page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size) {
-        page.ifPresent(p -> currentPage = Math.max(1,p));
-        size.ifPresent(s -> pageSize = s);
-        modelMap.addAttribute("postPage",postService.listPostByPage(new PageRequest(currentPage - 1,pageSize)));
-        return "/themes/default/index";
+    public String listPosts(ModelMap modelMap,  @RequestParam(name = "page",required = false) Integer pageNum, @RequestParam(name = "size",required = false) Integer pageSize) {
+        PageRequest request = new PageRequest(pageNum == null ? DEFAULT_PAGE_NUMS : pageNum - 1,
+                pageSize == null ? DEFAULT_PAGE_SIZE : pageSize);
+        Page<PostDTO> postDTOS = siteService.listPostsByPage(request).map(postDto -> {
+            String contentPreview = Jsoup.parse(postDto.getContent()).text();
+            postDto.setContent(contentPreview.length() > DEFAULT_CONTENT_PREVIEW_SIZE
+                    ? contentPreview.substring(0, DEFAULT_CONTENT_PREVIEW_SIZE)
+                    : contentPreview);
+            return postDto;
+        });
+        modelMap.addAttribute("postPage", postDTOS);
+        return themes + "index";
     }
 }

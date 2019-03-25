@@ -7,15 +7,23 @@ import cn.linj2n.melody.domain.enumeration.PostStatus;
 import cn.linj2n.melody.repository.CategoryRepository;
 import cn.linj2n.melody.repository.PostRepository;
 import cn.linj2n.melody.repository.TagRepository;
+import cn.linj2n.melody.repository.support.PostSpecification;
 import cn.linj2n.melody.service.SiteService;
 import cn.linj2n.melody.web.dto.Archive;
 import cn.linj2n.melody.web.dto.PostDTO;
 import cn.linj2n.melody.web.utils.DTOModelMapper;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -249,9 +257,14 @@ public class SiteServiceImpl implements SiteService {
 
 
     private List<Post> listAllPostsFromDB() {
-        return postRepository.findAllByOrderByCreatedAtDesc()
-                .stream()
-                .filter(post -> post.getStatus().equals(PostStatus.PUBLISHED))
-                .collect(toList());
+        return postRepository.findAllByOrderByCreatedAtDesc(PostSpecification.isPublished());
+
+    }
+
+    @Override
+    public Page<PostDTO> listPostsByPage(PageRequest pageRequest) {
+        // TODO: Eliminate "unchecked" warnings.
+        Page<Post> postDTOPage = postRepository.findAll(PostSpecification.isPublished(), pageRequest);
+        return postDTOPage.map(dtoModelMapper::convertToDTO);
     }
 }

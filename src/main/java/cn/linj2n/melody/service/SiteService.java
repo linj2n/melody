@@ -5,6 +5,8 @@ import cn.linj2n.melody.domain.Post;
 import cn.linj2n.melody.domain.Tag;
 import cn.linj2n.melody.web.dto.Archive;
 import cn.linj2n.melody.web.dto.PostDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.time.Month;
 import java.util.List;
@@ -43,4 +45,6 @@ public interface SiteService {
     Optional<Archive> getArchiveByTagId(long tagId);
 
     Optional<Category> getCategoryWithPostsById(long categoryId);
+
+    Page<PostDTO> listPostsByPage(PageRequest pageRequest);
 }

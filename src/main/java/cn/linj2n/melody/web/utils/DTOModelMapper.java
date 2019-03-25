@@ -11,12 +11,15 @@ public class DTOModelMapper {
 
     private ModelMapper modelMapper;
 
+    private ViewUtils viewUtils;
+
     @Autowired
-    public DTOModelMapper(ModelMapper modelMapper) {
+    public DTOModelMapper(ModelMapper modelMapper, ViewUtils viewUtils) {
         this.modelMapper = modelMapper;
+        this.viewUtils = viewUtils;
     }
 
-    public PostDTO convertToDTO(Post post) {
+    public PostDTO convertToDTO(final Post post) {
         if (post == null) {
             return null;
         }
@@ -27,6 +30,7 @@ public class DTOModelMapper {
         if (post.getUpdatedAt() != null) {
             postDTO.setUpdatedAt(post.getUpdatedAt().toLocalDateTime());
         }
+        postDTO.setContent(viewUtils.renderToHtml(post.getContent()));
         return postDTO;
     }
 
