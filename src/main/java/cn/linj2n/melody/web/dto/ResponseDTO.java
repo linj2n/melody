@@ -1,6 +1,6 @@
 package cn.linj2n.melody.web.dto;
 
-public class RestResponse <T>{
+public class ResponseDTO <T>{
     private String status;
     private String message;
     private T data;
@@ -10,7 +10,7 @@ public class RestResponse <T>{
         return status;
     }
 
-    public RestResponse setStatus(String status) {
+    public ResponseDTO setStatus(String status) {
         this.status = status;
         return this;
     }
@@ -19,7 +19,7 @@ public class RestResponse <T>{
         return message;
     }
 
-    public RestResponse setMessage(String message) {
+    public ResponseDTO setMessage(String message) {
         this.message = message;
         return this;
     }
@@ -28,7 +28,7 @@ public class RestResponse <T>{
         return data;
     }
 
-    public RestResponse setData(T data) {
+    public ResponseDTO setData(T data) {
         this.data = data;
         return this;
     }
