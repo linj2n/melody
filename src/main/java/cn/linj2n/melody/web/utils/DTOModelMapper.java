@@ -1,10 +1,15 @@
 package cn.linj2n.melody.web.utils;
 
+import cn.linj2n.melody.domain.Authority;
 import cn.linj2n.melody.domain.Post;
+import cn.linj2n.melody.domain.User;
 import cn.linj2n.melody.web.dto.PostDTO;
+import cn.linj2n.melody.web.dto.UserDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.stream.Collectors;
 
 @Component
 public class DTOModelMapper {
@@ -37,4 +42,15 @@ public class DTOModelMapper {
     public Post convertToEntity(PostDTO postDTO) {
         return modelMapper.map(postDTO, Post.class);
     }
+
+    public UserDTO convertToDTO(final User user) {
+        if (user == null) {
+            return null;
+        }
+        UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+        userDTO.setAuthorities(user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet()));
+        System.out.println(userDTO);
+        return userDTO;
+    }
+
 }
