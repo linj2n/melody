@@ -16,4 +16,6 @@ public interface UserService {
     Boolean checkIfExitUserActivatedByLoginOrEmail(String login,String email);
 
     Optional<User> getUserByPasswordResetKey(String key);
+
+    Optional<User> getUserByLogin(String login);
 }
