@@ -30,6 +30,5 @@ public class AjaxAuthenticationFailureHandler extends SimpleUrlAuthenticationFai
         } else {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, messageSource.getMessage("account.badCredentials", null, locale));
         }
-
     }
 }
