@@ -1,7 +1,7 @@
 <template>
   <div v-if="!item.hidden" class="menu-wrapper">
-
-    <template v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
+    <!--  -->
+    <template v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren) && !item.alwaysShow">
       <app-link :to="resolvePath(onlyOneChild.path)">
         <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
           <item :meta="Object.assign({},item.meta,onlyOneChild.meta)" />
@@ -80,6 +80,7 @@ export default {
 
       return false
     },
+    // 将相对路径转为绝对路径
     resolvePath(routePath) {
       if (isExternal(routePath)) {
         return routePath
