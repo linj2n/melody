@@ -1,26 +1,21 @@
 import { param2Obj } from './utils'
+import Cookies from 'js-cookie'
+import qs from 'qs'
 
-const tokens = {
-  admin: {
-    token: 'admin-token'
-  },
-  editor: {
-    token: 'editor-token'
-  }
-}
+// const tokens = {
+//   admin: {
+//     token: 'admin-token'
+//   },
+//   editor: {
+//     token: 'editor-token'
+//   }
+// }
 
 const users = {
-  'admin-token': {
-    roles: ['admin'],
+  'admin': {
+    authorities: ['ROLE_ADMIN'],
     introduction: 'I am a super administrator',
-    avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-    name: 'Super Admin'
-  },
-  'editor-token': {
-    roles: ['editor'],
-    introduction: 'I am an editor',
-    avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-    name: 'Normal Editor'
+    username: 'Super Admin'
   }
 }
 
@@ -32,9 +27,10 @@ export default {
     }
   },
   login: res => {
-    const { username } = JSON.parse(res.body)
-    const data = tokens[username]
-
+    // const { username } = JSON.parse(res.body)
+    const data = users[qs.parse(res.body).username]
+    console.log(data)
+    Cookies.set('AUTH', 'true')
     if (data) {
       return {
         code: 20000,
@@ -46,25 +42,24 @@ export default {
       message: 'Account and password are incorrect.'
     }
   },
-  // getInfo: res => {
-  //   const { token } = param2Obj(res.url)
-  //   const info = users[token]
-
-  //   if (info) {
-  //     return {
-  //       code: 20000,
-  //       data: info
-  //     }
-  //   }
-  //   return {
-  //     code: 50008,
-  //     message: 'Login failed, unable to get user details.'
-  //   }
-  // },
-  // logout: () => {
-  //   return {
-  //     code: 20000,
-  //     data: 'success'
-  //   }
-  // }
+  getInfo: res => {
+    const info = users['admin']
+    console.log(info)
+    if (info) {
+      return {
+        code: 20000,
+        data: info
+      }
+    }
+    return {
+      code: 50008,
+      message: 'Login failed, unable to get user details.'
+    }
+  },
+  logout: () => {
+    return {
+      code: 20000,
+      data: 'success'
+    }
+  }
 }
