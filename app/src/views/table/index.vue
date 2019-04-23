@@ -44,7 +44,6 @@
           <span>{{ scope.row.display_time }}</span>
         </template>
       </el-table-column>
-      
     </el-table>
   </div>
 </template>

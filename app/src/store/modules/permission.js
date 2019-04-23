@@ -41,7 +41,6 @@ const permission = {
   },
   mutations: {
     SET_ROUTERS: (state, routers) => {
-      console.log(routers)
       state.addRouters = routers
       state.routers = constantRouterMap.concat(routers)
     }
@@ -50,7 +49,6 @@ const permission = {
     GenerateRoutes({ commit }, data) {
       return new Promise(resolve => {
         const { roles } = data
-        console.log(roles)
         let accessedRouters
         // 生成对应角色路由表
         if (roles.includes('ROLE_ADMIN')) {

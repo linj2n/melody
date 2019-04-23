@@ -42,66 +42,64 @@ export const constantRouterMap = [
 
 export const asyncRouterMap = [
   {
-    path: '/',
+    path: '/posts',
     component: Layout,
+    meta: { roles: ['ROLE_ADMIN'] },
     children: [
       {
-        path: 'posts',
+        path: 'index',
         name: 'posts',
-        component: () => import('@/views/table/index'),
+        component: () => import('@/views/posts/index'),
         meta: { title: '文章', icon: 'icon_doc', roles: ['ROLE_ADMIN'] }
       }
     ]
   },
-  // TODO: 
+  // TODO: Tags component
   {
-    path: '/form',
+    path: '/tags',
     component: Layout,
     children: [
       {
         path: 'index',
-        name: 'Form',
+        name: 'Tags',
         component: () => import('@/views/form/index'),
         meta: { title: '标签', icon: 'icon_synergy' }
       }
     ]
   },
 
-  // TODO: 
+  // TODO: Categories component
   {
-    path: '/form',
+    path: '/categories',
     component: Layout,
     children: [
       {
         path: 'index',
-        name: 'Form',
+        name: 'Categories',
         component: () => import('@/views/form/index'),
         meta: { title: '分类', icon: 'icon_file' }
       }
     ]
   },
 
-  // TODO: 
+  // TODO: Setting component
   {
-    path: '/form',
+    path: '/setting',
     component: Layout,
     children: [
       {
         path: 'index',
-        name: 'Form',
+        name: 'Setting',
         component: () => import('@/views/form/index'),
         meta: { title: '配置', icon: 'icon_setting' }
       }
     ]
   },
-
-
-
   { path: '*', redirect: '/404', hidden: true }
 ]
 
 export default new Router({
-  mode: 'history', // 后端支持可开
+  // mode: 'history', // 后端支持可开
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRouterMap
 })

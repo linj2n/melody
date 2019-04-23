@@ -7,7 +7,7 @@ export function getAuthState() {
   return Cookies.get(AuthKey)
 }
 export function removeAuthCookie() {
-  return Cookies.remove(AuthKey)
+  return Cookies.remove(AuthKey)``
 }
 export function getCsrfToken() {
   return Cookies.get(CsrfTokenKey)

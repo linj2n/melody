@@ -24,7 +24,6 @@ export function getInfo() {
 }
 
 export function logout() {
-  console.log('do request to logout')
   return request({
     url: '/api/v1/logout',
     method: 'post'

@@ -2,6 +2,7 @@ import Mock from 'mockjs'
 import userAPI from './user'
 import tableAPI from './table'
 import registerAPI from './register'
+import postAPI from './post'
 import { param2Obj } from './utils'
 
 // User
@@ -17,4 +18,7 @@ Mock.mock(new RegExp('/api/v1/account'), 'get', userAPI.getInfo)
 Mock.mock(/\/table\/list/, 'get', tableAPI.list)
 
 Mock.mock(/\api\/blank/, 'get', registerAPI.initCsrfToken)
+
+// Post
+Mock.mock(new RegExp('/api/v1/posts/'), 'get', postAPI.listPosts)
 
