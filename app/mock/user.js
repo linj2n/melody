@@ -29,7 +29,6 @@ export default {
   login: res => {
     // const { username } = JSON.parse(res.body)
     const data = users[qs.parse(res.body).username]
-    console.log(data)
     Cookies.set('AUTH', 'true')
     if (data) {
       return {
@@ -44,7 +43,6 @@ export default {
   },
   getInfo: res => {
     const info = users['admin']
-    console.log(info)
     if (info) {
       return {
         code: 20000,

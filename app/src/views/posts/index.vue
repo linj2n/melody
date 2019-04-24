@@ -1,6 +1,26 @@
 <template>
   <div class="app-container">
-    <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%">
+    <!-- <div class="filter-container">
+      <template>
+        <el-select v-model="value5" multiple placeholder="请选择分类" class="filter-item">
+          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"/>
+        </el-select>
+        <el-select v-model="value11" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择标签" class="filter-item">
+          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+        </el-select>
+        <el-button class="filter-item" type="primary" icon="el-icon-search" >
+          确定
+        </el-button>
+      </template>
+    </div> -->
+    <el-table
+      v-loading="listLoading"
+      :data="list"
+      border
+      fit
+      highlight-current-row
+      style="width: 100%"
+    >
       <el-table-column align="center" label="ID" width="80">
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
@@ -25,41 +45,42 @@
         <template slot-scope="scope">
           <span>{{ scope.row.author }}</span>
         </template>
-      </el-table-column> -->
+      </el-table-column>-->
 
       <!-- <el-table-column width="100px" label="Importance">
         <template slot-scope="scope">
           <svg-icon v-for="n in +scope.row.importance" :key="n" icon-class="star" class="meta-item__icon" />
         </template>
-      </el-table-column> -->
+      </el-table-column>-->
 
       <el-table-column class-name="status-col" label="状态" width="110">
         <template slot-scope="{row}">
-          <el-tag :type="row.status | statusFilter">
-            {{ row.status }}
-          </el-tag>
+          <el-tag :type="row.status | statusFilter">{{ row.status }}</el-tag>
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="操作" width="120">
         <template slot-scope="scope">
-          <router-link :to="'/example/edit/'+scope.row.id">
-            <el-button type="primary" size="small" icon="el-icon-edit">
-              Edit
-            </el-button>
+          <router-link :to="'/posts/edit/'+scope.row.id">
+            <el-button type="primary" size="small" icon="el-icon-edit">Edit</el-button>
           </router-link>
         </template>
       </el-table-column>
     </el-table>
 
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+    <pagination
+      v-show="total>0"
+      :total="total"
+      :page.sync="listQuery.page"
+      :limit.sync="listQuery.size"
+      @pagination="getList"
+    />
   </div>
 </template>
 
 <script>
 import { listPosts } from '@/api/post'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
-
 export default {
   name: 'PostList',
   components: { Pagination },
@@ -79,7 +100,8 @@ export default {
       listLoading: true,
       listQuery: {
         page: 1,
-        limit: 20
+        limit: 20,
+        sort: 'createdAt,DESC' // TODO: add sort condition
       }
     }
   },
@@ -89,10 +111,10 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
+      console.log(this.listQuery)
       listPosts(this.listQuery).then(response => {
-        // handle postList response
-        this.list = response.data.items
-        this.total = response.data.total
+        this.list = response.data.content
+        this.total = response.data.totalElements
         this.listLoading = false
       })
     }
