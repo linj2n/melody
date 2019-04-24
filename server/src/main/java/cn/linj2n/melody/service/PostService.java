@@ -34,4 +34,6 @@ public interface PostService {
     Boolean existsById(Long postId);
 
     List<Post> getPostsByTags(List<Long> tagIds);
+
+    Page<Post> findPostsByTitle(String title, Pageable pageable);
 }

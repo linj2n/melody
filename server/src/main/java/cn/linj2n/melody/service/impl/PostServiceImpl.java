@@ -111,4 +111,9 @@ public class PostServiceImpl implements PostService{
     public Page<Post> listPostByPage(Pageable pageable) {
         return postRepository.findAll(pageable);
     }
+
+    @Override
+    public Page<Post> findPostsByTitle(String title, Pageable pageable) {
+        return postRepository.findByTitleContaining(title, pageable);
+    }
 }

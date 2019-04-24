@@ -95,6 +95,16 @@ public class PostResource {
         return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(postDTOS), HttpStatus.ACCEPTED);
     }
 
+
+    @RequestMapping(value = "/v1/posts/search",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> searchPost(@RequestParam(value = "title", required = false) String title,  Pageable pageable) {
+        Page<PostDTO> postDTOS = postService.findPostsByTitle(title, pageable).map(dtoModelMapper::convertToDTO);
+        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(postDTOS), HttpStatus.ACCEPTED);
+    }
+
+
     @RequestMapping(value = "v1/posts/page",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
