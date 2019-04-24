@@ -1,17 +1,14 @@
 package cn.linj2n.melody.web.dto;
 
+import cn.linj2n.melody.web.dto.support.ResponseCode;
+
 public class ResponseDTO <T>{
-    private String status;
+    private int code;
     private String message;
     private T data;
 
-
-    public String getStatus() {
-        return status;
-    }
-
-    public ResponseDTO setStatus(String status) {
-        this.status = status;
+    public ResponseDTO setCode(ResponseCode responseCode) {
+        this.code = responseCode.code();
         return this;
     }
 
@@ -31,5 +28,9 @@ public class ResponseDTO <T>{
     public ResponseDTO setData(T data) {
         this.data = data;
         return this;
+    }
+
+    public int getCode() {
+        return code;
     }
 }

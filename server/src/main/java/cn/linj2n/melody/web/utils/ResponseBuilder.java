@@ -1,63 +1,70 @@
 package cn.linj2n.melody.web.utils;
 
-import cn.linj2n.melody.web.dto.RestResponse;
+import cn.linj2n.melody.web.dto.ResponseDTO;
+import cn.linj2n.melody.web.dto.support.ResponseCode;
 import org.springframework.http.HttpStatus;
 
-public class RestResponseBuilder {
+import javax.xml.ws.Response;
+
+public class ResponseBuilder {
     private static final String DEFAULT_SUCCESS_STATUS = "success";
     private static final String DEFAULT_FAILED_STATUS = "fail";
 
-    public static RestResponse buildHttpResponse(HttpStatus status){
-        return new RestResponse()
-                .setStatus(status.getReasonPhrase())
-                .setMessage(status.getReasonPhrase());
+    public static ResponseDTO buildSuccessResponse() {
+        return new ResponseDTO()
+                .setCode(ResponseCode.SUCCESS)
+                .setMessage(DEFAULT_SUCCESS_STATUS);
     }
 
-    public static RestResponse buildSuccessResponse() {
-        return new RestResponse()
-                .setStatus(DEFAULT_SUCCESS_STATUS);
-    }
-
-    public static RestResponse buildSuccessResponse(String message) {
-        return new RestResponse()
-                .setStatus(DEFAULT_SUCCESS_STATUS)
+    public static ResponseDTO buildSuccessResponse(String message) {
+        return new ResponseDTO()
+                .setCode(ResponseCode.SUCCESS)
                 .setMessage(message);
     }
 
-    public static <T> RestResponse<T> buildSuccessResponse(String message, T data) {
-        return new RestResponse()
-                .setStatus(DEFAULT_SUCCESS_STATUS)
+    public static <T> ResponseDTO<T> buildSuccessResponse(String message, T data) {
+        return new ResponseDTO()
+                .setCode(ResponseCode.SUCCESS)
                 .setMessage(message)
                 .setData(data);
     }
 
-    public static <T> RestResponse<T> buildSuccessResponse(T data) {
-        return new RestResponse()
-                .setStatus(DEFAULT_SUCCESS_STATUS)
+    public static <T> ResponseDTO<T> buildSuccessResponse(T data) {
+        return new ResponseDTO()
+                .setCode(ResponseCode.SUCCESS)
+                .setMessage(DEFAULT_SUCCESS_STATUS)
                 .setData(data);
     }
 
-    public static RestResponse buildFailedResponse() {
-        return new RestResponse()
-                .setStatus(DEFAULT_FAILED_STATUS);
+    public static ResponseDTO buildFailedResponse() {
+        return new ResponseDTO()
+                .setCode(ResponseCode.FAIL)
+                .setMessage(DEFAULT_FAILED_STATUS);
     }
 
-    public static RestResponse buildFailedResponse(String message) {
-        return new RestResponse()
-                .setStatus(DEFAULT_FAILED_STATUS)
+    public static ResponseDTO buildFailedResponse(ResponseCode responseCode) {
+        return new ResponseDTO()
+                .setCode(responseCode)
+                .setMessage(DEFAULT_FAILED_STATUS);
+    }
+
+
+    public static ResponseDTO buildFailedResponse(String message) {
+        return new ResponseDTO()
+                .setCode(ResponseCode.FAIL)
                 .setMessage(message);
     }
 
-    public static <T> RestResponse<T> buildFailedResponse(String message, T data) {
-        return new RestResponse()
-                .setStatus(DEFAULT_FAILED_STATUS)
+    public static <T> ResponseDTO<T> buildFailedResponse(String message, T data) {
+        return new ResponseDTO()
+                .setCode(ResponseCode.FAIL)
                 .setMessage(message)
                 .setData(data);
     }
 
-    public static <T> RestResponse<T> buildFailedResponse(T data) {
-        return new RestResponse()
-                .setStatus(DEFAULT_FAILED_STATUS)
+    public static <T> ResponseDTO<T> buildFailedResponse(T data) {
+        return new ResponseDTO()
+                .setCode(ResponseCode.FAIL)
                 .setData(data);
     }
     

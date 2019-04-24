@@ -1,9 +1,11 @@
 package cn.linj2n.melody.web.dto;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.validator.constraints.Email;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Set;
 
 public class UserDTO {
 
@@ -21,9 +23,7 @@ public class UserDTO {
     @Size(min = 1,message = "{message.password.required}")
     private String password;
 
-    @NotNull
-    @Size(min = 1,message = "{message.password.required}")
-    private String matchPassword;
+    private Set<String> authorities ;
 
     public String getLogin() {
         return login;
@@ -53,25 +53,26 @@ public class UserDTO {
         return password;
     }
 
+    public Set<String> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(Set<String> authorities) {
+        this.authorities = authorities;
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public String getMatchPassword() {
-        return matchPassword;
-    }
-
-    public void setMatchPassword(String matchPassword) {
-        this.matchPassword = matchPassword;
-    }
-
     @Override
     public String toString() {
-        return "UserDto{" +
-                "login='" + login + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", matchPassword='" + matchPassword + '\'' +
-                '}';
+        return new ToStringBuilder(this)
+                .append("login", login)
+                .append("username", username)
+                .append("email", email)
+                .append("password", password)
+                .append("authorities", authorities)
+                .toString();
     }
 }
