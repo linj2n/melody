@@ -1,24 +1,26 @@
 import Mock from 'mockjs'
 import userAPI from './user'
 import tableAPI from './table'
-import registerAPI from './register'
-import postAPI from './post'
-import { param2Obj } from './utils'
+
+// Fix an issue with setting withCredentials = true, cross-domain request lost cookies
+// https://github.com/nuysoft/Mock/issues/300
+Mock.XHR.prototype.proxy_send = Mock.XHR.prototype.send
+Mock.XHR.prototype.send = function() {
+  if (this.custom.xhr) {
+    this.custom.xhr.withCredentials = this.withCredentials || false
+  }
+  this.proxy_send(...arguments)
+}
+// Mock.setup({
+//   timeout: '350-600'
+// })
 
 // User
+Mock.mock(/\/user\/login/, 'post', userAPI.login)
 Mock.mock(/\/user\/info/, 'get', userAPI.getInfo)
 Mock.mock(/\/user\/logout/, 'post', userAPI.logout)
-Mock.mock(/\/user\/register/, 'post', userAPI.register)
-
-Mock.mock(new RegExp('/api/v1/account/authentication'), 'post', userAPI.login)
-
-Mock.mock(new RegExp('/api/v1/account'), 'get', userAPI.getInfo)
 
 // Table
 Mock.mock(/\/table\/list/, 'get', tableAPI.list)
 
-Mock.mock(/\api\/blank/, 'get', registerAPI.initCsrfToken)
-
-// Post
-Mock.mock(new RegExp('/api/v1/posts/'), 'get', postAPI.listPosts)
-
+export default Mock
