@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <meta name="theme-color" content="#222">
+
+
+    <meta http-equiv="Cache-Control" content="no-transform"/>
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+
+
+    <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext"
+          rel="stylesheet" type="text/css">
+
+
+    <link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css"/>
+
+    <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css"/>
+
+    <meta name="keywords" content="Hexo, NexT"/>
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2"/>
+
+
+    <meta name="description"
+          content="Spring 提供基于注解的编程模型，例如，在模型中通过@Controller与@RestController注解表达 request 映射、request 的输入和异常处理等等。这些注解 Controller有着十分灵活的方法签名，同时既不需要继承任何的基类也不需要实现任何接口即可工作。 1. 定义在WebApplicationContext中，可以使用标准 Spring bean 定义来定义C">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="1 &#x2F; 0 == ∞">
+    <meta property="og:url" content="http://linj2n.cn/2018/09/28/1. 定义/index.html">
+    <meta property="og:site_name" content="1 &#x2F; 0 == ∞">
+    <meta property="og:description"
+          content="Spring 提供基于注解的编程模型，例如，在模型中通过@Controller与@RestController注解表达 request 映射、request 的输入和异常处理等等。这些注解 Controller有着十分灵活的方法签名，同时既不需要继承任何的基类也不需要实现任何接口即可工作。 1. 定义在WebApplicationContext中，可以使用标准 Spring bean 定义来定义C">
+    <meta property="og:locale" content="en">
+    <meta property="og:updated_time" content="2018-09-27T16:59:56.000Z">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="1 &#x2F; 0 == ∞">
+    <meta name="twitter:description"
+          content="Spring 提供基于注解的编程模型，例如，在模型中通过@Controller与@RestController注解表达 request 映射、request 的输入和异常处理等等。这些注解 Controller有着十分灵活的方法签名，同时既不需要继承任何的基类也不需要实现任何接口即可工作。 1. 定义在WebApplicationContext中，可以使用标准 Spring bean 定义来定义C">
+
+
+    <script type="text/javascript" id="hexo.configurations">
+        var NexT = window.NexT || {};
+        var CONFIG = {
+            root: '/',
+            scheme: 'Muse',
+            sidebar: {
+                "position": "left",
+                "display": "post",
+                "offset": 12,
+                "offset_float": 12,
+                "b2t": false,
+                "scrollpercent": false,
+                "onmobile": false
+            },
+            fancybox: true,
+            tabs: true,
+            motion: true,
+            duoshuo: {
+                userId: '0',
+                author: 'Author'
+            },
+            algolia: {
+                applicationID: 'K1Q1DQ07MZ',
+                apiKey: '',
+                indexName: 'linj2nBlog',
+                hits: {"per_page": 10},
+                labels: {
+                    "input_placeholder": "Search for Posts",
+                    "hits_empty": "We didn't find any results for the search: ${query}",
+                    "hits_stats": "${hits} results found in ${time} ms"
+                }
+            }
+        };
+    </script>
+
+
+    <link rel="canonical" href="http://linj2n.cn/2018/09/28/1. 定义/"/>
+
+
+    <title> | 1 / 0 == ∞</title>
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+
+<div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner">
+            <div class="site-brand-wrapper">
+                <div class="site-meta ">
+                    <div class="custom-logo-site-title">
+                        <a href="/" class="brand" rel="start">
+                            <span class="logo-line-before"><i></i></span>
+                            <span class="site-title">1 / 0 == ∞</span>
+                            <span class="logo-line-after"><i></i></span>
+                        </a>
+                    </div>
+                    <p class="site-subtitle">Done is better than perfect.</p>
+                </div>
+                <div class="site-nav-toggle">
+                    <button>
+                        <span class="btn-bar"></span>
+                        <span class="btn-bar"></span>
+                        <span class="btn-bar"></span>
+                    </button>
+                </div>
+            </div>
+            <nav class="site-nav">
+                <ul id="menu" class="menu">
+                    <li class="menu-item menu-item-home">
+                        <a href="/" rel="section">
+
+                            <i class="menu-item-icon fa fa-fw fa-home"></i> <br/>
+
+                            Home
+                        </a>
+                    </li>
+                    <li class="menu-item menu-item-archives">
+                        <a href="/archives/" rel="section">
+                            <i class="menu-item-icon fa fa-fw fa-archive"></i> <br/>
+                            Archives
+                        </a>
+                    </li>
+                    <li class="menu-item menu-item-tags">
+                        <a href="/tags/" rel="section">
+                            <i class="menu-item-icon fa fa-fw fa-tags"></i> <br/>
+                            Tags
+                        </a>
+                    </li>
+                    <li class="menu-item menu-item-search">
+
+                        <a href="javascript:;" class="popup-trigger">
+
+
+                            <i class="menu-item-icon fa fa-search fa-fw"></i> <br/>
+
+                            Search
+                        </a>
+                    </li>
+
+                </ul>
+
+
+                <div class="site-search">
+
+
+                    <div class="algolia-popup popup search-popup">
+                        <div class="algolia-search">
+                            <div class="algolia-search-input-icon">
+                                <i class="fa fa-search"></i>
+                            </div>
+                            <div class="algolia-search-input" id="algolia-search-input"></div>
+                        </div>
+
+                        <div class="algolia-results">
+                            <div id="algolia-stats"></div>
+                            <div id="algolia-hits"></div>
+                            <div id="algolia-pagination" class="algolia-pagination"></div>
+                        </div>
+
+                        <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+                    </div>
+
+
+                </div>
+
+            </nav>
+
+
+        </div>
+    </header>
+
+    <main id="main" class="main">
+        <div class="main-inner">
+            <div class="content-wrap">
+                <div id="content" class="content">
+
+
+                    <div id="posts" class="posts-expand">
+
+
+                        <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+
+
+                            <div class="post-block">
+                                <link itemprop="mainEntityOfPage" href="http://linj2n.cn/2018/09/28/1. 定义/">
+
+                                <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="linj2n">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+                                <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="1 / 0 == ∞">
+    </span>
+
+
+                                <header class="post-header">
+
+
+                                    <h1 class="post-title" itemprop="name headline"></h1>
+
+
+                                    <div class="post-meta">
+          <span class="post-time">
+
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+
+                <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-28T00:59:56+08:00">
+                2018/09/28
+              </time>
+
+
+
+
+
+          </span>
+
+
+                                    </div>
+                                </header>
+
+
+                                <div class="post-body" itemprop="articleBody">
+
+
+                                    <p>Spring 提供基于注解的编程模型，例如，在模型中通过<code>@Controller</code>与<code>@RestController</code>注解表达
+                                        request 映射、request 的输入和异常处理等等。这些注解 <code>Controller</code>有着十分灵活的方法签名，同时既不需要继承任何的基类也不需要实现任何接口即可工作。
+                                    </p>
+                                    <h1 id="1-定义"><a href="#1-定义" class="headerlink" title="1. 定义"></a>1. 定义</h1>
+                                    <p>在<code>WebApplicationContext</code>中，可以使用标准 Spring bean
+                                        定义来定义<code>Controller</code> bean。</p>
+                                    <p>要启用此类@Controller bean的自动检测，您可以将组件扫描添加到Java配置中：</p>
+                                    <figure class="highlight java">
+                                        <table>
+                                            <tr>
+                                                <td class="gutter">
+                                                    <pre><span class="line">1</span><br><span
+                                                            class="line">2</span><br><span
+                                                            class="line">3</span><br><span
+                                                            class="line">4</span><br><span
+                                                            class="line">5</span><br><span
+                                                            class="line">6</span><br></pre>
+                                                </td>
+                                                <td class="code">
+                                                    <pre><span class="line"><span
+                                                            class="meta">@Configuration</span></span><br><span
+                                                            class="line"><span class="meta">@ComponentScan</span>(<span
+                                                            class="string">"org.example.web"</span>)</span><br><span
+                                                            class="line"><span class="keyword">public</span> <span
+                                                            class="class"><span class="keyword">class</span> <span
+                                                            class="title">WebConfig</span> </span>&#123;</span><br><span
+                                                            class="line"></span><br><span class="line">    <span
+                                                            class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </figure>
+                                    <p>等价的xml 配置如下：</p>
+                                    <figure class="highlight xml">
+                                        <table>
+                                            <tr>
+                                                <td class="gutter">
+                                                    <pre><span class="line">1</span><br><span
+                                                            class="line">2</span><br><span
+                                                            class="line">3</span><br><span
+                                                            class="line">4</span><br><span
+                                                            class="line">5</span><br><span
+                                                            class="line">6</span><br><span
+                                                            class="line">7</span><br><span
+                                                            class="line">8</span><br><span
+                                                            class="line">9</span><br><span
+                                                            class="line">10</span><br><span
+                                                            class="line">11</span><br><span
+                                                            class="line">12</span><br><span
+                                                            class="line">13</span><br><span
+                                                            class="line">14</span><br><span
+                                                            class="line">15</span><br><span
+                                                            class="line">16</span><br></pre>
+                                                </td>
+                                                <td class="code">
+                                                    <pre><span
+                                                            class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span><br><span
+                                                            class="line"><span class="tag">&lt;<span
+                                                            class="name">beans</span> <span
+                                                            class="attr">xmlns</span>=<span class="string">"http://www.springframework.org/schema/beans"</span></span></span><br><span
+                                                            class="line"><span class="tag">    <span class="attr">xmlns:xsi</span>=<span
+                                                            class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span
+                                                            class="line"><span class="tag">    <span class="attr">xmlns:p</span>=<span
+                                                            class="string">"http://www.springframework.org/schema/p"</span></span></span><br><span
+                                                            class="line"><span class="tag">    <span class="attr">xmlns:context</span>=<span
+                                                            class="string">"http://www.springframework.org/schema/context"</span></span></span><br><span
+                                                            class="line"><span class="tag">    <span class="attr">xsi:schemaLocation</span>=<span
+                                                            class="string">"</span></span></span><br><span class="line"><span
+                                                            class="tag"><span class="string">        http://www.springframework.org/schema/beans</span></span></span><br><span
+                                                            class="line"><span class="tag"><span class="string">        http://www.springframework.org/schema/beans/spring-beans.xsd</span></span></span><br><span
+                                                            class="line"><span class="tag"><span class="string">        http://www.springframework.org/schema/context</span></span></span><br><span
+                                                            class="line"><span class="tag"><span class="string">        http://www.springframework.org/schema/context/spring-context.xsd"</span>&gt;</span></span><br><span
+                                                            class="line"></span><br><span class="line">    <span
+                                                            class="tag">&lt;<span
+                                                            class="name">context:component-scan</span> <span
+                                                            class="attr">base-package</span>=<span class="string">"org.example.web"</span>/&gt;</span></span><br><span
+                                                            class="line"></span><br><span class="line">    <span
+                                                            class="comment">&lt;!-- ... --&gt;</span></span><br><span
+                                                            class="line"></span><br><span class="line"><span
+                                                            class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </figure>
+                                    <p><code>@RestController</code>是一个组合注释，这个注释组合了<code>@Controller</code>与<code>@ResponseBody</code>。与
+                                        model-and-view 渲染不同，使用该注解的控制器下的所有方法继承了<code>@ResponseBody</code>，直接将信息写入
+                                        response body 映射。</p>
+                                    <h1 id="2-Request-Mapping"><a href="#2-Request-Mapping" class="headerlink"
+                                                                  title="2. Request Mapping"></a>2. Request Mapping</h1>
+                                    <p><code>@RequestMapping</code>注解用于将 request 映射到对应的 controller
+                                        方法。可以通过该注解的以下属性来指定请求所要满足的条件：</p>
+                                    <table>
+                                        <thead>
+                                        <tr>
+                                            <th>属性</th>
+                                            <th>描述</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td><code>value</code></td>
+                                            <td>指定请求的 URL template。</td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>method</code></td>
+                                            <td>指定请求的 HTTP method 类型，如<code>method = RequestMethod.POST</code>，表示控制器/方法接受使用
+                                                POST 方法的请求
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>consumes</code></td>
+                                            <td>指定该控制器/方法接受请求的 Content-Type 类型，例如<code>consumes = {&quot;text/plain&quot;,
+                                                &quot;application/*&quot;}</code>，表示控制器/方法接受<code>Content-Type=</code>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>produces</code></td>
+                                            <td>指定请求返回的内容类型，即接受处理的请求的<code>header</code>中的（Accept）类型中需要包含该指定类型。</td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>params</code></td>
+                                            <td>指定request中必须包含某些参数值时，例如<code>params=&quot;myParam=myValue&quot;</code>即控制器/方法接受含有<code>myParam=myValue</code>的请求。
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>headers</code></td>
+                                            <td>指定request中必须包含某些指定的header值，例如<code>headers=&quot;Referer=http://linj2n.cn&quot;</code>，表示
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+
+
+                                </div>
+
+
+                                <footer class="post-footer">
+
+
+                                    <div class="post-nav">
+                                        <div class="post-nav-next post-nav-item">
+
+                                            <a href="/2018/08/03/gradle-introduction/" rel="next"
+                                               title="gradle-introduction">
+                                                <i class="fa fa-chevron-left"></i> gradle-introduction
+                                            </a>
+
+                                        </div>
+
+                                        <span class="post-nav-divider"></span>
+
+                                        <div class="post-nav-prev post-nav-item">
+
+                                        </div>
+                                    </div>
+
+
+                                </footer>
+                            </div>
+
+
+                        </article>
+
+
+                        <div class="post-spread">
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+                <div class="comments" id="comments">
+
+                </div>
+
+
+            </div>
+
+
+            <div class="sidebar-toggle">
+                <div class="sidebar-toggle-line-wrap">
+                    <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+                    <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+                    <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+                </div>
+            </div>
+
+            <aside id="sidebar" class="sidebar">
+
+                <div class="sidebar-inner">
+
+
+                    <ul class="sidebar-nav motion-element">
+                        <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+                            Table of Contents
+                        </li>
+                        <li class="sidebar-nav-overview" data-target="site-overview">
+                            Overview
+                        </li>
+                    </ul>
+
+
+                    <section class="site-overview sidebar-panel">
+                        <div class="site-author motion-element" itemprop="author" itemscope
+                             itemtype="http://schema.org/Person">
+                            <img class="site-author-image" itemprop="image"
+                                 src="/images/avatar.gif"
+                                 alt="linj2n"/>
+                            <p class="site-author-name" itemprop="name">linj2n</p>
+
+                            <p class="site-description motion-element" itemprop="description"></p>
+
+                        </div>
+                        <nav class="site-state motion-element">
+
+
+                            <div class="site-state-item site-state-posts">
+                                <a href="/archives/">
+                                    <span class="site-state-item-count">49</span>
+                                    <span class="site-state-item-name">posts</span>
+                                </a>
+                            </div>
+
+
+                            <div class="site-state-item site-state-tags">
+                                <a href="/tags/index.html">
+                                    <span class="site-state-item-count">38</span>
+                                    <span class="site-state-item-name">tags</span>
+                                </a>
+                            </div>
+
+
+                        </nav>
+
+
+                        <div class="links-of-author motion-element">
+
+
+              <span class="links-of-author-item">
+                <a href="https://github.com/linj2n" target="_blank" title="GitHub">
+
+                    <i class="fa fa-fw fa-github"></i>
+
+
+                      GitHub
+
+                </a>
+              </span>
+
+                            <span class="links-of-author-item">
+                <a href="https://weibo.com/p/1005055919829882" target="_blank" title="Weibo">
+
+                    <i class="fa fa-fw fa-weibo"></i>
+
+
+                      Weibo
+
+                </a>
+              </span>
+
+
+                        </div>
+
+
+                    </section>
+
+
+                    <!--noindex-->
+                    <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+                        <div class="post-toc">
+
+
+                            <div class="post-toc-content">
+                                <ol class="nav">
+                                    <li class="nav-item nav-level-1"><a class="nav-link" href="#1-定义"><span
+                                            class="nav-number">1.</span> <span class="nav-text">1. 定义</span></a></li>
+                                    <li class="nav-item nav-level-1"><a class="nav-link" href="#2-Request-Mapping"><span
+                                            class="nav-number">2.</span> <span
+                                            class="nav-text">2. Request Mapping</span></a></li>
+                                </ol>
+                            </div>
+
+
+                        </div>
+                    </section>
+                    <!--/noindex-->
+
+
+                </div>
+            </aside>
+
+
+        </div>
+    </main>
+
+    <footer id="footer" class="footer">
+        <div class="footer-inner">
+            <div class="copyright">
+
+                &copy;
+                <span itemprop="copyrightYear">2018</span>
+                <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+                <span class="author" itemprop="copyrightHolder">linj2n</span>
+            </div>
+
+
+            <div class="powered-by">
+                Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+            </div>
+
+            <div class="theme-info">
+                Theme -
+                <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+                    NexT.Muse
+                </a>
+            </div>
+
+
+        </div>
+    </footer>
+
+
+    <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+        window.Promise = null;
+    }
+</script>
+
+
+<script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+
+<script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+
+<script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+
+<script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+
+<script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+<script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+<script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+<script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+<script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+<script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+<link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+
+<script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+
+
+<script src="/js/src/algolia-search.js?v=5.1.2"></script>
+
+
+</body>
+</html>

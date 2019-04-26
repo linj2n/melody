@@ -79,12 +79,41 @@ public class PostResource {
                 allPosts.add(dtoModelMapper.convertToDTO(post));
             });
         } else {
-            logger.info("get all posts by specific tags --------------> ");
+            logger.info("get all posts by specific tags --------------> " + tagIds.toString());
             postService.getPostsByTags(tagIds).forEach(post -> {
                 allPosts.add(dtoModelMapper.convertToDTO(post));
             });
         }
         return allPosts;
+    }
+
+    @RequestMapping(value = "/v1/old/posts/search",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public Page<Post> getListByTags(@RequestParam(value = "tagId",required = false) List<Long> tagIdList,
+                                    @RequestParam(value = "categoryId", required = false) List<Long> categoryIdList,
+                                    @RequestParam(value = "title", required = false) String title,
+                                    Pageable pageable) {
+
+//        List<PostDTO> allPosts=new ArrayList<>();
+//        if (tagIds == null || tagIds.isEmpty()) {
+//            logger.info("get all posts --------------> ");
+//            postService.listAllPosts().forEach(post -> {
+//                allPosts.add(dtoModelMapper.convertToDTO(post));
+//            });
+//        } else {
+//            logger.info("get all posts by specific tags --------------> " + tagIds.toString());
+//            postService.getPostsByTags(tagIds).forEach(post -> {
+//                allPosts.add(dtoModelMapper.convertToDTO(post));
+//            });
+//        }
+//        return allPosts;
+//        if (!tagIds.isEmpty()) {
+//            return postService.getpostsByTags(tagIds, pageable);
+//        }
+//        return null;
+        return postService.findBySearch(tagIdList, categoryIdList, pageable);
+
     }
 
     @RequestMapping(value = "/v1/posts",

@@ -31,4 +31,18 @@ public interface PostRepository extends JpaRepository<Post,Long>, JpaSpecificati
             "where tag.id in :tagIds " +
             "group by post.id having count(post.id) = :tagCount")
     List<Post> findAllByTags(@Param("tagIds") List<Long> tagIds, @Param("tagCount") Long tagCount);
+
+    @Query("select post from Post post join post.tags tag " +
+            "where tag.id in :tagIds " +
+            "group by post.id having count(post.id) = :tagCount")
+    Page<Post> findAllByTags(@Param("tagIds") List<Long> tagIds, @Param("tagCount") Long tagCount, Pageable pageable);
+
+    @Query(" select post from Post post join post.categories category join post.tags tag " +
+            "where category.id in :categoryIdList and tag.id in :tagIdList" +
+            " group by post.id having count(tag.id) = :tagCount and count(category.id) = :categoryCount")
+    Page<Post> findBySearch(@Param("tagIdList") List<Long> tagIdList,
+                            @Param("tagCount") Long tagCount,
+                            @Param("categoryIdList") List<Long> categoryList,
+                            @Param("categoryCount") Long categoryCount,
+                            Pageable pageable);
 }

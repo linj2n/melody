@@ -36,4 +36,8 @@ public interface PostService {
     List<Post> getPostsByTags(List<Long> tagIds);
 
     Page<Post> findPostsByTitle(String title, Pageable pageable);
+
+    Page<Post> getpostsByTags(List<Long> tagIds, Pageable pageable);
+
+    public Page<Post> findBySearch(List<Long> tagIdList,List<Long> categoryList, Pageable pageable);
 }

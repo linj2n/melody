@@ -1,0 +1,518 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta id="_csrf" name="_csrf" content="17d49eb5-8e71-42a7-9b58-3b64c89b4f95"/>
+    <meta id="_csrf_header" name="_csrf_header" content="X-CSRF-TOKEN"/>
+    <title>编辑文章</title>
+
+
+    <!-- Common styles from local repository-->
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../../static/admin/plugins/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap core CSS -->
+    <link href="../../static/admin/plugins/md-bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="../../static/admin/plugins/md-bootstrap/css/mdb.min.css" rel="stylesheet">
+
+    <!-- Your custom styles (optional) -->
+    <link href="../../static/admin/css/style.css" rel="stylesheet">
+    <link href="../../static/admin/css/side-bar.css" rel="stylesheet">
+
+    <!-- Lepture-Markdown-Editor -->
+    <link rel="stylesheet" href="../../static/admin/plugins/lepture-markdown-editor/editor/editor.css">
+    <!-- Select2  -->
+    <link rel="stylesheet" href="../../static/admin/plugins/select2/css/select2.css">
+
+    <style>
+
+    </style>
+</head>
+
+
+<body class="grey lighten-4">
+
+<!--Main Navigation-->
+<header>
+
+    <!-- Navbar -->
+    <nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar" id="item-nav" style="display: none">
+        <div class="container-fluid">
+            <!-- Brand -->
+            <a class="navbar-brand waves-effect" href="#"
+               target="_blank">
+                <strong class="blue-text">Melody</strong>
+            </a>
+
+            <!-- Collapse -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Links -->
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+                <!-- Left -->
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link waves-effect" href="#"
+                           target="_blank"><strong>文章管理</strong></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link waves-effect" href="#"
+                           target="_blank"><strong>分类/标签</strong></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link waves-effect" href="#"
+                           target="_blank"><strong>我的账号</strong></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link waves-effect" href="#"
+                           target="_blank"><strong>系统设置</strong></a>
+                    </li>
+                </ul>
+
+                <!-- Right -->
+                <ul class="navbar-nav nav-flex-icons">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link border border-light rounded waves-effect"
+                           target="_blank">
+                            <i class="fa fa-user mr-2"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- Navbar -->
+
+</header>
+<!--Main Navigation-->
+
+
+<div class="wrapper">
+    <!-- th:replace -->
+    <!-- Sidebar -->
+    <nav class="side-navbar">
+        <!-- Sidebar Header-->
+        <div class="sidebar-header d-flex align-items-center"><a href="#">
+            <div class="avatar"><img src="images/logo.png" alt="..." class="img-fluid rounded-circle"></div></a>
+            <div class="title">
+                <h1 class="h4">Melody</h1>
+                <p>linj2n</p>
+            </div>
+        </div>
+        <!-- Sidebar Navidation Menus-->
+        <span class="heading">Main</span>
+        <ul class="list-unstyled">
+            <li><a href="index.html" > <i class="fa fa-home"></i>Home </a></li>
+            <li><a href="#tablesDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-list-ul"></i>文章</a>
+                <ul id="tablesDropdown" class="collapse">
+                    <li><a href="#">Demo</a></li>
+                    <li><a href="#">Demo</a></li>
+                </ul>
+            </li>
+            <li><a href="#chartsDropdown" aria-expanded="false" data-toggle="collapse" > <i class="fa fa-tag"></i>标签</a>
+                <ul id="chartsDropdown" class="collapse list-unstyled ">
+                    <li><a href="#">Demo</a></li>
+                    <li><a href="#">Demo</a></li>
+                </ul>
+            </li>
+            <li><a href="#formsDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-folder"></i>分类</a>
+                <ul id="formsDropdown" class="collapse list-unstyled ">
+                    <li><a href="#">Demo</a></li>
+                    <li><a href="#">Demo</a></li>
+                    <li><a href="#">Demo</a></li>
+                </ul>
+            </li>
+            <li class="active"><a href="#componentsDropdown" aria-expanded="false" data-toggle="collapse" class="collapsed"> <i class="fa fa-cog"></i>设置 </a>
+                <ul id="componentsDropdown" class="list-unstyled collapse" style="">
+                    <li><a href="#">Demo</a></li>
+                    <li><a href="#">Demo</a></li>
+                    <li><a href="#">Demo</a></li>
+                </ul>
+            </li>
+            <li><a href="#pagesDropdown" aria-expanded="true" data-toggle="collapse" class=""> <i class="fa fa-user-circle"></i>我的</a>
+                <ul id="pagesDropdown" class="list-unstyled collapse show" style="">
+                    <li><a href="pages-contacts.html">Contacts</a></li>
+                    <li><a href="login.html">Login page</a></li>
+                    <li><a href="pages-profile.html">Profile</a></li>
+                    <li><a href="pages-pricing.html">Pricing table</a></li>
+                </ul>
+            </li>
+        </ul><span class="heading">Extras</span>
+        <ul class="list-unstyled">
+            <li> <a href="#"> <i class="icon-flask"></i>Demo </a></li>
+            <li> <a href="#"> <i class="icon-screen"></i>Demo </a></li>
+            <li> <a href="#"> <i class="icon-mail"></i>Demo </a></li>
+            <li> <a href="#"> <i class="icon-picture"></i>Demo </a></li>
+        </ul>
+    </nav>
+
+    <div class="main" >
+        <!-- th:replace fix top nav bar-->
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-sm navbar-light white" >
+            <div class="container-fluid">
+                <!-- Collapse -->
+
+                <a href="#" id="sidebarCollapse" class="button-collapse"><i class="fa fa-bars"></i><span class="sr-only" aria-hidden="true">Toggle side navigation</span></a>
+                <!-- Links -->
+                <div class="collapse navbar-collapse" id="#">
+
+                    <!-- Left -->
+                    <ul class="navbar-nav mr-auto"></ul>
+                    <!-- Right -->
+                    <ul class="navbar-nav nav-flex-icons">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                               aria-haspopup="true"
+                               aria-expanded="false">
+                                <i class="fa fa-user"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right dropdown-default"
+                                 aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Navbar -->
+        <!--Main layout-->
+        <main class="container-fluid pt-2">
+            <div class="mt-1">
+                <!--Section: Modals-->
+                <section>
+                    <div class="modal fade" id="modalPostSetting" tabindex="-1" role="dialog" aria-labelledby="modalPostSetting"
+                         aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title blue-text">设置</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+
+                                    <div class="md-form form-sm mt-0">
+                                        <i class="fa fa-tags grey-text mb-3"> 标签</i>
+                                        <select id="postTagSelect" class="browser-default custom-select form-control mb-1"
+                                                multiple="multiple" style="width: 100%">
+                                            <option value="5">Algorithms</option>
+                                            <option value="18">AOP</option>
+                                            <option value="6">CSS</option>
+                                            <option value="19">DI</option>
+                                            <option value="20">DOM</option>
+                                            <option value="21">Gradle</option>
+                                            <option value="22">H2 Database</option>
+                                            <option value="3">Java</option>
+                                            <option value="14">Java Bean</option>
+                                            <option value="15">Java SE</option>
+                                            <option value="7">Java Web</option>
+                                            <option value="4">JPA</option>
+                                            <option value="2">jQuery</option>
+                                            <option value="8">LeetCode</option>
+                                            <option value="13">LintCode</option>
+                                            <option value="17">mySQL</option>
+                                            <option value="11">OJ</option>
+                                            <option value="9">POJO</option>
+                                            <option value="1">Spring Boot</option>
+                                            <option value="12">Spring Data JPA</option>
+                                            <option value="10">前端笔记</option>
+                                            <option value="16">反射</option>
+                                        </select>
+                                    </div>
+                                    <!-- Grid row -->
+
+                                    <!-- Grid row -->
+
+                                    <div class="md-form form-sm mt-0">
+                                        <i class="fa fa-book grey-text mb-3"> 分类</i>
+                                        <select id="postCategorySelect" class="browser-default custom-select form-control mb-1"
+                                                multiple="multiple" style="width: 100%">
+
+                                        </select>
+                                    </div>
+                                    <!-- Grid row -->
+
+                                    <!-- Grid row -->
+                                    <div class="md-form form-sm mt-0">
+                                        <i class="fa fa-file-text-o  grey-text"> 概要</i>
+                                        <textarea class="md-textarea form-control mb-1" id="postSummary"></textarea>
+                                    </div>
+                                    <!-- Grid row -->
+                                    <!-- Grid row -->
+                                    <div class="md-form form-sm mb-2" id="postStatus">
+                                        <i class="fa fa-info grey-text mr-5"> 类型</i>
+                                        <!-- Default inline 1-->
+                                        <div class="custom-control custom-radio custom-control-inline pr-3">
+                                            <input type="radio" class="custom-control-input" id="radio1"
+                                                   name="statusRadio" value="draft">
+                                            <label class="custom-control-label" for="radio1" >草稿</label>
+                                        </div>
+                                        <!-- Default inline 2-->
+                                        <div class="custom-control custom-radio custom-control-inline pr-3">
+                                            <input type="radio" class="custom-control-input" id="radio2" value="post"
+                                                   name="statusRadio" checked="checked">
+                                            <label class="custom-control-label" for="radio2" >文章</label>
+                                        </div>
+                                    </div>
+                                    <!-- Grid row -->
+                                </div>
+                                <div class="modal-footer d-flex">
+                                    <button class="btn btn-primary" id="submitToPost">确定</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="centralModalSuccess" tabindex="-1" role="dialog" aria-labelledby="centralModalSuccess" aria-hidden="true">
+                        <div class="modal-dialog modal-notify modal-success" role="document">
+                            <!--Content-->
+                            <div class="modal-content">
+                                <!--Header-->
+                                <div class="modal-header">
+                                    <p class="heading lead">消息</p>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true" class="white-text">&times;</span>
+                                    </button>
+                                </div>
+
+                                <!--Body-->
+                                <div class="modal-body">
+                                    <div class="text-center">
+                                        <i class="fa fa-check fa-4x mb-3 animated rotateIn"></i>
+                                        <p><strong>操作成功！</strong></p>
+                                    </div>
+                                </div>
+
+                                <!--Footer-->
+                                <div class="modal-footer justify-content-center">
+                                    <button type="button" class="btn btn-success waves-effect" data-dismiss="modal">确定</button>
+                                </div>
+                            </div>
+                            <!--/.Content-->
+                        </div>
+                    </div>
+                    <!-- Central Modal Medium Success-->
+                </section>
+                <!--Section: Modals-->
+
+                <!--Section: Main panel-->
+                <!--Grid row-->
+                <div class="row wow fadeIn">
+                    <!--Grid column-->
+                    <div class="col-md-12 mb-12">
+                        <div class="card">
+                            <!-- Card-header-->
+                            <div class="card-header" role="tab" id="headingOne">
+                                <!--Options-->
+                                <div class="pull-right">
+                                    <button type="button" class="btn btn-md btn-blue-grey btn-rounded m-0 mr-3 p-2 waves-effect waves-light" id="savePostButton">
+                                        <i class="fa fa-floppy-o mx-3"><span class="mx-2">保 存</span></i>
+                                    </button>
+                                    <button type="button" class="btn btn-primary btn-md btn-rounded m-0 mr-3 p-2 waves-effect waves-light" data-toggle="modal"
+                                            data-target="#modalPostSetting">
+                                        <i class="fa fa-paper-plane mx-3"><span class="mx-2">发 布</span></i>
+                                    </button>
+                                </div>
+
+                                <!-- Heading -->
+                                <h4 class="card-header-title blue-text">编辑文章</h4>
+                            </div>
+                            <!-- Card-header-->
+                            <!-- Card-body -->
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="md-form mt-2">
+                                            <input type="hidden" value="1" name="postId" id="postId">
+                                            <input type="text"  value="MacDown Help" class="form-control"  id="postTitle">
+                                            <label for="postTitle">标题</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="md-form mt-2 mb-0">
+                                            <label for="postEditor" class="active">正文</label>
+                                            <!-- Medium input -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="md-form mt-1">
+                                            <!-- Medium input -->
+                                            <textarea type="text" id="postEditor"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!--Grid column-->
+                </div>
+                <!--Grid row-->
+                <!--Section: Main panel-->
+            </div>
+        </main>
+        <!--Main layout-->
+    </div>
+</div>
+
+<!--Footer-->
+<footer class="page-footer text-center font-small">
+    <!--Copyright-->
+    <div class="footer-copyright">
+        © 2018 Copyright:
+        <a href="#" target="_blank"> linj2n.cn </a>
+    </div>
+    <!--/.Copyright-->
+</footer>
+
+<!-- SCRIPTS -->
+
+
+<!-- JQuery -->
+<script type="text/javascript" src="../../static/admin/plugins/md-bootstrap/js/jquery-3.3.1.min.js"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="../../static/admin/plugins/md-bootstrap/js/popper.min.js"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="../../static/admin/plugins/md-bootstrap/js/bootstrap.min.js"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="../../static/admin/plugins/md-bootstrap/js/mdb.min.js"></script>
+<script type="text/javascript" src="../../static/admin/plugins/md-bootstrap/js/addons/datatables.js"></script>
+<!-- Simplemde-Markdown-Editor -->
+<script type="text/javascript" src="../../static/admin/plugins/lepture-markdown-editor/editor/editor.js"></script>
+<script type="text/javascript" src="../../static/admin/plugins/lepture-markdown-editor/editor/marked.js"></script>
+<!-- Select2 -->
+<script type="text/javascript" src="../../static/admin/plugins/select2/js/select2.js"></script>
+
+<!-- Common.js -->
+<script type="text/javascript" src="../../static/admin/js/common.js"></script>
+
+
+
+
+<!-- Initializations -->
+<script>
+
+    $(document).ready(function () {
+
+
+
+        var token = $('#_csrf').attr('content');
+        var header = $('#_csrf_header').attr('content');
+        var paramHeader = "_csrf";
+        var csrfToken = "17d49eb5-8e71-42a7-9b58-3b64c89b4f95";
+
+        var $postTagSelect = $('#postTagSelect');
+        var $postCategorySelect = $('#postCategorySelect');
+
+        var postAllTagsId = Array.from([{"id":3,"name":"Java"},{"id":2,"name":"jQuery"},{"id":1,"name":"Spring Boot"}], item => item.id);
+        var postAllCategoriesId = Array.from([], item => item.id);
+
+        $postTagSelect.val(postAllTagsId).trigger('change');
+        $postCategorySelect.val(postAllCategoriesId).trigger('change');
+
+        new WOW().init();
+        console.log("postEditor ---> " + document.getElementById('postEditor').value);
+        var postEditor = new Editor({
+            element: document.getElementById('postEditor')
+            // value: document.getElementById('postEditor').value
+        });
+        postEditor.render();
+        $('.custom-select').select2({
+            width: 'resolve',
+            tags: true,
+            createTag: function (params) {
+                var term = $.trim(params.term);
+                if (term === '') {
+                    return null;
+                }
+
+                return {
+                    id: -1,
+                    text: term,
+                    newTag: true
+                }
+            }
+        });
+
+
+        var targetUrl = "/api/v1/posts/" + $('#postId').val();
+
+        // TODO: improve save and submit operation.
+        $('#submitToPost').click(function () {
+            var postData = getPostContent();
+            console.log("postStatus ---> " + $("#postStatus").find(":checked").val());
+            savePost(postData,targetUrl);
+        });
+        $('#savePostButton').click(function () {
+            var postData = getPostContent();
+            console.log("postStatus ---> " + $("#postStatus").find(":checked").val());
+            savePost(postData,targetUrl);
+        });
+
+        $('#centralModalSuccess').on('hidden.bs.modal', function(){
+            location.reload();
+        });
+
+        function savePost(postData,targetUrl) {
+            $.ajax({
+                type: "PUT",
+                url: targetUrl,
+                contentType: "application/json",
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                data: postData,
+                success: function (data) {
+                    $('#modalPostSetting').modal("hide");
+                    $('#centralModalSuccess').modal("show");
+                },
+                error: function (jqXHR, textStatus, errorThrown ) {
+                    console.log("error");
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                }
+            });
+        }
+
+        function getAllSelectedOptions(select) {
+            var optionList = [];
+            $(select).find('option:selected')
+                .map(function () {
+                    var item = {};
+                    item.id = this.value > 0 ? this.value : null;
+                    item.name = this.text;
+                    optionList.push(item);
+                });
+            return optionList;
+        }
+        function getPostContent() {
+            return JSON.stringify({
+                'id': $('#postId').val(),
+                'title': $('#postTitle').val(),
+                'summary': $('#postSummary').val(),
+                'content': postEditor.codemirror.getValue(),
+                'categories': getAllSelectedOptions($('#postCategorySelect')),
+                'tags': getAllSelectedOptions($('#postTagSelect')),
+                'status': $("#postStatus").find(":checked").val()
+            });
+        }
+    });
+
+</script>
+</body>
+
+</html>

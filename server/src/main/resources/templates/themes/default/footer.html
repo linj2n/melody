@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<th:block th:fragment="common_footer(sources_version)">
+    <footer class="container">
+        <div class="site-footer" role="contentinfo">
+            <div class="copyright left mobile-block">
+                © 2018
+                <span title="linj2n">linj2n</span>
+                <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+            </div>
+
+            <ul class="site-footer-links right mobile-hidden">
+                <li>
+                    <a href="javascript:window.scrollTo(0,0)">TOP</a>
+                </li>
+            </ul>
+            <a href="#" target="_blank" aria-label="view source code">
+                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+            </a>
+            <ul class="site-footer-links mobile-hidden">
+
+                <li>
+                    <a href="/" th:href="@{/}" title="首页" target="">首页</a>
+                </li>
+
+                <li>
+                    <a th:href="@{/categories/}" title="分类" target="">分类</a>
+                </li>
+
+                <li>
+                    <a  th:href="@{/tags/}" title="标签" target="">标签</a>
+                </li>
+
+                <li>
+                    <a  th:href="@{/links/}" title="链接" target="">链接</a>
+                </li>
+
+                <li>
+                    <a  th:href="@{/about/}" title="关于" target="">关于</a>
+                </li>
+
+            </ul>
+
+        </div>
+        <th:block th:if="${sources_version} == 'cdn'">
+
+        </th:block>
+        <th:block th:if="${sources_version} == 'local'">
+            <!--<script th:src="@{/blog/themes/default/vendor/share.js/dist/js/share.min.js}"></script>-->
+            <script th:src="@{/blog/themes/default/vendor/jquery/dist/jquery.min.js}"></script>
+            <script th:src="@{/blog/themes/default/js/jquery-ui.js}" ></script>
+            <script th:src="@{/blog/themes/default/js/geopattern.js}" ></script>
+            <script th:src="@{/blog/themes/default/js/prism.js}" ></script>
+            <script th:src="@{/blog/themes/default/js/main.js}"></script>
+
+        </th:block>
+
+    </footer>
+    <div class="tools-wrapper">
+        <a class="gotop" href="#" title="回到顶部"><span class="octicon octicon-arrow-up"></span></a>
+    </div>
+    <!-- / footer -->
+
+</th:block>
+
+</body>
+</html>

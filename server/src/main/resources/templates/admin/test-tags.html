@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta id="_csrf" name="_csrf" content="37f5fbf0-c76e-4956-a5b9-de99f49a83e5"/>
+    <meta id="_csrf_header" name="_csrf_header" content="X-CSRF-TOKEN"/>
+    <title>标签</title>
+
+    <!-- Common styles from local repository-->
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../../static/admin/plugins/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap core CSS -->
+    <link href="../../static/admin/plugins/md-bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="../../static/admin/plugins/md-bootstrap/css/mdb.min.css" rel="stylesheet">
+
+    <!-- Your custom styles (optional) -->
+    <link href="../../static/admin/css/style.css" rel="stylesheet">
+    <link href="../../static/admin/css/side-bar.css" rel="stylesheet">
+
+    <!-- Lepture-Markdown-Editor -->
+    <link rel="stylesheet" href="../../static/admin/plugins/lepture-markdown-editor/editor/editor.css">
+    <!-- Select2  -->
+    <link rel="stylesheet" href="../../static/admin/plugins/select2/css/select2.css">
+
+    <!--<style></style>-->
+</head>
+
+<body class="grey lighten-4">
+
+<!-- Wrapper -->
+<div class="wrapper">
+    <!-- Sidebar -->
+    <nav class="side-navbar">
+
+        <!-- Sidebar Header-->
+        <div class="sidebar-header d-flex align-items-center"><a href="#">
+            <div class="avatar"><img src="/admin/images/logo.png" alt="..." class="img-fluid rounded-circle"></div>
+        </a>
+            <div class="title">
+                <h1 class="h4">Melody</h1>
+                <p>linj2n</p>
+            </div>
+        </div>
+        <!-- Sidebar Navidation Menus-->
+        <!--<span class="heading">Main</span>-->
+        <ul class="pt-0">
+            <li><a href="index.html"> <i class="fa fa-home"></i>Home </a></li>
+            <li><a href="#tablesDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-list-ul"></i>文章</a>
+                <ul id="tablesDropdown" class="collapse">
+                    <li><a href="/admin/posts/new">新建文章</a></li>
+                    <li><a href="/admin/posts">文章列表</a></li>
+                </ul>
+            </li>
+            <li class="active"><a href="/admin/tags"> <i class="fa fa-tag"></i>标签</a></li>
+            <li><a href="/admin/categories"> <i class="fa fa-folder"></i>分类</a></li>
+            <li><a href="#componentsDropdown" aria-expanded="false" data-toggle="collapse" class="collapsed"> <i
+                    class="fa fa-cog"></i>设置 </a>
+                <ul id="componentsDropdown" class="list-unstyled collapse" style="">
+                    <li><a href="#">账号设置</a></li>
+                    <li><a href="#">系统设置</a></li>
+                </ul>
+            </li>
+            <!--<li th:classappend="${active_tab == 'user' ? 'active' : ''}"><a href="#pagesDropdown" aria-expanded="true" data-toggle="collapse" class=""> <i class="fa fa-user-circle"></i>我的</a>-->
+            <!--<ul id="pagesDropdown" class="list-unstyled collapse show" style="">-->
+            <!--<li><a href="pages-contacts.html">Contacts</a></li>-->
+            <!--<li><a href="login.html">Login page</a></li>-->
+            <!--<li><a href="pages-profile.html">Profile</a></li>-->
+            <!--<li><a href="pages-pricing.html">Pricing table</a></li>-->
+            <!--</ul>-->
+            <!--</li>-->
+            <!--</ul><span class="heading">Extras</span>-->
+            <!--<ul class="list-unstyled">-->
+            <!--<li> <a href="#"> <i class="icon-flask"></i>Demo </a></li>-->
+            <!--<li> <a href="#"> <i class="icon-screen"></i>Demo </a></li>-->
+            <!--<li> <a href="#"> <i class="icon-mail"></i>Demo </a></li>-->
+            <!--<li> <a href="#"> <i class="icon-picture"></i>Demo </a></li>-->
+            <!--</ul>-->
+        </ul>
+    </nav>
+    <!-- Sidebar -->
+
+    <!-- main content-->
+    <div class="main">
+        <!-- th:replace fix top nav bar-->
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-sm navbar-light white py-0">
+            <div class="container-fluid">
+                <!-- Collapse -->
+
+                <a id="sidebarCollapse" class="button-collapse"><i class="fa fa-bars"></i><span class="sr-only"
+                                                                                                aria-hidden="true">Toggle side navigation</span></a>
+                <!-- Links -->
+                <div class="collapse navbar-collapse" id="#">
+
+                    <!-- Left -->
+                    <ul class="navbar-nav mr-auto"></ul>
+                    <!-- Right -->
+                    <ul class="navbar-nav nav-flex-icons">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                               aria-haspopup="true"
+                               aria-expanded="false">
+                                <i class="fa fa-user"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right dropdown-default"
+                                 aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Navbar -->
+
+        <main class="pt-1">
+            <div class="container-fluid mt-1">
+                <!-- Heading -->
+                <!-- Heading -->
+                <!--Section: Modals-->
+                <section>
+                    <div class="modal fade" id="tagSettingModal" tabindex="-1" role="dialog"
+                         aria-labelledby="tagSettingModal"
+                         aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title blue-text">标签</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="md-form form-sm mt-0">
+                                        <input type="text" id="tagName" class="form-control" placeholder="输入标签名">
+                                        <label for="tagName"></label>
+                                    </div>
+                                </div>
+                                <div class="modal-footer d-flex">
+                                    <button class="btn btn-primary" id="saveButton">确定</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="centralModalSuccess" tabindex="-1" role="dialog"
+                         aria-labelledby="centralModalSuccess" aria-hidden="true">
+                        <div class="modal-dialog modal-notify modal-success" role="document">
+                            <!--Content-->
+                            <div class="modal-content">
+                                <!--Header-->
+                                <div class="modal-header">
+                                    <p class="heading lead">消息</p>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true" class="white-text">&times;</span>
+                                    </button>
+                                </div>
+                                <!--Body-->
+                                <div class="modal-body">
+                                    <div class="text-center">
+                                        <i class="fa fa-check fa-4x mb-3 animated rotateIn"></i>
+                                        <p><strong>操作成功！</strong></p>
+                                    </div>
+                                </div>
+
+                                <!--Footer-->
+                                <div class="modal-footer justify-content-center">
+                                    <button type="button" class="btn btn-success waves-effect" data-dismiss="modal">确定
+                                    </button>
+                                </div>
+                            </div>
+                            <!--/.Content-->
+                        </div>
+                    </div>
+                    <!-- Central Modal Medium Success-->
+                    <!--Modal: modalConfirmDelete-->
+                    <div class="modal fade" id="modalConfirmDelete" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+                            <!--Content-->
+                            <div class="modal-content text-center">
+                                <!--Header-->
+                                <div class="modal-header d-flex justify-content-center">
+                                    <p class="heading">确定删除 ？</p>
+                                </div>
+
+                                <!--Body-->
+                                <div class="modal-body">
+
+                                    <i class="fa fa-times fa-4x animated rotateIn"></i>
+
+                                </div>
+
+                                <!--Footer-->
+                                <div class="modal-footer flex-center">
+                                    <a class="btn  btn-outline-danger btn-ok">确定</a>
+                                    <a class="btn btn-danger waves-effect" data-dismiss="modal">取消</a>
+                                </div>
+                            </div>
+                            <!--/.Content-->
+                        </div>
+                    </div>
+                    <!--Modal: modalConfirmDelete-->
+                </section>
+                <!--Section: Modals-->
+
+                <!--Section: Main panel-->
+                <!--Grid row-->
+                <div class="row wow fadeIn">
+                    <!--Grid column-->
+                    <div class="col-md-12 mb-12">
+                        <div class="card">
+                            <!-- Card-header-->
+                            <div class="card-header" role="tab" id="headingOne">
+                                <!--Options-->
+
+                                <!-- Heading -->
+
+                                <div class="dropdown pull-right">
+                                    <button type="button" class="btn btn-primary btn-md btn-rounded m-0 mr-3 p-2 waves-effect waves-light" id="newTagsButton"
+                                            data-toggle="modal"
+                                            data-target="#tagSettingModal">
+                                        <i class="fa fa-plus mx-3"><span class="mx-2">新增标签</span></i>
+                                    </button>
+                                </div>
+                                <h4 class="card-header-title blue-text">标签列表</h4>
+                            </div>
+                            <!-- Card-header-->
+                            <div class="card-body">
+                                <!-- Grid row -->
+                                <div class="row tagsRow ml-1 mt-2">
+                                    <div class="tags text-center">
+                                        <div class="tag white hoverable" id="tag5" data-tag-id="5"
+                                             data-tag-name="Algorithms">
+                                            <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                               aria-expanded="false"><span>Algorithms</span>
+                                                <span class="ml-2 mr-2">0</span></a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuMenu">
+                                                <a class="dropdown-item text-sm-left"
+                                                   href="/admin/tags/5/posts">查看文章</a>
+                                                <a class="dropdown-item text-sm-left" data-toggle="modal"
+                                                   data-target="#tagSettingModal">重命名</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" data-toggle="modal"
+                                                   data-target="#modalConfirmDelete">删除</a>
+                                            </div>
+                                        </div>
+                                        <div class="tag white hoverable" id="tag18" data-tag-id="18"
+                                             data-tag-name="AOP">
+                                            <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                               aria-expanded="false"><span>AOP</span>
+                                                <span class="ml-2 mr-2">0</span></a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuMenu">
+                                                <a class="dropdown-item text-sm-left"
+                                                   href="/admin/tags/18/posts">查看文章</a>
+                                                <a class="dropdown-item text-sm-left" data-toggle="modal"
+                                                   data-target="#tagSettingModal">重命名</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" data-toggle="modal"
+                                                   data-target="#modalConfirmDelete">删除</a>
+                                            </div>
+                                        </div>
+                                        <div class="tag white hoverable" id="tag6" data-tag-id="6"
+                                             data-tag-name="CSS">
+                                            <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                               aria-expanded="false"><span>CSS</span>
+                                                <span class="ml-2 mr-2">1</span></a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuMenu">
+                                                <a class="dropdown-item text-sm-left"
+                                                   href="/admin/tags/6/posts">查看文章</a>
+                                                <a class="dropdown-item text-sm-left" data-toggle="modal"
+                                                   data-target="#tagSettingModal">重命名</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" data-toggle="modal"
+                                                   data-target="#modalConfirmDelete">删除</a>
+                                            </div>
+                                        </div>
+                                        <div class="tag white hoverable" id="tag19" data-tag-id="19"
+                                             data-tag-name="DI">
+                                            <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                               aria-expanded="false"><span>DI</span>
+                                                <span class="ml-2 mr-2">0</span></a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuMenu">
+                                                <a class="dropdown-item text-sm-left"
+                                                   href="/admin/tags/19/posts">查看文章</a>
+                                                <a class="dropdown-item text-sm-left" data-toggle="modal"
+                                                   data-target="#tagSettingModal">重命名</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" data-toggle="modal"
+                                                   data-target="#modalConfirmDelete">删除</a>
+                                            </div>
+                                        </div>
+                                        <div class="tag white hoverable" id="tag20" data-tag-id="20"
+                                             data-tag-name="DOM">
+                                            <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                               aria-expanded="false"><span>DOM</span>
+                                                <span class="ml-2 mr-2">0</span></a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuMenu">
+                                                <a class="dropdown-item text-sm-left"
+                                                   href="/admin/tags/20/posts">查看文章</a>
+                                                <a class="dropdown-item text-sm-left" data-toggle="modal"
+                                                   data-target="#tagSettingModal">重命名</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" data-toggle="modal"
+                                                   data-target="#modalConfirmDelete">删除</a>
+                                            </div>
+                                        </div>
+                                        <div class="tag white hoverable" id="tag21" data-tag-id="21"
+                                             data-tag-name="Gradle">
+                                            <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                               aria-expanded="false"><span>Gradle</span>
+                                                <span class="ml-2 mr-2">0</span></a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuMenu">
+                                                <a class="dropdown-item text-sm-left"
+                                                   href="/admin/tags/21/posts">查看文章</a>
+                                                <a class="dropdown-item text-sm-left" data-toggle="modal"
+                                                   data-target="#tagSettingModal">重命名</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" data-toggle="modal"
+                                                   data-target="#modalConfirmDelete">删除</a>
+                                            </div>
+                                        </div>
+                                        <div class="tag white hoverable" id="tag22" data-tag-id="22"
+                                             data-tag-name="H2 Database">
+                                            <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                               aria-expanded="false"><span>H2 Database</span>
+                                                <span class="ml-2 mr-2">0</span></a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuMenu">
+                                                <a class="dropdown-item text-sm-left"
+                                                   href="/admin/tags/22/posts">查看文章</a>
+                                                <a class="dropdown-item text-sm-left" data-toggle="modal"
+                                                   data-target="#tagSettingModal">重命名</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" data-toggle="modal"
+                                                   data-target="#modalConfirmDelete">删除</a>
+                                            </div>
+                                        </div>
+                                        <div class="tag white hoverable" id="tag3" data-tag-id="3"
+                                             data-tag-name="Java">
+                                            <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                               aria-expanded="false"><span>Java</span>
+                                                <span class="ml-2 mr-2">2</span></a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuMenu">
+                                                <a class="dropdown-item text-sm-left"
+                                                   href="/admin/tags/3/posts">查看文章</a>
+                                                <a class="dropdown-item text-sm-left" data-toggle="modal"
+                                                   data-target="#tagSettingModal">重命名</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" data-toggle="modal"
+                                                   data-target="#modalConfirmDelete">删除</a>
+                                            </div>
+                                        </div>
+                                        <div class="tag white hoverable" id="tag14" data-tag-id="14"
+                                             data-tag-name="Java Bean">
+                                            <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                               aria-expanded="false"><span>Java Bean</span>
+                                                <span class="ml-2 mr-2">0</span></a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuMenu">
+                                                <a class="dropdown-item text-sm-left"
+                                                   href="/admin/tags/14/posts">查看文章</a>
+                                                <a class="dropdown-item text-sm-left" data-toggle="modal"
+                                                   data-target="#tagSettingModal">重命名</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" data-toggle="modal"
+                                                   data-target="#modalConfirmDelete">删除</a>
+                                            </div>
+                                        </div>
+                                        <div class="tag white hoverable" id="tag15" data-tag-id="15"
+                                             data-tag-name="Java SE">
+                                            <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                               aria-expanded="false"><span>Java SE</span>
+                                                <span class="ml-2 mr-2">0</span></a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuMenu">
+                                                <a class="dropdown-item text-sm-left"
+                                                   href="/admin/tags/15/posts">查看文章</a>
+                                                <a class="dropdown-item text-sm-left" data-toggle="modal"
+                                                   data-target="#tagSettingModal">重命名</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" data-toggle="modal"
+                                                   data-target="#modalConfirmDelete">删除</a>
+                                            </div>
+                                        </div>
+                                        <div class="tag white hoverable" id="tag7" data-tag-id="7"
+                                             data-tag-name="Java Web">
+                                            <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                               aria-expanded="false"><span>Java Web</span>
+                                                <span class="ml-2 mr-2">1</span></a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuMenu">
+                                                <a class="dropdown-item text-sm-left"
+                                                   href="/admin/tags/7/posts">查看文章</a>
+                                                <a class="dropdown-item text-sm-left" data-toggle="modal"
+                                                   data-target="#tagSettingModal">重命名</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" data-toggle="modal"
+                                                   data-target="#modalConfirmDelete">删除</a>
+                                            </div>
+                                        </div>
+                                        <div class="tag white hoverable" id="tag4" data-tag-id="4"
+                                             data-tag-name="JPA">
+                                            <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                               aria-expanded="false"><span>JPA</span>
+                                                <span class="ml-2 mr-2">2</span></a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuMenu">
+                                                <a class="dropdown-item text-sm-left"
+                                                   href="/admin/tags/4/posts">查看文章</a>
+                                                <a class="dropdown-item text-sm-left" data-toggle="modal"
+                                                   data-target="#tagSettingModal">重命名</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" data-toggle="modal"
+                                                   data-target="#modalConfirmDelete">删除</a>
+                                            </div>
+                                        </div>
+                                        <div class="tag white hoverable" id="tag2" data-tag-id="2"
+                                             data-tag-name="jQuery">
+                                            <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                               aria-expanded="false"><span>jQuery</span>
+                                                <span class="ml-2 mr-2">4</span></a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuMenu">
+                                                <a class="dropdown-item text-sm-left"
+                                                   href="/admin/tags/2/posts">查看文章</a>
+                                                <a class="dropdown-item text-sm-left" data-toggle="modal"
+                                                   data-target="#tagSettingModal">重命名</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" data-toggle="modal"
+                                                   data-target="#modalConfirmDelete">删除</a>
+                                            </div>
+                                        </div>
+                                        <div class="tag white hoverable" id="tag8" data-tag-id="8"
+                                             data-tag-name="LeetCode">
+                                            <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                               aria-expanded="false"><span>LeetCode</span>
+                                                <span class="ml-2 mr-2">1</span></a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuMenu">
+                                                <a class="dropdown-item text-sm-left"
+                                                   href="/admin/tags/8/posts">查看文章</a>
+                                                <a class="dropdown-item text-sm-left" data-toggle="modal"
+                                                   data-target="#tagSettingModal">重命名</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" data-toggle="modal"
+                                                   data-target="#modalConfirmDelete">删除</a>
+                                            </div>
+                                        </div>
+                                        <div class="tag white hoverable" id="tag13" data-tag-id="13"
+                                             data-tag-name="LintCode">
+                                            <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                               aria-expanded="false"><span>LintCode</span>
+                                                <span class="ml-2 mr-2">0</span></a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuMenu">
+                                                <a class="dropdown-item text-sm-left"
+                                                   href="/admin/tags/13/posts">查看文章</a>
+                                                <a class="dropdown-item text-sm-left" data-toggle="modal"
+                                                   data-target="#tagSettingModal">重命名</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" data-toggle="modal"
+                                                   data-target="#modalConfirmDelete">删除</a>
+                                            </div>
+                                        </div>
+                                        <div class="tag white hoverable" id="tag17" data-tag-id="17"
+                                             data-tag-name="mySQL">
+                                            <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                               aria-expanded="false"><span>mySQL</span>
+                                                <span class="ml-2 mr-2">0</span></a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuMenu">
+                                                <a class="dropdown-item text-sm-left"
+                                                   href="/admin/tags/17/posts">查看文章</a>
+                                                <a class="dropdown-item text-sm-left" data-toggle="modal"
+                                                   data-target="#tagSettingModal">重命名</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" data-toggle="modal"
+                                                   data-target="#modalConfirmDelete">删除</a>
+                                            </div>
+                                        </div>
+                                        <div class="tag white hoverable" id="tag11" data-tag-id="11"
+                                             data-tag-name="OJ">
+                                            <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                               aria-expanded="false"><span>OJ</span>
+                                                <span class="ml-2 mr-2">0</span></a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuMenu">
+                                                <a class="dropdown-item text-sm-left"
+                                                   href="/admin/tags/11/posts">查看文章</a>
+                                                <a class="dropdown-item text-sm-left" data-toggle="modal"
+                                                   data-target="#tagSettingModal">重命名</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" data-toggle="modal"
+                                                   data-target="#modalConfirmDelete">删除</a>
+                                            </div>
+                                        </div>
+                                        <div class="tag white hoverable" id="tag9" data-tag-id="9"
+                                             data-tag-name="POJO">
+                                            <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                               aria-expanded="false"><span>POJO</span>
+                                                <span class="ml-2 mr-2">1</span></a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuMenu">
+                                                <a class="dropdown-item text-sm-left"
+                                                   href="/admin/tags/9/posts">查看文章</a>
+                                                <a class="dropdown-item text-sm-left" data-toggle="modal"
+                                                   data-target="#tagSettingModal">重命名</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" data-toggle="modal"
+                                                   data-target="#modalConfirmDelete">删除</a>
+                                            </div>
+                                        </div>
+                                        <div class="tag white hoverable" id="tag1" data-tag-id="1"
+                                             data-tag-name="Spring Boot">
+                                            <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                               aria-expanded="false"><span>Spring Boot</span>
+                                                <span class="ml-2 mr-2">4</span></a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuMenu">
+                                                <a class="dropdown-item text-sm-left"
+                                                   href="/admin/tags/1/posts">查看文章</a>
+                                                <a class="dropdown-item text-sm-left" data-toggle="modal"
+                                                   data-target="#tagSettingModal">重命名</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" data-toggle="modal"
+                                                   data-target="#modalConfirmDelete">删除</a>
+                                            </div>
+                                        </div>
+                                        <div class="tag white hoverable" id="tag12" data-tag-id="12"
+                                             data-tag-name="Spring Data JPA">
+                                            <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                               aria-expanded="false"><span>Spring Data JPA</span>
+                                                <span class="ml-2 mr-2">1</span></a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuMenu">
+                                                <a class="dropdown-item text-sm-left"
+                                                   href="/admin/tags/12/posts">查看文章</a>
+                                                <a class="dropdown-item text-sm-left" data-toggle="modal"
+                                                   data-target="#tagSettingModal">重命名</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" data-toggle="modal"
+                                                   data-target="#modalConfirmDelete">删除</a>
+                                            </div>
+                                        </div>
+                                        <div class="tag white hoverable" id="tag10" data-tag-id="10"
+                                             data-tag-name="前端笔记">
+                                            <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                               aria-expanded="false"><span>前端笔记</span>
+                                                <span class="ml-2 mr-2">0</span></a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuMenu">
+                                                <a class="dropdown-item text-sm-left"
+                                                   href="/admin/tags/10/posts">查看文章</a>
+                                                <a class="dropdown-item text-sm-left" data-toggle="modal"
+                                                   data-target="#tagSettingModal">重命名</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" data-toggle="modal"
+                                                   data-target="#modalConfirmDelete">删除</a>
+                                            </div>
+                                        </div>
+                                        <div class="tag white hoverable" id="tag16" data-tag-id="16"
+                                             data-tag-name="反射">
+                                            <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                               aria-expanded="false"><span>反射</span>
+                                                <span class="ml-2 mr-2">0</span></a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuMenu">
+                                                <a class="dropdown-item text-sm-left"
+                                                   href="/admin/tags/16/posts">查看文章</a>
+                                                <a class="dropdown-item text-sm-left" data-toggle="modal"
+                                                   data-target="#tagSettingModal">重命名</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" data-toggle="modal"
+                                                   data-target="#modalConfirmDelete">删除</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Grid column-->
+                </div>
+                <!--Grid row-->
+                <!--Section: Main panel-->
+            </div>
+
+        </main>
+        <!--Main layout-->
+        <div class="row mt-5 pl-5">
+            <div class="col">
+                <footer class="page-footer text-center font-small white">
+                    <!--Copyright-->
+                    <div class="custom-footer-copyright">
+                        © 2018 Copyright:
+                        <a href="https://github.com/linj2n" class="blue-text">linj2n</a>
+                    </div>
+                    <!--/.Copyright-->
+                </footer>
+            </div>
+        </div>
+    </div>
+    <!-- main content-->
+</div>
+<!-- Wrapper -->
+<!--Footer-->
+<!--<footer class="page-footer text-center font-small white">-->
+    <!--&lt;!&ndash;Copyright&ndash;&gt;-->
+    <!--<div class="custom-footer-copyright">-->
+        <!--© 2018 Copyright:-->
+        <!--<a href="https://github.com/linj2n" class="blue-text">linj2n</a>-->
+    <!--</div>-->
+    <!--&lt;!&ndash;/.Copyright&ndash;&gt;-->
+<!--</footer>-->
+<!--Footer-->
+
+<!-- SCRIPTS -->
+
+
+<!-- JQuery -->
+<script type="text/javascript" src="../../static/admin/plugins/md-bootstrap/js/jquery-3.3.1.min.js"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="../../static/admin/plugins/md-bootstrap/js/popper.min.js"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="../../static/admin/plugins/md-bootstrap/js/bootstrap.min.js"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="../../static/admin/plugins/md-bootstrap/js/mdb.min.js"></script>
+<script type="text/javascript" src="../../static/admin/plugins/md-bootstrap/js/addons/datatables.js"></script>
+<!-- Simplemde-Markdown-Editor -->
+<script type="text/javascript" src="../../static/admin/plugins/lepture-markdown-editor/editor/editor.js"></script>
+<script type="text/javascript" src="../../static/admin/plugins/lepture-markdown-editor/editor/marked.js"></script>
+<!-- Select2 -->
+<script type="text/javascript" src="../../static/admin/plugins/select2/js/select2.js"></script>
+
+<!-- Common.js -->
+<script type="text/javascript" src="../../static/admin/js/common.js"></script>
+
+
+<!-- Initializations -->
+<script>
+
+    $(document).ready(function () {
+
+        var token = $('#_csrf').attr('content');
+        var header = $('#_csrf_header').attr('content');
+
+        $centralModalSuccess = $('#centralModalSuccess');
+        $tagSettingModal = $('#tagSettingModal');
+
+        /* 1. Bind to modal opening to set necessary data properties to be used to make request */
+        $tagSettingModal.on('show.bs.modal', function (e) {
+            var data = $(e.relatedTarget).parents('.tag').data() || "";
+            $('.btn-primary', this).data('tagId', data.tagId || "");
+            $('#tagName').val(data.tagName || "");
+        });
+
+        /* 2. Bind click to OK button within popup */
+        $tagSettingModal.on('click', '.btn-primary', function (e) {
+            var tagId = $(this).data('tagId') || "";
+            var tagName = $('#tagName').val();
+            $.ajax({
+                type: tagId === "" ? "POST" : "PUT",
+                url: '/api/v1/tags/' + tagId,
+                contentType: "application/json",
+                data: JSON.stringify({
+                    'id': tagId,
+                    'name': tagName
+                }),
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                success: function (data) {
+                    console.log("success to update via ajax");
+                    console.log("data.id= " + data.id);
+                    $tagSettingModal.modal("hide");
+                    var needToCreate = tagId === "";
+                    createOrUpdateTagElement(data.id, data.name, needToCreate);
+                    $centralModalSuccess.modal("show");
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+                    alert(textStatus);
+                }
+            });
+        });
+
+        function createOrUpdateTagElement(tagId, tagName, needToCreate) {
+            if (needToCreate) {
+                var tagItem = '<div class="tag white hoverable" data-tag-id="' + tagId + '" data-tag-name="' + tagName + '" id="tag' + tagId + '">\n' +
+                    '                    <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"\n' +
+                    '                aria-expanded="false"><span>' + tagName + '</span>\n' +
+                    '                    <span class="ml-2 mr-2" >0</span></a>\n' +
+                    '                <div class="dropdown-menu" aria-labelledby="dropdownMenuMenu">\n' +
+                    '                    <a class="dropdown-item text-sm-left" href="/admin/tags/' + tagId + '/posts">查看文章</a>\n' +
+                    '                    <a class="dropdown-item text-sm-left" data-toggle="modal"\n' +
+                    '                data-target="#tagSettingModal">重命名</a>\n' +
+                    '                    <div class="dropdown-divider"></div>\n' +
+                    '                    <a class="dropdown-item" data-toggle="modal"\n' +
+                    '                data-target="#modalConfirmDelete">删除</a>\n' +
+                    '                    </div>\n' +
+                    '            </div>';
+                $(".tags").append(tagItem);
+            } else {
+                console.log("update node");
+                $targetTag = $("#tag" + tagId);
+                $targetTag.find("span:first-child").text(tagName);
+                $targetTag.data("tagId", tagId);
+                $targetTag.data("tagName", tagName);
+            }
+        }
+
+        $modalConfirmDelete = $("#modalConfirmDelete");
+        $modalConfirmDelete.on('show.bs.modal', function (e) {
+            var data = $(e.relatedTarget).parents('.tag').data() || "";
+            $('.btn-ok', this).data('tagId', data.tagId || "");
+        });
+
+        $modalConfirmDelete.on('click', '.btn-ok', function (e) {
+            var tagId = $(this).data('tagId') || "";
+            $.ajax({
+                type: "DELETE",
+                url: '/api/v1/tags/' + tagId,
+                contentType: "application/json",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                success: function (data) {
+                    $modalConfirmDelete.modal("hide");
+                    $("#tag" + tagId).remove();
+                    $centralModalSuccess.modal("show");
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+                    alert(textStatus);
+                }
+            });
+        });
+    });
+
+</script>
+</body>
+
+</html>
