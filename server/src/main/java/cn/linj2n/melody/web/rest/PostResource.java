@@ -112,7 +112,7 @@ public class PostResource {
 //            return postService.getpostsByTags(tagIds, pageable);
 //        }
 //        return null;
-        return postService.findBySearch(tagIdList, categoryIdList, pageable);
+        return postService.findBySearch(tagIdList, categoryIdList, title, pageable);
 
     }
 

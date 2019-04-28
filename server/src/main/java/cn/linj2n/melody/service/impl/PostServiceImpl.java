@@ -103,7 +103,8 @@ public class PostServiceImpl implements PostService{
     @Override
     @Transactional
     public List<Post> getPostsByTags(List<Long> tagIds) {
-        return postRepository.findAllByTags(tagIds,Long.valueOf(tagIds.size()));
+//        return postRepository.findAllByTags(tagIds,Long.valueOf(tagIds.size()));
+        return null;
     }
 
 
@@ -123,8 +124,16 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public Page<Post> findBySearch(List<Long> tagIdList,List<Long> categoryList, Pageable pageable) {
+    public Page<Post> findBySearch(List<Long> tagIdList,List<Long> categoryList, String title, Pageable pageable) {
         logger.info(tagIdList.size() + ", " + categoryList.size());
-        return postRepository.findBySearch(tagIdList, Long.valueOf(tagIdList.size()), categoryList, Long.valueOf(categoryList.size()), pageable);
+        if (!categoryList.isEmpty() && !tagIdList.isEmpty()) {
+            return postRepository.findBySearch(tagIdList, Long.valueOf(tagIdList.size()), categoryList, Long.valueOf(categoryList.size()), title.toLowerCase(), pageable);
+        } else if (!categoryList.isEmpty()){
+            return postRepository.findAllByCategoriesAndTitle(categoryList, Long.valueOf(categoryList.size()), title.toLowerCase(), pageable);
+        } else if (!tagIdList.isEmpty()) {
+            return postRepository.findAllByTagsAndTitle(tagIdList, Long.valueOf(tagIdList.size()), title.toLowerCase(), pageable);
+        }
+        return postRepository.findByTitleContaining(title, pageable);
+//        return postRepository.findBySearch(tagIdList, Long.valueOf(tagIdList.size()), categoryList, Long.valueOf(categoryList.size()), title.toLowerCase(),pageable);
     }
 }
