@@ -1,18 +1,19 @@
 <template>
   <div class="app-container">
-    <!-- <div class="filter-container">
+    <div class="filter-container">
       <template>
-        <el-select v-model="value5" multiple placeholder="请选择分类" class="filter-item">
-          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"/>
+        <el-input v-model="listQuery.title" placeholder="标题" style="width:330px;" class="filter-item" @keyup.enter.native="handleFilter" />
+        <el-select v-model="listQuery.categoryId" multiple placeholder="请选择分类" class="filter-item" style="margin-left: 25px; width:330px;">
+          <el-option v-for="category in categoryOptions" :key="category.id" :label="category.name" :value="category.id"/>
         </el-select>
-        <el-select v-model="value11" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择标签" class="filter-item">
-          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+        <el-select v-model="listQuery.tagId" multiple style="margin-left: 25px; width:330px;" placeholder="请选择标签" class="filter-item">
+          <el-option v-for="tag in tagOptions" :key="tag.id" :label="tag.name" :value="tag.id" />
         </el-select>
-        <el-button class="filter-item" type="primary" icon="el-icon-search" >
+        <el-button class="filter-item" type="primary" icon="el-icon-search" style="margin-left: 20px;" @click="handleFilter">
           确定
         </el-button>
       </template>
-    </div> -->
+    </div>
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -79,7 +80,7 @@
 </template>
 
 <script>
-import { listPosts } from '@/api/post'
+import { listPosts, listAllCategories, listAllTags } from '@/api/post'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 export default {
   name: 'PostList',
@@ -96,9 +97,14 @@ export default {
   data() {
     return {
       list: null,
+      categoryOptions: null,
+      tagOptions: null,
       total: 0,
       listLoading: true,
       listQuery: {
+        title: '',
+        categoryId: null,
+        tagId: null,
         page: 1,
         limit: 20,
         sort: 'createdAt,DESC' // TODO: add sort condition
@@ -107,15 +113,30 @@ export default {
   },
   created() {
     this.getList()
+    this.getCategoryOptions()
+    this.getTagOptions()
   },
   methods: {
+    handleFilter() {
+      this.listQuery.page = 1
+      this.getList()
+    },
     getList() {
       this.listLoading = true
-      console.log(this.listQuery)
       listPosts(this.listQuery).then(response => {
         this.list = response.data.content
         this.total = response.data.totalElements
         this.listLoading = false
+      })
+    },
+    getTagOptions() {
+      listAllTags().then(response => {
+        this.tagOptions = response.data
+      })
+    },
+    getCategoryOptions() {
+      listAllCategories().then(response => {
+        this.categoryOptions = response.data
       })
     }
   }
