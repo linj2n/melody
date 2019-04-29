@@ -8,7 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -127,13 +129,14 @@ public class PostServiceImpl implements PostService{
     public Page<Post> findBySearch(List<Long> tagIdList,List<Long> categoryList, String title, Pageable pageable) {
         logger.info(tagIdList.size() + ", " + categoryList.size());
         if (!categoryList.isEmpty() && !tagIdList.isEmpty()) {
-            return postRepository.findBySearch(tagIdList, Long.valueOf(tagIdList.size()), categoryList, Long.valueOf(categoryList.size()), title.toLowerCase(), pageable);
+            // Convert the field name of domain class to actual column name in database, eg. "createdAt" -> "created_at". Need to refactor
+            PageRequest newPageRequest = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(),Sort.Direction.DESC, "created_at");
+            return postRepository.findBySearch(tagIdList, Long.valueOf(tagIdList.size()), categoryList, Long.valueOf(categoryList.size()), title.toLowerCase(), newPageRequest);
         } else if (!categoryList.isEmpty()){
             return postRepository.findAllByCategoriesAndTitle(categoryList, Long.valueOf(categoryList.size()), title.toLowerCase(), pageable);
         } else if (!tagIdList.isEmpty()) {
             return postRepository.findAllByTagsAndTitle(tagIdList, Long.valueOf(tagIdList.size()), title.toLowerCase(), pageable);
         }
         return postRepository.findByTitleContaining(title, pageable);
-//        return postRepository.findBySearch(tagIdList, Long.valueOf(tagIdList.size()), categoryList, Long.valueOf(categoryList.size()), title.toLowerCase(),pageable);
     }
 }

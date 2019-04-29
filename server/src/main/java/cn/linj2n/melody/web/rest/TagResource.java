@@ -4,6 +4,7 @@ package cn.linj2n.melody.web.rest;
 import cn.linj2n.melody.domain.Tag;
 import cn.linj2n.melody.repository.TagRepository;
 import cn.linj2n.melody.service.TagService;
+import cn.linj2n.melody.web.utils.ResponseBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,4 +52,12 @@ public class TagResource {
         tagService.removeTagById(tagId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/v1/tags",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getAllTags() {
+        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(tagService.listAllTags()), HttpStatus.OK);
+    }
+
 }

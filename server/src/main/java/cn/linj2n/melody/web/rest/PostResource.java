@@ -4,6 +4,7 @@ import cn.linj2n.melody.domain.Post;
 import cn.linj2n.melody.domain.enumeration.PostStatus;
 import cn.linj2n.melody.service.PostService;
 import cn.linj2n.melody.web.dto.PostDTO;
+import cn.linj2n.melody.web.dto.support.ResponseCode;
 import cn.linj2n.melody.web.utils.DTOModelMapper;
 import cn.linj2n.melody.web.utils.ResponseBuilder;
 import cn.linj2n.melody.web.utils.ViewUtils;
@@ -46,7 +47,6 @@ public class PostResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updatePost(@RequestBody PostDTO postDTO) {
         // TODO: complete the post status setting
-        System.out.println("hit");
         postDTO.setStatus(PostStatus.PUBLISHED);
         Post post = dtoModelMapper.convertToEntity(postDTO);
         logger.info("post.content ----> {} ",post.getContent());
@@ -87,33 +87,22 @@ public class PostResource {
         return allPosts;
     }
 
-    @RequestMapping(value = "/v1/old/posts/search",
+    @RequestMapping(value = "/v1/posts/search",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Page<Post> getListByTags(@RequestParam(value = "tagId",required = false) List<Long> tagIdList,
-                                    @RequestParam(value = "categoryId", required = false) List<Long> categoryIdList,
-                                    @RequestParam(value = "title", required = false) String title,
+    public ResponseEntity<?> getListByTags(@RequestParam(value = "tagId",required = false, defaultValue = "") List<Long> tagIdList,
+                                    @RequestParam(value = "categoryId", required = false, defaultValue = "") List<Long> categoryIdList,
+                                    @RequestParam(value = "title", required = false, defaultValue = "") String title,
                                     Pageable pageable) {
-
-//        List<PostDTO> allPosts=new ArrayList<>();
-//        if (tagIds == null || tagIds.isEmpty()) {
-//            logger.info("get all posts --------------> ");
-//            postService.listAllPosts().forEach(post -> {
-//                allPosts.add(dtoModelMapper.convertToDTO(post));
-//            });
-//        } else {
-//            logger.info("get all posts by specific tags --------------> " + tagIds.toString());
-//            postService.getPostsByTags(tagIds).forEach(post -> {
-//                allPosts.add(dtoModelMapper.convertToDTO(post));
-//            });
-//        }
-//        return allPosts;
-//        if (!tagIds.isEmpty()) {
-//            return postService.getpostsByTags(tagIds, pageable);
-//        }
-//        return null;
-        return postService.findBySearch(tagIdList, categoryIdList, title, pageable);
-
+        if (title == null || tagIdList == null || categoryIdList == null) {
+            return new ResponseEntity<>(ResponseBuilder.buildFailedResponse("参数错误"), HttpStatus.BAD_REQUEST);
+        }
+        logger.info("categoryIdList.size: {}, tagIdList.size: {}", categoryIdList.size(),tagIdList.size());
+        return new ResponseEntity<>(ResponseBuilder
+                .buildSuccessResponse(postService
+                        .findBySearch(tagIdList, categoryIdList, title, pageable)
+                        .map(dtoModelMapper::convertToDTO)),
+                HttpStatus.OK);
     }
 
     @RequestMapping(value = "/v1/posts",
@@ -125,19 +114,5 @@ public class PostResource {
     }
 
 
-    @RequestMapping(value = "/v1/posts/search",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> searchPost(@RequestParam(value = "title", required = false) String title,  Pageable pageable) {
-        Page<PostDTO> postDTOS = postService.findPostsByTitle(title, pageable).map(dtoModelMapper::convertToDTO);
-        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(postDTOS), HttpStatus.ACCEPTED);
-    }
 
-
-    @RequestMapping(value = "v1/posts/page",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> testPage(@PageableDefault Pageable pageable) {
-        return new ResponseEntity<>(postService.listPostByPage(pageable), HttpStatus.OK);
-    }
 }

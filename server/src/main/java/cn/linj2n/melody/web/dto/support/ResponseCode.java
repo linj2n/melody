@@ -17,6 +17,7 @@ public enum ResponseCode {
      * 接口不存在
      */
     NOT_FOUND(40004),
+
     /**
      * 服务器错误
      */
