@@ -114,5 +114,12 @@ public class PostResource {
     }
 
 
+    @RequestMapping(value = "/v1/posts/new",
+            method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> requestToNewPost() {
+        String postIdString = postService.createPost().getId().toString();
+
+    }
 
 }
