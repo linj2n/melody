@@ -43,6 +43,17 @@ public class PostResource {
     }
 
     @RequestMapping(value = "/v1/posts/{postId}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> updatePost(@PathVariable(value = "postId") Long postId) {
+        // TODO: Handle invalid post id
+        return postService.getPost(postId)
+//                .map(dtoModelMapper::convertToDTO)
+                .map(postDTO -> new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(postDTO), HttpStatus.OK))
+                .orElse(new ResponseEntity<>(ResponseBuilder.buildFailedResponse(), HttpStatus.BAD_REQUEST));
+    }
+
+    @RequestMapping(value = "/v1/posts/{postId}",
             method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updatePost(@RequestBody PostDTO postDTO) {
@@ -119,7 +130,7 @@ public class PostResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> requestToNewPost() {
         String postIdString = postService.createPost().getId().toString();
-
+        return null;
     }
 
 }
