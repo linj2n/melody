@@ -2,16 +2,21 @@
   <div class="app-container">
     <div class="filter-container">
       <template>
-        <el-input v-model="listQuery.title" placeholder="标题" style="width:330px;" class="filter-item" @keyup.enter.native="handleFilter" />
-        <el-select v-model="listQuery.categoryId" multiple placeholder="请选择分类" class="filter-item" style="margin-left: 25px; width:330px;">
-          <el-option v-for="category in categoryOptions" :key="category.id" :label="category.name" :value="category.id"/>
-        </el-select>
-        <el-select v-model="listQuery.tagId" multiple style="margin-left: 25px; width:330px;" placeholder="请选择标签" class="filter-item">
+        <el-input v-model="listQuery.title" placeholder="标题" style="width:300px;" class="filter-item" @keyup.enter.native="handleFilter" />
+         <el-select v-model="listQuery.tagId" multiple style=" width:300px;" placeholder="请选择文章标签" class="filter-item">
           <el-option v-for="tag in tagOptions" :key="tag.id" :label="tag.name" :value="tag.id" />
         </el-select>
-        <el-button class="filter-item" type="primary" icon="el-icon-search" style="margin-left: 20px;" @click="handleFilter">
-          确定
-        </el-button>
+        <el-select v-model="listQuery.categoryId" multiple placeholder="请选择文章分类" class="filter-item" style="width:300px;">
+          <el-option v-for="category in categoryOptions" :key="category.id" :label="category.name" :value="category.id"/>
+        </el-select>
+        <div class="filter-item">
+          <el-button  type="info" icon="el-icon-search" style="margin-left: 20px;" @click="handleFilter">
+            搜索
+          </el-button>
+          <el-button  type="primary" icon="el-icon-edit" style="margin-left: 20px;" @click="createNewPost">
+              新文章
+          </el-button>
+        </div>
       </template>
     </div>
     <el-table
@@ -41,19 +46,7 @@
           <span>{{ scope.row.createdAt }}</span>
         </template>
       </el-table-column>
-
-      <!-- <el-table-column width="120px" align="center" label="Author">
-        <template slot-scope="scope">
-          <span>{{ scope.row.author }}</span>
-        </template>
-      </el-table-column>-->
-
-      <!-- <el-table-column width="100px" label="Importance">
-        <template slot-scope="scope">
-          <svg-icon v-for="n in +scope.row.importance" :key="n" icon-class="star" class="meta-item__icon" />
-        </template>
-      </el-table-column>-->
-
+      
       <el-table-column class-name="status-col" label="状态" width="110">
         <template slot-scope="{row}">
           <el-tag :type="row.status | statusFilter">{{ row.status }}</el-tag>

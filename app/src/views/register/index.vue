@@ -125,9 +125,10 @@ export default {
     return {
       // 表单项数据
       registerForm: {
-        login: '',
-        email: '',
-        password: ''
+        // Just for test
+        login: 'admin',
+        email: 'admin@xxx.com',
+        password: 'admin'
       },
       // 表单校验规则
       registerRules: {
