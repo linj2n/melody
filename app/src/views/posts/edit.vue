@@ -1,36 +1,42 @@
 <template>
   <div class="app-container">
-    <el-form ref="postInfo" :model="postInfo"  class="form-container">
-    <div class="editor-menu">
-        <el-row>
-          <el-col >
-            <el-form-item style="margin-bottom: 40px;" prop="title">
-              <el-input v-model="postInfo.title" :maxlength="100" name="name" required placeholder="Titile">
-              </el-input>
-              <el-button type="primary" @click="updatePost">发布</el-button>
-            </el-form-item>
-            <!-- <div class="postInfo-container">
-              <el-row>
+    <el-form :model="postInfo" label-position="left" label-width="50px" >
+      <el-form-item prop="title" label="标 题">
+        <el-input v-model="postInfo.title"  required placeholder="Titile">
+        </el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="settingDialogVisible = true">
+          发布
+        </el-button>
+      </el-form-item>
+      <div class="editor-container" >
+        <markdown-editor v-model="postInfo.content" :options="{hideModeSwitch:true,previewStyle:'tab',toolbarItems: []}" height="580px"/>
+      </div>
+    </el-form>
 
-              </el-row>
-            </div> -->
-          </el-col>
-          <el-col>
-          <el-select v-model="postInfo.tags" multiple style=" width:300px;" placeholder="请选择文章标签" class="filter-item">
+    <el-dialog :visible.sync="settingDialogVisible" width="80%">
+      <el-form label-position="left" label-width="50px" style="width: 100%; margin-left:20px; margin-right:20px;">
+        <el-form-item label="分类">
+          <el-select v-model="tagOptionsValue" multiple placeholder="请选择文章标签" class="setting-item">
             <el-option v-for="tag in tagOptions" :key="tag.id" :label="tag.name" :value="tag.id" />
           </el-select>
-          <el-select v-model="postInfo.categories" multiple placeholder="请选择文章分类" class="filter-item" style="width:300px;">
+        </el-form-item>
+        <el-form-item label="标签">
+          <el-select v-model="categoryOptionsValue" multiple placeholder="请选择文章分类" class="setting-item">
             <el-option v-for="category in categoryOptions" :key="category.id" :label="category.name" :value="category.id"/>
           </el-select>
-          </el-col>
-        </el-row>
-    </div>
-    <div class="editor-container">
-      <el-form-item>
-        <markdown-editor v-model="postInfo.content" :options="{hideModeSwitch:true,previewStyle:'tab',toolbarItems: []}" height="580px"/>
-      </el-form-item>
-    </div>
-    </el-form>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="settingDialogVisible = false">
+          取消
+        </el-button>
+        <el-button type="primary" @click="updatePost">
+          发布
+        </el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -57,6 +63,7 @@ export default {
   data() {
     return {
       fecthPostLoading: true,
+      settingDialogVisible: false,
       postInfo: Object.assign({}, postInfoForm),
       categoryOptions: null,
       tagOptions: null
@@ -64,16 +71,44 @@ export default {
   },
   created() {
     const id = this.$route.params && this.$route.params.id
+    this.fecthPostInfo(id)
     this.getCategoryOptions()
     this.getTagOptions()
-    this.fecthPostInfo(id)
+  },
+  computed: {
+    tagOptionsValue: {
+      get() {
+        return this.postInfo.tags && this.postInfo.tags.map(tag => tag.id)
+      },
+      set(val) {
+        const vm = this
+        vm.postInfo.tags = val.map(function (tagId) {
+          var tag = {}
+          tag['id'] = tagId
+          tag['name'] = vm.tagOptions.find(tag => tag.id === tagId).name
+          return tag
+        })
+      }
+    },
+    categoryOptionsValue: {
+      get() {
+        return this.postInfo.categories && this.postInfo.categories.map(category => category.id)
+      },
+      set(val) {
+        const vm = this
+        vm.postInfo.categories = val.map(function (categoryId) {
+          var category = {}
+          category['id'] = categoryId
+          category['name'] = vm.categoryOptions.find(category => category.id === categoryId).name
+          return category
+        })
+      }
+    }
   },
   methods: {
     fecthPostInfo(id) {
       this.fecthPostLoading = true
       fecthPost(id).then(response => {
-        console.log(response.data)
-        // Update post form
         this.postInfo = Object.assign({}, response.data)
         this.fecthPostLoading = false
       })
@@ -89,8 +124,8 @@ export default {
       })
     },
     updatePost() {
-      console.log(this.postInfo)
       updatePost(this.postInfo).then(response => {
+        this.settingDialogVisible = false
         this.$message({
           message: response.message,
           type: 'success'
@@ -102,5 +137,9 @@ export default {
 </script>
 
 <style >
-
+.setting-item {
+  width: 100%;
+  padding-left: 20px;
+  padding-right: 20px;
+}
 </style>

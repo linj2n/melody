@@ -47,10 +47,17 @@ export const asyncRouterMap = [
     meta: { roles: ['ROLE_ADMIN'] },
     children: [
       {
-        path: 'index',
+        path: '',
         name: 'posts',
-        component: () => import('@/views/posts/index'),
+        component: () => import('@/views/posts/list'),
         meta: { title: '文章', icon: 'icon_doc', roles: ['ROLE_ADMIN'] }
+      },
+      {
+        path: ':id/edit',
+        name: 'post-edit',
+        component: () => import('@/views/posts/edit'),
+        hidden: true,
+        meta: { title: '编辑文章', icon: 'icon_doc', roles: ['ROLE_ADMIN'] }
       }
     ]
   },
@@ -74,7 +81,7 @@ export const asyncRouterMap = [
     component: Layout,
     children: [
       {
-        path: 'index',
+        path: '',
         name: 'Categories',
         component: () => import('@/views/form/index'),
         meta: { title: '分类', icon: 'icon_file' }
@@ -88,7 +95,7 @@ export const asyncRouterMap = [
     component: Layout,
     children: [
       {
-        path: 'index',
+        path: '',
         name: 'Setting',
         component: () => import('@/views/form/index'),
         meta: { title: '配置', icon: 'icon_setting' }

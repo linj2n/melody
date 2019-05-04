@@ -32,3 +32,38 @@ export function listAllTags() {
     method: 'get'
   })
 }
+
+export function requestToNewPost() {
+  return request({
+    url: '/api/v1/posts/new',
+    method: 'post'
+  })
+}
+
+export function fecthPost(id) {
+  return request({
+    url: '/api/v1/posts/' + id,
+    method: 'get'
+  })
+}
+
+export function updatePost(post) {
+  console.log(post)
+  return request({
+    url: '/api/v1/posts/' + post.id,
+    method: 'put',
+    data: post
+    // data: Object.assign({}, post)
+    // data: {
+    //   id: post.id,
+    //   title: post.title,
+    //   summary: post.summary,
+    //   content: post.content,
+    //   status: post.status,
+    //   url: post.url,
+    //   views: post.views,
+    //   createdAt: post.createdAt,
+    //   updatedAt: post.updatedAt
+    // }
+  })
+}

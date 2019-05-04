@@ -100,7 +100,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         // 允许携带 cookies
                         .allowCredentials(true)
                         // 允许那些方法进行跨域请求
-                        .allowedMethods("OPTIONS", "GET", "POST")
+                        .allowedMethods("OPTIONS", "GET", "POST","PUT")
                         // 允许的源地址，开启 cookie 共享时必须指定具体的源地址
                         .allowedOrigins("http://127.0.0.1:9999")
                         // 允许请求携带的 Headers

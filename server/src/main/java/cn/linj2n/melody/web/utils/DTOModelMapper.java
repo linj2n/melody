@@ -35,7 +35,8 @@ public class DTOModelMapper {
         if (post.getUpdatedAt() != null) {
             postDTO.setUpdatedAt(post.getUpdatedAt().toLocalDateTime());
         }
-        postDTO.setContent(viewUtils.renderToHtml(post.getContent()));
+//        postDTO.setContent(viewUtils.renderToHtml(post.getContent()));
+        postDTO.setContent(post.getContent());
         return postDTO;
     }
 

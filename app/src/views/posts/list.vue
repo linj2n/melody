@@ -3,7 +3,7 @@
     <div class="filter-container">
       <template>
         <el-input v-model="listQuery.title" placeholder="标题" style="width:300px;" class="filter-item" @keyup.enter.native="handleFilter" />
-         <el-select v-model="listQuery.tagId" multiple style=" width:300px;" placeholder="请选择文章标签" class="filter-item">
+        <el-select v-model="listQuery.tagId" multiple style=" width:300px;" placeholder="请选择文章标签" class="filter-item">
           <el-option v-for="tag in tagOptions" :key="tag.id" :label="tag.name" :value="tag.id" />
         </el-select>
         <el-select v-model="listQuery.categoryId" multiple placeholder="请选择文章分类" class="filter-item" style="width:300px;">
@@ -14,7 +14,7 @@
             搜索
           </el-button>
           <el-button  type="primary" icon="el-icon-edit" style="margin-left: 20px;" @click="createNewPost">
-              新文章
+            新文章
           </el-button>
         </div>
       </template>
@@ -35,9 +35,8 @@
 
       <el-table-column min-width="300px" label="标题">
         <template slot-scope="{row}">
-          <router-link :to="'/example/edit/'+row.id" class="link-type">
-            <span>{{ row.title }}</span>
-          </router-link>
+          
+          <a target="_blank" :href="'http://localhost:8080/posts/' + row.id" >{{row.title}}</a>
         </template>
       </el-table-column>
 
@@ -55,7 +54,7 @@
 
       <el-table-column align="center" label="操作" width="120">
         <template slot-scope="scope">
-          <router-link :to="'/posts/edit/'+scope.row.id">
+          <router-link :to="'/posts/'+scope.row.id+'/edit'">
             <el-button type="primary" size="small" icon="el-icon-edit">Edit</el-button>
           </router-link>
         </template>
@@ -73,7 +72,7 @@
 </template>
 
 <script>
-import { listPosts, listAllCategories, listAllTags } from '@/api/post'
+import { listPosts, listAllCategories, listAllTags, requestToNewPost} from '@/api/post'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 export default {
   name: 'PostList',
@@ -130,6 +129,11 @@ export default {
     getCategoryOptions() {
       listAllCategories().then(response => {
         this.categoryOptions = response.data
+      })
+    },
+    createNewPost() {
+      requestToNewPost().then(response => {
+        this.$router.push({ path: `/posts/${response.data}/edit` }) // -> /user/123    
       })
     }
   }

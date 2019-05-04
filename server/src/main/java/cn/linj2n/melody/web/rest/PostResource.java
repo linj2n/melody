@@ -46,23 +46,26 @@ public class PostResource {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updatePost(@PathVariable(value = "postId") Long postId) {
-        // TODO: Handle invalid post id
         return postService.getPost(postId)
-//                .map(dtoModelMapper::convertToDTO)
-                .map(postDTO -> new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(postDTO), HttpStatus.OK))
-                .orElse(new ResponseEntity<>(ResponseBuilder.buildFailedResponse(), HttpStatus.BAD_REQUEST));
+                .map(dtoModelMapper::convertToDTO)
+                .map(postDTO -> {
+                    logger.info("postInfo -> ",postDTO.toString());
+                    return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(postDTO), HttpStatus.OK);
+                })
+                .orElse(new ResponseEntity<>(ResponseBuilder.buildFailedResponse("文章不存在"), HttpStatus.BAD_REQUEST));
     }
 
     @RequestMapping(value = "/v1/posts/{postId}",
             method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updatePost(@RequestBody PostDTO postDTO) {
-        // TODO: complete the post status setting
-        postDTO.setStatus(PostStatus.PUBLISHED);
         Post post = dtoModelMapper.convertToEntity(postDTO);
         logger.info("post.content ----> {} ",post.getContent());
-        postService.updatePost(post);
-        return new ResponseEntity<>(HttpStatus.OK);
+        Post newPost = postService.updatePost(post);
+        if (newPost == null) {
+            return new ResponseEntity<>(ResponseBuilder.buildFailedResponse("服务器错误，更新失败"),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse("文章更新成功"), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/v1/posts/{postId}",
@@ -129,8 +132,11 @@ public class PostResource {
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> requestToNewPost() {
-        String postIdString = postService.createPost().getId().toString();
-        return null;
+        Post newPost = postService.createPost();
+        // TODO: Refactor, Using Optional replace of the 'null' checking
+        if (newPost == null) {
+            return new ResponseEntity<>(ResponseBuilder.buildFailedResponse("服务器出错"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(newPost.getId()), HttpStatus.OK);
     }
-
 }
