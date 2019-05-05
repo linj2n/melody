@@ -85,7 +85,7 @@ public class PostServiceImpl implements PostService{
 
     @Override
     public Post createPost(){
-        return postRepository.save(new Post(""));
+        return postRepository.save(new Post());
     }
 
     @Override

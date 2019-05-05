@@ -32,7 +32,8 @@ public class Post {
     /**
      * 文章标题
      */
-    private String title;
+    @Column(name="title")
+    private String title = "Untitled";
 
     /**
      * 文章概要

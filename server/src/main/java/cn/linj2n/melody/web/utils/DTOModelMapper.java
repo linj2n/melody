@@ -41,7 +41,9 @@ public class DTOModelMapper {
     }
 
     public Post convertToEntity(PostDTO postDTO) {
-        return modelMapper.map(postDTO, Post.class);
+        Post post = modelMapper.map(postDTO, Post.class);
+//        post.setTitle(post.getTitle().isEmpty() ? "Untitled" : post.getTitle());
+        return post;
     }
 
     public UserDTO convertToDTO(final User user) {
