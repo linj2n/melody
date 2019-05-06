@@ -48,7 +48,6 @@ export function fecthPost(id) {
 }
 
 export function updatePost(post) {
-  console.log(post)
   return request({
     url: '/api/v1/posts/' + post.id,
     method: 'put',

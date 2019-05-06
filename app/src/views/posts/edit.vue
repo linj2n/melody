@@ -1,22 +1,44 @@
 <template>
   <div class="app-container">
-    <el-form :model="postInfo" label-position="left" label-width="50px" >
-      <el-form-item prop="title" label="标 题">
-        <el-input v-model="postInfo.title"  required placeholder="Titile">
-        </el-input>
+    <el-form :model="postInfo" >
+      <el-form-item prop="title">
+        <md-input v-model="postInfo.title" name="title" placeholder="请输入标题" style="width: 100%;">
+          标题
+        </md-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="settingDialogVisible = true">
-          发布
-        </el-button>
       </el-form-item>
       <div class="editor-container" >
-        <markdown-editor v-model="postInfo.content" :options="{hideModeSwitch:true,previewStyle:'tab',toolbarItems: []}" height="580px"/>
+        <markdown-editor v-model="postInfo.content" :options="{hideModeSwitch:true,previewStyle:'tab',toolbarItems: [
+        'heading',
+        'bold',
+        'italic',
+        'strike',
+        'divider',
+        'hr',
+        'quote',
+        'divider',
+        'ul',
+        'ol',
+        'task',
+        'indent',
+        'outdent',
+        'divider',
+        'table',
+        'image',
+        'link',
+        'divider',
+        'code',
+        'codeblock'
+    ]}" height="580px"/>
       </div>
     </el-form>
-
-    <el-dialog :visible.sync="settingDialogVisible" width="80%">
-      <el-form label-position="left" label-width="50px" style="width: 100%; margin-left:20px; margin-right:20px;">
+    <div class="postSettingButton" @click="settingDialogVisible = true">  
+          <i class="el-icon-setting" />
+    </div>
+    
+    <el-dialog :visible.sync="settingDialogVisible" width="70%" title="设置">
+      <el-form label-position="left" label-width="50px" style="width: 100%; margin-left:20px;">
         <el-form-item label="分类">
           <el-select v-model="tagOptionsValue" multiple placeholder="请选择文章标签" class="setting-item">
             <el-option v-for="tag in tagOptions" :key="tag.id" :label="tag.name" :value="tag.id" />
@@ -27,16 +49,29 @@
             <el-option v-for="category in categoryOptions" :key="category.id" :label="category.name" :value="category.id"/>
           </el-select>
         </el-form-item>
+        <el-form-item label="状态">
+          <el-radio-group v-model="postInfo.status" size="small">
+            <el-radio-button label="PUBLISHED">发布</el-radio-button>
+            <el-radio-button label="DRAFT">草稿</el-radio-button>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="概述">
+          <el-input type="textarea" :rows="5" v-model="postInfo.summary" class="setting-item" ></el-input>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="settingDialogVisible = false">
-          取消
+        <el-button type="danger" icon="el-icon-delete"  >
+          删除
         </el-button>
-        <el-button type="primary" @click="updatePost">
+        <el-button type="info" icon="el-icon-view" @click="settingDialogVisible = true">
+          预览
+        </el-button>
+        <el-button type="success" icon="el-icon-check" @click="updatePost">
           发布
         </el-button>
       </div>
     </el-dialog>
+    
   </div>
 </template>
 
@@ -44,6 +79,9 @@
 import { fecthPost, updatePost, listAllTags, listAllCategories } from '@/api/post'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 import MarkdownEditor from '@/components/MarkdownEditor'
+import MdInput from '@/components/MDinput'
+
+
 const postInfoForm = {
   id: null,
   title: '',
@@ -59,7 +97,10 @@ const postInfoForm = {
 }
 export default {
   name: 'PosetEdit',
-  components: { MarkdownEditor },
+  components: { 
+    MarkdownEditor,     
+    MdInput
+  },
   data() {
     return {
       fecthPostLoading: true,
@@ -137,9 +178,81 @@ export default {
 </script>
 
 <style >
+.postSettingButton {
+  position: fixed;
+  right: 0;
+  top: 25%;
+  border-radius: 6px 0 0 6px !important;
+  width: 48px;
+  height: 48px;
+  pointer-events: auto;
+  z-index: 10;
+  cursor: pointer;
+  pointer-events: auto;
+  font-size: 24px;
+  text-align: center;
+  background-color:#1890ff;
+  color: #fff;
+  line-height: 48px;
+}
+.postSettingButton:hover {
+    background: #66b1ff;
+    border-color: #66b1ff;
+    color: #fff;
+}
 .setting-item {
   width: 100%;
-  padding-left: 20px;
+  /* padding-left: 20px; */
   padding-right: 20px;
+}
+.te-toolbar-section {
+    height: 33px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    border-bottom: 1px solid #e5e5e5;
+    /* border-top: 1px solid #e5e5e5;
+    border-right: 1px solid #e5e5e5; */
+  
+}
+.tui-editor-defaultUI .te-markdown-tab-section {
+    float: left;
+    height: 31px;
+    background: #fff;
+    border-bottom: 1px solid #e5e5e5;
+}
+.tui-editor-defaultUI {
+  /* border-top: 1px solid #e5e5e5; */
+  border-right: 1px solid #e5e5e5;
+}
+
+.te-markdown-tab-section .te-tab {
+  margin: 0px;
+  height: 31px;
+}
+.tui-editor-defaultUI .te-tab button {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    line-height: 100%;
+    height: 31px;
+    position: relative;
+    cursor: pointer;
+    z-index: 1;
+    font-size: 13px;
+    font-weight: 600;
+    background-color: #f9f9f9;
+    border: solid 1px #e5e5e5;
+    border-left: 0px;
+    border-bottom: 0px;
+    border-top: 0;
+    padding: 0 9px;
+    color: #777;
+    border-radius: 0;
+    outline: 0;
+}
+.te-markdown-tab-section .te-tab button.te-tab-active, .te-markdown-tab-section .te-tab button:hover.te-tab-active {
+    background-color: #fff;
+    color: #1890ff;
+    border-bottom: 1px solid #fff;
+    z-index: 2;
 }
 </style>
