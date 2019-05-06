@@ -50,7 +50,7 @@ export const asyncRouterMap = [
         path: '',
         name: 'posts',
         component: () => import('@/views/posts/list'),
-        meta: { title: '文章', icon: 'icon_doc', roles: ['ROLE_ADMIN'] }
+        meta: { title: '文 章', icon: 'icon_doc', roles: ['ROLE_ADMIN'] }
       },
       {
         path: ':id/edit',
@@ -69,8 +69,8 @@ export const asyncRouterMap = [
       {
         path: 'index',
         name: 'Tags',
-        component: () => import('@/views/form/index'),
-        meta: { title: '标签', icon: 'icon_synergy' }
+        component: () => import('@/views/category/index'),
+        meta: { title: '标 签', icon: 'icon_synergy' }
       }
     ]
   },
@@ -84,7 +84,7 @@ export const asyncRouterMap = [
         path: '',
         name: 'Categories',
         component: () => import('@/views/form/index'),
-        meta: { title: '分类', icon: 'icon_file' }
+        meta: { title: '分 类', icon: 'icon_file' }
       }
     ]
   },
@@ -98,7 +98,7 @@ export const asyncRouterMap = [
         path: '',
         name: 'Setting',
         component: () => import('@/views/form/index'),
-        meta: { title: '配置', icon: 'icon_setting' }
+        meta: { title: '配 置', icon: 'icon_setting' }
       }
     ]
   },
