@@ -39,14 +39,26 @@
     
     <el-dialog :visible.sync="settingDialogVisible" width="70%" title="设置">
       <el-form label-position="left" label-width="50px" style="width: 100%; margin-left:20px;">
-        <el-form-item label="分类">
-          <el-select v-model="tagOptionsValue" multiple placeholder="请选择文章标签" class="setting-item">
-            <el-option v-for="tag in tagOptions" :key="tag.id" :label="tag.name" :value="tag.id" />
+        <el-form-item label="标签">
+          <el-select 
+            multiple 
+            allow-create
+            filterable
+            v-model="tagOptionsValue" 
+            placeholder="请选择文章标签" 
+            class="setting-item">
+            <el-option v-for="tag in tagOptions" :key="tag.name" :label="tag.name" :value="tag.name" />
           </el-select>
         </el-form-item>
-        <el-form-item label="标签">
-          <el-select v-model="categoryOptionsValue" multiple placeholder="请选择文章分类" class="setting-item">
-            <el-option v-for="category in categoryOptions" :key="category.id" :label="category.name" :value="category.id"/>
+        <el-form-item label="分类">
+          <el-select 
+            multiple
+            allow-create
+            filterable
+            v-model="categoryOptionsValue" 
+            placeholder="请选择文章分类" 
+            class="setting-item">
+            <el-option v-for="category in categoryOptions" :key="category.name" :label="category.name" :value="category.name"/>
           </el-select>
         </el-form-item>
         <el-form-item label="状态">
@@ -95,6 +107,16 @@ const postInfoForm = {
   categories: null,
   url: null
 }
+const findOrCreateNewItemInOptions = function(name, targetSet) {
+  var targetItem = targetSet.find(item => item.name === name)
+  if (!targetItem) {
+    var newItem = {}
+    newItem['id'] = undefined
+    newItem['name'] = name
+    return newItem
+  }
+  return targetItem
+}
 export default {
   name: 'PosetEdit',
   components: { 
@@ -119,29 +141,23 @@ export default {
   computed: {
     tagOptionsValue: {
       get() {
-        return this.postInfo.tags && this.postInfo.tags.map(tag => tag.id)
+        return this.postInfo.tags && this.postInfo.tags.map(tag => tag.name)
       },
-      set(val) {
+      set(values) {
         const vm = this
-        vm.postInfo.tags = val.map(function (tagId) {
-          var tag = {}
-          tag['id'] = tagId
-          tag['name'] = vm.tagOptions.find(tag => tag.id === tagId).name
-          return tag
+        vm.postInfo.tags = values.map(function (value) {
+          return findOrCreateNewItemInOptions(value, vm.tagOptions)
         })
       }
     },
     categoryOptionsValue: {
       get() {
-        return this.postInfo.categories && this.postInfo.categories.map(category => category.id)
+        return this.postInfo.categories && this.postInfo.categories.map(category => category.name)
       },
-      set(val) {
+      set(values) {
         const vm = this
-        vm.postInfo.categories = val.map(function (categoryId) {
-          var category = {}
-          category['id'] = categoryId
-          category['name'] = vm.categoryOptions.find(category => category.id === categoryId).name
-          return category
+        vm.postInfo.categories = values.map(function (value) {
+          return findOrCreateNewItemInOptions(value, vm.categoryOptions)
         })
       }
     }
@@ -157,6 +173,11 @@ export default {
     getTagOptions() {
       listAllTags().then(response => {
         this.tagOptions = response.data
+      }).catch(err => {
+          this.$message({
+            message: response.message,
+            type: 'error'
+          });
       })
     },
     getCategoryOptions() {
@@ -165,6 +186,7 @@ export default {
       })
     },
     updatePost() {
+      console.log(this.postInfo)
       updatePost(this.postInfo).then(response => {
         this.settingDialogVisible = false
         this.$message({

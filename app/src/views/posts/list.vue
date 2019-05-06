@@ -10,7 +10,7 @@
           <el-option v-for="category in categoryOptions" :key="category.id" :label="category.name" :value="category.id"/>
         </el-select>
         <div class="filter-item">
-          <el-button  type="info" icon="el-icon-search" style="margin-left: 20px;" @click="handleFilter">
+          <el-button  type="info" icon="el-icon-search"  @click="handleFilter">
             搜索
           </el-button>
           <el-button  type="primary" icon="el-icon-edit" style="margin-left: 20px;" @click="createNewPost">
