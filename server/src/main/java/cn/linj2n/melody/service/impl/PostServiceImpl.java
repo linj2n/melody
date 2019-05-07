@@ -102,13 +102,6 @@ public class PostServiceImpl implements PostService{
         return postRepository.exists(postId);
     }
 
-    @Override
-    @Transactional
-    public List<Post> getPostsByTags(List<Long> tagIds) {
-//        return postRepository.findAllByTags(tagIds,Long.valueOf(tagIds.size()));
-        return null;
-    }
-
 
     @Override
     public Page<Post> listPostByPage(Pageable pageable) {
