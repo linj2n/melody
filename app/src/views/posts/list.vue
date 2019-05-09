@@ -95,8 +95,8 @@ export default {
       listLoading: true,
       listQuery: {
         title: '',
-        categoryId: null,
-        tagId: null,
+        categoryId: Array.of(this.$route.query.categoryId) || null,
+        tagId: Array.of(this.$route.query.tagId) || null,
         page: 1,
         limit: 20,
         sort: 'createdAt,DESC' // TODO: add sort condition
