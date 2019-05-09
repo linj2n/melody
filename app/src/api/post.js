@@ -74,3 +74,10 @@ export function updateTagOrCategory(type, item) {
     data: item
   })
 }
+
+export function removeTagOrCategory(type, item) {
+  return request({
+    url: '/api/v1/' + type + '/' + item.id,
+    method: 'delete'
+  })
+}

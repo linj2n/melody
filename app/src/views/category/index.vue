@@ -73,7 +73,6 @@
         <el-dialog
           :title="typeTextMap[editDialogType]"
           :visible.sync="editDialogVisible"
-          :before-close="handleClose"
           >
           <el-form label-position="left" label-width="50px" :model="item">
             <el-form-item label="名称">
@@ -81,9 +80,17 @@
             </el-form-item>
           </el-form>
           <span slot="footer" class="dialog-footer">
-            <el-button type="danger" icon="el-icon-delete" >
-              删 除
-            </el-button>
+            <el-popover
+              placement="top"
+              width="160"
+              v-model="deletePopoverVisible">
+              <p>确定删除吗？</p>
+              <div style="text-align: right; margin: 0">
+                <el-button size="mini" type="text" @click="deletePopoverVisible = false">取消</el-button>
+                <el-button type="primary" size="mini" @click="handleDeleteConfirm">确定</el-button>
+              </div>
+              <el-button slot="reference" type="danger" icon="el-icon-delete" >删 除</el-button>
+            </el-popover>
             <el-button @click="editDialogVisible = false">
               取 消
             </el-button>
@@ -98,7 +105,7 @@
 </template>
 
 <script>
-import { listAllCategories, listAllTags, createNewTag, updateTagOrCategory } from '@/api/post'
+import { listAllCategories, listAllTags, createNewTag, updateTagOrCategory, removeTagOrCategory } from '@/api/post'
 export default {
   data() {
     return {
@@ -109,6 +116,7 @@ export default {
       tagInputValue: '',
       inputVisible: false,
       inputValue: '',
+      deletePopoverVisible: false,
       editDialogVisible: false,
       editDialogType: '',
       typeTextMap: {
@@ -129,9 +137,6 @@ export default {
   methods: {
     handleClick(tab, event) {
       console.log(tab, event);
-    },
-    handleClose(event) {
-      console.log(event);
     },
     showInput() {
       this.inputVisible = true;
@@ -199,8 +204,13 @@ export default {
     },
     handleEditConfirm() {
       const type = this.editDialogType
+      const set = type === 'tags' ? this.allTags : this.allCategories
       let item = Object.assign({}, this.item)
       updateTagOrCategory(type, item).then(response => {
+        const newItem = response.data
+        const indexOfItem = set.findIndex(elem => elem.id === newItem.id)
+        set.splice(indexOfItem, 1, newItem)
+        this.editDialogVisible = false
         this.$message({
           message: response.message,
           type: 'success'
@@ -208,7 +218,19 @@ export default {
       })
     },
     handleDeleteConfirm() {
-      
+      const type = this.editDialogType
+      const set = type === 'tags' ? this.allTags : this.allCategories
+      let item = Object.assign({}, this.item)
+      removeTagOrCategory(type, item).then(response => {
+        const indexOfItem = set.findIndex(elem => elem.id === item.id)
+        set.splice(indexOfItem, 1)
+        this.deletePopoverVisible = false
+        this.editDialogVisible = false
+        this.$message({
+          message: response.message,
+          type: 'success'
+        })
+      })
     }
   }
 }
