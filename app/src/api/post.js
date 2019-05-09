@@ -52,17 +52,25 @@ export function updatePost(post) {
     url: '/api/v1/posts/' + post.id,
     method: 'put',
     data: post
-    // data: Object.assign({}, post)
-    // data: {
-    //   id: post.id,
-    //   title: post.title,
-    //   summary: post.summary,
-    //   content: post.content,
-    //   status: post.status,
-    //   url: post.url,
-    //   views: post.views,
-    //   createdAt: post.createdAt,
-    //   updatedAt: post.updatedAt
-    // }
+  })
+}
+
+export function createNewCategory(newCategory) {
+
+}
+
+export function createNewTag(newTag) {
+  return request({
+    url: '/api/v1/tags',
+    method: 'post',
+    data: newTag
+  })
+}
+
+export function updateTagOrCategory(type, item) {
+  return request({
+    url: '/api/v1/' + type + '/' + item.id,
+    method: 'put',
+    data: item
   })
 }
