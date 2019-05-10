@@ -237,7 +237,7 @@ export default {
 
   // Component:
   .material-input__component {
-    margin-top: 36px;
+    margin-top: 22px;
     position: relative;
     * {
       box-sizing: border-box;
