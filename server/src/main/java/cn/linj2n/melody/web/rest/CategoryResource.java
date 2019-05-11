@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,5 +32,12 @@ public class CategoryResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> listAllCategories() {
         return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(categoryService.listAllCategories()), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/v1/categories",
+            method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> createCategory(@RequestBody Category newCategory) {
+        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse("新分类创建成功", categoryService.createCategory(newCategory)),HttpStatus.CREATED);
     }
 }

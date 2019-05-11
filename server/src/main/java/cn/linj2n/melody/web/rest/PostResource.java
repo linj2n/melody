@@ -52,7 +52,7 @@ public class PostResource {
                     logger.info("postInfo -> ",postDTO.toString());
                     return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(postDTO), HttpStatus.OK);
                 })
-                .orElse(new ResponseEntity<>(ResponseBuilder.buildFailedResponse("文章不存在"), HttpStatus.BAD_REQUEST));
+                .orElse(new ResponseEntity<>(ResponseBuilder.buildFailedResponse("文章不存在"), HttpStatus.OK));
     }
 
     @RequestMapping(value = "/v1/posts/{postId}",
@@ -74,10 +74,10 @@ public class PostResource {
     public ResponseEntity<?> deletePostById(@PathVariable(value = "postId") Long postId) {
         logger.info("request to delete post[id={}]",postId);
         if (!postService.existsById(postId)) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(ResponseBuilder.buildFailedResponse("文章不存在"),HttpStatus.OK);
         }
         postService.removePost(postId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse("文章已删除"),HttpStatus.OK);
     }
 
     @RequestMapping(value = "/v1/old/posts",
@@ -109,7 +109,7 @@ public class PostResource {
                                     @RequestParam(value = "title", required = false, defaultValue = "") String title,
                                     Pageable pageable) {
         if (title == null || tagIdList == null || categoryIdList == null) {
-            return new ResponseEntity<>(ResponseBuilder.buildFailedResponse("参数错误"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(ResponseBuilder.buildFailedResponse("参数错误"), HttpStatus.OK);
         }
         logger.info("categoryIdList.size: {}, tagIdList.size: {}", categoryIdList.size(),tagIdList.size());
         return new ResponseEntity<>(ResponseBuilder

@@ -28,17 +28,18 @@ public class TagResource {
     }
 
 
-    @RequestMapping(value = "/v1/tags/",
+    @RequestMapping(value = "/v1/tags",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Tag createTagByName(@RequestBody Tag tag) {
-        return tagService.createTag(tag.getName());
+    public ResponseEntity<?> createTag(@RequestBody Tag newTag) {
+        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse("标签创建成功", tagService.createTag(newTag)), HttpStatus.CREATED);
     }
+
     @RequestMapping(value = "/v1/tags/{tagId}",
             method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Tag updateTag(@RequestBody Tag tag) {
-        return tagService.updateTag(tag);
+    public ResponseEntity<?> updateTag(@RequestBody Tag tag) {
+        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse("标签信息更新成功", tagService.updateTag(tag)), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/v1/tags/{tagId}",
@@ -47,10 +48,10 @@ public class TagResource {
     public ResponseEntity<?> deleteTagById(@PathVariable(value = "tagId") Long tagId) {
         logger.info("request to delete tag[id={}]",tagId);
         if (!tagService.existsById(tagId)) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(ResponseBuilder.buildFailedResponse("标签不存在"), HttpStatus.NOT_FOUND);
         }
         tagService.removeTagById(tagId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse("删除成功"), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/v1/tags",
@@ -59,5 +60,4 @@ public class TagResource {
     public ResponseEntity<?> getAllTags() {
         return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(tagService.listAllTags()), HttpStatus.OK);
     }
-
 }
