@@ -1,8 +1,8 @@
 <template>
   <div class="card-container">
     <el-row>
-        <el-card>
-          <el-tabs v-model="activePane">
+      <el-card>
+        <el-tabs v-model="activePane">
           <el-tab-pane label="所有标签" name="tags">
             <ItemTabPane
               :items="allTags"
@@ -21,16 +21,20 @@
               @handleEditConfirm="handleEditConfirm"
             />
           </el-tab-pane>
-            
-          </el-tabs>
-        </el-card>
+        </el-tabs>
+      </el-card>
     </el-row>
-    
   </div>
 </template>
 
 <script>
-import { listAllCategories, listAllTags, createNewTag, updateTagOrCategory, removeTagOrCategory, createNewTagOrCategory } from '@/api/post'
+import {
+  listAllCategories,
+  listAllTags,
+  updateTagOrCategory,
+  removeTagOrCategory,
+  createNewTagOrCategory
+} from '@/api/post'
 import ItemTabPane from './components/ItemTabPane'
 export default {
   components: { ItemTabPane },
@@ -51,7 +55,7 @@ export default {
         id: null,
         name: ''
       }
-    };
+    }
   },
   created() {
     this.initTagsAndCategories()
@@ -66,7 +70,7 @@ export default {
         this.$message({
           message: '添加成功',
           type: 'success'
-        }) 
+        })
       })
     },
     initTagsAndCategories() {
@@ -79,10 +83,10 @@ export default {
     },
     listPostByItemId(id) {
       console.log('hit listPostByItemId in index')
-      // TODO: 
+      // TODO:
       const queryValue = {}
       queryValue['tagId'] = id
-      this.$router.push({ path: '/posts', query: queryValue }) 
+      this.$router.push({ path: '/posts', query: queryValue })
     },
     handleEditConfirm(newItem) {
       const itemList = this.getCurrItemList()
@@ -98,14 +102,16 @@ export default {
     },
     handleDeleteConfirm(item) {
       const itemList = this.getCurrItemList()
-      removeTagOrCategory(this.activePane, Object.assign({}, item)).then(response => {
-        const indexOfItem = itemList.findIndex(e => e.id === item.id)
-        itemList.splice(indexOfItem, 1)
-        this.$message({
-          message: response.message,
-          type: 'success'
-        })
-      })
+      removeTagOrCategory(this.activePane, Object.assign({}, item)).then(
+        response => {
+          const indexOfItem = itemList.findIndex(e => e.id === item.id)
+          itemList.splice(indexOfItem, 1)
+          this.$message({
+            message: response.message,
+            type: 'success'
+          })
+        }
+      )
     }
   }
 }
