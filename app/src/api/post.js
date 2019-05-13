@@ -55,6 +55,13 @@ export function updatePost(post) {
   })
 }
 
+export function removePost(postId) {
+  return request({
+    url: 'api/v1/posts/' + postId,
+    method: 'delete'
+  })
+}
+
 export function createNewCategory(newCategory) {
 
 }
@@ -64,6 +71,14 @@ export function createNewTag(newTag) {
     url: '/api/v1/tags',
     method: 'post',
     data: newTag
+  })
+}
+
+export function createNewTagOrCategory(type, newItem) {
+  return request({
+    url: '/api/v1/' + type,
+    method: 'post',
+    data: newItem
   })
 }
 

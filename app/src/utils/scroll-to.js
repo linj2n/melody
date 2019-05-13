@@ -56,4 +56,3 @@ export function scrollTo(to, duration, callback) {
   }
   animateScroll()
 }
-

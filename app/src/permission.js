@@ -44,7 +44,7 @@ router.beforeEach((to, from, next) => {
       }
     }
   } else {
-    /* has no token*/
+    /* has no token */
     if (whiteList.indexOf(to.path) !== -1) { // 在免登录白名单，直接进入
       next()
     } else {

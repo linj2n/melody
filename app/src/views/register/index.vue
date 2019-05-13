@@ -11,7 +11,7 @@
       <h3 class="title">Register</h3>
       <el-form-item prop="login">
         <span class="svg-container">
-          <svg-icon icon-class="user"/>
+          <svg-icon icon-class="user" />
         </span>
         <el-input
           v-model="registerForm.login"
@@ -23,7 +23,7 @@
       </el-form-item>
       <el-form-item prop="email">
         <span class="svg-container">
-          <svg-icon icon-class="icon_cmail"/>
+          <svg-icon icon-class="icon_cmail" />
         </span>
         <el-input
           v-model="registerForm.email"
@@ -35,18 +35,18 @@
       </el-form-item>
       <el-form-item prop="password">
         <span class="svg-container">
-          <svg-icon icon-class="password"/>
+          <svg-icon icon-class="password" />
         </span>
         <el-input
-          :type="pwdType"
           v-model="registerForm.password"
+          :type="pwdType"
           name="password"
           auto-complete="on"
           placeholder="password"
           @keyup.enter.native="handleRegister"
         />
         <span class="show-pwd" @click="showPwd">
-          <svg-icon :icon-class="pwdType === 'password' ? 'eye' : 'eye-open'"/>
+          <svg-icon :icon-class="pwdType === 'password' ? 'eye' : 'eye-open'" />
         </span>
       </el-form-item>
       <el-form-item>
