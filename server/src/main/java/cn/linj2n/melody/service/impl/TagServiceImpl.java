@@ -27,19 +27,13 @@ public class TagServiceImpl implements TagService{
     }
 
     @Override
-    public Tag createTag(String tagName) {
-        return tagRepository.save(new Tag(tagName));
+    public Tag createTag(Tag newTag) {
+        return tagRepository.save(newTag);
     }
 
     @Override
     @Transactional
     public void removeTagByName(String tagName) {
-//       tagRepository.findOneByName(tagName)
-//               .map(tag -> {
-////                   tag.getPosts().forEach(e -> e.removeTag(tag));
-//                   tagRepository.delete(tag);
-//                   return tag;
-//               });
         getTagWithPosts(tagName).map(tag -> {
             tag.getPosts().forEach(e -> e.getTags().remove(tag));
             tagRepository.delete(tag);

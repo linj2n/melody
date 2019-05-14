@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/api")
@@ -34,10 +31,29 @@ public class CategoryResource {
         return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(categoryService.listAllCategories()), HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/v1/categories/{categoryId}",
+            method = RequestMethod.PUT,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> updateCategory(@RequestBody Category category) {
+        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse("信息更新成功", categoryService.updateCategory(category)), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/v1/categories/{categoryId}",
+            method = RequestMethod.DELETE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> deleteTagById(@PathVariable(value = "categoryId") Long categoryId) {
+        logger.info("request to delete category[id={}]",categoryId);
+        if (!categoryService.existsById(categoryId)) {
+            return new ResponseEntity<>(ResponseBuilder.buildFailedResponse("分类不存在"), HttpStatus.OK);
+        }
+        categoryService.removeCategoryById(categoryId);
+        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse("删除成功"), HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/v1/categories",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> createCategory(@RequestBody Category newCategory) {
-        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse("新分类创建成功", categoryService.createCategory(newCategory)),HttpStatus.CREATED);
+        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse("创建成功", categoryService.createCategory(newCategory)),HttpStatus.CREATED);
     }
 }

@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface TagService {
 
-    Tag createTag(String tagName);
+    Tag createTag(Tag newTag);
 
     void removeTagByName(String tagName);
 

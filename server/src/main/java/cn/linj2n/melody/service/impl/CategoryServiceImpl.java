@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,8 +26,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category createCategory(String categoryName) {
-        return null;
+    public Category createCategory(Category newCategory) {
+        return categoryRepository.save(newCategory);
     }
 
     @Override
@@ -45,8 +46,25 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<Category> getCategoryWithPosts(String categoryName) {
-        return Optional.empty();
+        logger.info("hit getCategoryWithPosts");
+        return categoryRepository.findOptionalByName(categoryName)
+                .map(u -> {
+                    u.getPosts().size();
+                    return u;
+                });
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<Category> getCategoryWithPosts(Long categoryId) {
+        logger.info("hit getCategoryWithPosts");
+        return categoryRepository.findOptionalById(categoryId)
+                .map(u -> {
+                    u.getPosts().size();
+                    return u;
+                });
     }
 
     @Override
@@ -62,5 +80,26 @@ public class CategoryServiceImpl implements CategoryService {
                     e.getPosts().size();
                 })
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public void removeCategoryById(Long categoryId) {
+        logger.info("hit removeCategoryById");
+        getCategoryWithPosts(categoryId).map(category -> {
+            category.getPosts().forEach(e -> e.getCategories().remove(category));
+            categoryRepository.delete(category);
+            return category;
+        });
+    }
+
+    @Override
+    public Category updateCategory(Category category) {
+        return categoryRepository.save(category);
+    }
+
+    @Override
+    public boolean existsById(Long categoryId) {
+        return categoryRepository.exists(categoryId);
     }
 }
