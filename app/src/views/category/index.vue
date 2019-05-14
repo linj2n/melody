@@ -4,74 +4,67 @@
       <el-card>
         <el-tabs v-model="activePane">
           <el-tab-pane label="所有标签" name="tags">
-            <!-- <ItemTabPane
-              :items="allTags"
-              @handleItemInputConfirm="handleItemInputConfirm"
-              @listPostByItemId="listPostByItemId"
-              @handleDeleteConfirm="handleDeleteConfirm"
-              @handleEditConfirm="handleEditConfirm"
-            />-->
-            <el-dropdown
-              v-for="item in items"
-              :key="item.name"
-              :trigger="trigger"
-            >
-              <span class="el-tag el-tag--info">{{ item.name }}</span>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item @click.native="listPostByItemId(item.id)">
-                  <span>
-                    <i class="el-icon-view el-icon--left" />
-                    查看文章
-                  </span>
-                </el-dropdown-item>
-                <el-dropdown-item @click.native="handleEdit(item)">
-                  <span>
-                    <i class="el-icon-edit el-icon--left" />
-                    编辑
-                  </span>
-                </el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
+            <Item
+              v-for="tag in allTags"
+              :key="tag.id"
+              :item="tag"
+              @listPosts="listPostByItemId"
+              @handleEdit="handleEdit"
+            />
             <el-input
-              v-if="itemInputVisible"
-              ref="saveTagInput"
-              v-model="itemInputValue"
+              v-if="newItemInputVisible"
+              ref="newItemInput"
               class="input-new-tag"
               size="small"
-              @keyup.enter.native="handleItemInputConfirm"
-              @blur="handleItemInputConfirm"
+              @keyup.enter.native="handleNewInputConfirm"
+              @blur="handleNewInputConfirm"
             />
             <el-button
               v-else
               class="button-new-tag"
               size="small"
-              @click="showTagInput"
-            >+ 新增标签</el-button>
+              @click="showNewItemInput"
+            >+ 新 增
+            </el-button>
           </el-tab-pane>
           <el-tab-pane label="所有分类" name="categories">
-            <!-- <ItemTabPane
-              :items="allCategories"
-              @handleItemInputConfirm="handleItemInputConfirm"
-              @listPostByItemId="listPostByItemId"
-              @handleDeleteConfirm="handleDeleteConfirm"
-              @handleEditConfirm="handleEditConfirm"
-            />-->
+            <Item
+              v-for="category in allCategories"
+              :key="category.id"
+              :item="category"
+              @listPosts="listPostByItemId"
+              @handleEdit="handleEdit"
+            />
+            <el-input
+              v-if="newItemInputVisible"
+              ref="newItemInput"
+              class="input-new-tag"
+              size="small"
+              @keyup.enter.native="handleNewInputConfirm"
+              @blur="handleNewInputConfirm"
+            />
+            <el-button
+              v-else
+              class="button-new-tag"
+              size="small"
+              @click="showNewItemInput"
+            >+ 新 增
+            </el-button>
           </el-tab-pane>
         </el-tabs>
       </el-card>
     </el-row>
-    <el-dialog :title="itemType" :visible.sync="editDialogVisible">
-      <el-form
-        :model="currentEditingItem"
-        label-position="left"
-        label-width="50px"
-      >
+    <el-dialog
+      :title="typeTextMap[activePane]"
+      :visible.sync="editDialogVisible"
+    >
+      <el-form :model="currentItem" label-position="left" label-width="50px">
         <el-form-item label="名称">
-          <el-input v-model="currentEditingItem.name" />
+          <el-input v-model="currentItem.name" />
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-popover :model="deletePopoverVisible" placement="top" width="160">
+        <el-popover v-model="deletePopoverVisible" placement="top" width="160">
           <p>确定删除吗？</p>
           <div style="text-align: right; margin: 0">
             <el-button
@@ -80,23 +73,24 @@
               @click="deletePopoverVisible = false"
             >取消</el-button>
             <el-button
-type="primary"
-size="mini" @click="handleDeleteConfirm">确定</el-button>
+              type="primary"
+              size="mini"
+              @click="handleDeleteConfirm(currentItem)"
+            >确定</el-button>
           </div>
-          <el-button
-slot="reference"
-type="danger" icon="el-icon-delete">删 除</el-button>
+          <el-button slot="reference" type="danger">删 除</el-button>
         </el-popover>
+        <el-button @click="editDialogVisible = false">取 消</el-button>
         <el-button
-style="margin-left: 10px;"
-@click="editDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="handleEditConfirm">确 定</el-button>
+type="primary"
+@click="handleEditConfirm(currentItem)">确 定</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
+import Item from './components/Item'
 import {
   listAllCategories,
   listAllTags,
@@ -104,25 +98,19 @@ import {
   removeTagOrCategory,
   createNewTagOrCategory
 } from '@/api/post'
-// import ItemTabPane from './components/ItemTabPane'
 export default {
-  // components: { ItemTabPane },
+  components: { Item },
   data() {
     return {
       allTags: [],
       allCategories: [],
+      editDialogVisible: false,
+      deletePopoverVisible: false,
+      newItemInputVisible: false,
       activePane: 'tags',
-      itemTypeMap: {
-        allTagsPane: 'tags',
-        allCategoriesPane: 'categories'
-      },
       typeTextMap: {
-        tags: '标签',
-        categories: '分类'
-      },
-      item: {
-        id: null,
-        name: ''
+        tags: '标签: ',
+        categories: '分类: '
       },
       currentItem: {
         id: null,
@@ -137,14 +125,42 @@ export default {
     getCurrItemList() {
       return this.activePane === 'tags' ? this.allTags : this.allCategories
     },
-    handleItemInputConfirm(newItem) {
-      createNewTagOrCategory(this.activePane, newItem).then(response => {
-        this.getCurrItemList().push(response.data)
-        this.$message({
-          message: '添加成功',
-          type: 'success'
-        })
+    showNewItemInput() {
+      this.newItemInputVisible = true
+      this.$nextTick(_ => {
+        this.$refs.newItemInput.$refs.input.focus()
       })
+    },
+    handleNewInputConfirm(e) {
+      const itemName = e.target.value.trim()
+      const currItemList = this.getCurrItemList()
+      if (itemName) {
+        const exited = currItemList.find(item => item.name === itemName)
+        if (exited) {
+          this.$message({
+            message: this.typeTextMap[this.activePane] + itemName + ' 已存在，添加失败',
+            type: 'warning'
+          })
+          return
+        } else {
+          const newItem = {}
+          newItem['id'] = null
+          newItem['name'] = itemName
+          createNewTagOrCategory(this.activePane, newItem).then(response => {
+            currItemList.push(response.data)
+            this.$message({
+              message: '添加成功',
+              type: 'success'
+            })
+          })
+        }
+      }
+      this.newItemInputVisible = false
+      e.target.value = ''
+    },
+    handleEdit(item) {
+      this.currentItem = Object.assign({}, item)
+      this.editDialogVisible = true
     },
     initTagsAndCategories() {
       listAllTags().then(response => {
@@ -154,12 +170,10 @@ export default {
         this.allCategories = response.data
       })
     },
-
     listPostByItemId(id) {
-      console.log('hit listPostByItemId in index')
-      // TODO:
+      const key = this.activePane === 'tags' ? 'tagId' : 'categoryId'
       const queryValue = {}
-      queryValue['tagId'] = id
+      queryValue[key] = id
       this.$router.push({ path: '/posts', query: queryValue })
     },
     handleEditConfirm(newItem) {
@@ -172,6 +186,7 @@ export default {
           message: response.message,
           type: 'success'
         })
+        this.editDialogVisible = false
       })
     },
     handleDeleteConfirm(item) {
@@ -186,6 +201,8 @@ export default {
           })
         }
       )
+      this.deletePopoverVisible = false
+      this.editDialogVisible = false
     }
   }
 }
