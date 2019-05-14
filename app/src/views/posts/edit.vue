@@ -115,12 +115,9 @@
             >取消</el-button>
             <el-button
 type="primary"
-size="mini" @click="handleDeleteConfirm">确定
-            </el-button>
+size="mini" @click="handleDeleteConfirm">确定</el-button>
           </div>
-          <el-button
-slot="reference"
-type="danger" icon="el-icon-delete">删 除</el-button>
+          <el-button slot="reference" type="danger">删 除</el-button>
         </el-popover>
         <el-button
           type="info"
