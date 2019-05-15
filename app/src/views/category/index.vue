@@ -24,7 +24,7 @@
               class="button-new-tag"
               size="small"
               @click="showNewItemInput"
-            >+ 新 增
+            >+ 添加标签
             </el-button>
           </el-tab-pane>
           <el-tab-pane label="所有分类" name="categories">
@@ -48,7 +48,7 @@
               class="button-new-tag"
               size="small"
               @click="showNewItemInput"
-            >+ 新 增
+            >+ 添加分类
             </el-button>
           </el-tab-pane>
         </el-tabs>
@@ -109,8 +109,8 @@ export default {
       newItemInputVisible: false,
       activePane: 'tags',
       typeTextMap: {
-        tags: '标签: ',
-        categories: '分类: '
+        tags: '标签',
+        categories: '分类'
       },
       currentItem: {
         id: null,
