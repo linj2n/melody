@@ -80,7 +80,9 @@
           </div>
           <el-button slot="reference" type="danger">删 除</el-button>
         </el-popover>
-        <el-button @click="editDialogVisible = false">取 消</el-button>
+        <el-button
+style="margin-left: 10px"
+@click="editDialogVisible = false">取 消</el-button>
         <el-button
 type="primary"
 @click="handleEditConfirm(currentItem)">确 定</el-button>
