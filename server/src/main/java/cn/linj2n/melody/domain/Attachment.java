@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "attachment")
-public class Attachment {
+public class Attach {
 
     @Id
     private Long id;
