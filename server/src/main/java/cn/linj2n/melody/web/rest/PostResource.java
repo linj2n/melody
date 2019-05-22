@@ -104,7 +104,7 @@ public class PostResource {
     @RequestMapping(value = "/v1/posts/search",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getListByTags(@RequestParam(value = "tagId",required = false, defaultValue = "") List<Long> tagIdList,
+    public ResponseEntity<?> searchPost(@RequestParam(value = "tagId",required = false, defaultValue = "") List<Long> tagIdList,
                                     @RequestParam(value = "categoryId", required = false, defaultValue = "") List<Long> categoryIdList,
                                     @RequestParam(value = "title", required = false, defaultValue = "") String title,
                                     Pageable pageable) {
