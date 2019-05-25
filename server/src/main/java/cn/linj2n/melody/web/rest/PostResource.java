@@ -50,9 +50,9 @@ public class PostResource {
                 .map(dtoModelMapper::convertToDTO)
                 .map(postDTO -> {
                     logger.info("postInfo -> ",postDTO.toString());
-                    return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(postDTO), HttpStatus.OK);
+                    return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(null, postDTO), HttpStatus.OK);
                 })
-                .orElse(new ResponseEntity<>(ResponseBuilder.buildFailedResponse("文章不存在"), HttpStatus.OK));
+                .orElse(new ResponseEntity<>(ResponseBuilder.buildFailedResponse("文章不存在", null), HttpStatus.OK));
     }
 
     @RequestMapping(value = "/v1/posts/{postId}",
@@ -63,9 +63,9 @@ public class PostResource {
         logger.info("post.content ----> {} ",post.getContent());
         Post newPost = postService.updatePost(post);
         if (newPost == null) {
-            return new ResponseEntity<>(ResponseBuilder.buildFailedResponse("服务器错误，更新失败"),HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(ResponseBuilder.buildFailedResponse("服务器错误，更新失败", null),HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse("文章更新成功"), HttpStatus.OK);
+        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse("文章更新成功", null), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/v1/posts/{postId}",
@@ -74,10 +74,10 @@ public class PostResource {
     public ResponseEntity<?> deletePostById(@PathVariable(value = "postId") Long postId) {
         logger.info("request to delete post[id={}]",postId);
         if (!postService.existsById(postId)) {
-            return new ResponseEntity<>(ResponseBuilder.buildFailedResponse("文章不存在"),HttpStatus.OK);
+            return new ResponseEntity<>(ResponseBuilder.buildFailedResponse("文章不存在", null),HttpStatus.OK);
         }
         postService.removePost(postId);
-        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse("文章已删除"),HttpStatus.OK);
+        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse("文章已删除", null),HttpStatus.OK);
     }
 
     @RequestMapping(value = "/v1/old/posts",
@@ -109,11 +109,11 @@ public class PostResource {
                                     @RequestParam(value = "title", required = false, defaultValue = "") String title,
                                     Pageable pageable) {
         if (title == null || tagIdList == null || categoryIdList == null) {
-            return new ResponseEntity<>(ResponseBuilder.buildFailedResponse("参数错误"), HttpStatus.OK);
+            return new ResponseEntity<>(ResponseBuilder.buildFailedResponse("参数错误", null), HttpStatus.OK);
         }
         logger.info("categoryIdList.size: {}, tagIdList.size: {}", categoryIdList.size(),tagIdList.size());
         return new ResponseEntity<>(ResponseBuilder
-                .buildSuccessResponse(postService
+                .buildSuccessResponse(null, postService
                         .findBySearch(tagIdList, categoryIdList, title, pageable)
                         .map(dtoModelMapper::convertToDTO)),
                 HttpStatus.OK);
@@ -124,7 +124,7 @@ public class PostResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> listPost(Pageable pageable) {
         Page<PostDTO> postDTOS = postService.listPostByPage(pageable).map(dtoModelMapper::convertToDTO);
-        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(postDTOS), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(null, postDTOS), HttpStatus.ACCEPTED);
     }
 
 
@@ -135,8 +135,8 @@ public class PostResource {
         Post newPost = postService.createPost();
         // TODO: Refactor, Using Optional replace of the 'null' checking
         if (newPost == null) {
-            return new ResponseEntity<>(ResponseBuilder.buildFailedResponse("服务器出错"), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(ResponseBuilder.buildFailedResponse("服务器出错", null), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(newPost.getId()), HttpStatus.OK);
+        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(null, newPost.getId()), HttpStatus.OK);
     }
 }

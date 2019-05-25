@@ -33,13 +33,13 @@ public class ConfigResource {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> listAllSiteConfigOptions() {
-        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(configService.listAllOptions()), HttpStatus.OK);
+        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(null, configService.listAllOptions()), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/v1/config",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateConfig(@RequestBody List<Option> options) {
-        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(configService.updateOptions(options)), HttpStatus.OK);
+        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(null, configService.updateOptions(options)), HttpStatus.OK);
     }
 }

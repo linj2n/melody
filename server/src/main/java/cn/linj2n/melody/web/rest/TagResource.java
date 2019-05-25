@@ -48,16 +48,16 @@ public class TagResource {
     public ResponseEntity<?> deleteTagById(@PathVariable(value = "tagId") Long tagId) {
         logger.info("request to delete tag[id={}]",tagId);
         if (!tagService.existsById(tagId)) {
-            return new ResponseEntity<>(ResponseBuilder.buildFailedResponse("标签不存在"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(ResponseBuilder.buildFailedResponse("标签不存在", null), HttpStatus.NOT_FOUND);
         }
         tagService.removeTagById(tagId);
-        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse("删除成功"), HttpStatus.OK);
+        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse("删除成功", null), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/v1/tags",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getAllTags() {
-        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(tagService.listAllTags()), HttpStatus.OK);
+        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(null, tagService.listAllTags()), HttpStatus.OK);
     }
 }

@@ -16,11 +16,6 @@ public class ResponseBuilder {
                 .setMessage(DEFAULT_SUCCESS_STATUS);
     }
 
-    public static ResponseDTO buildSuccessResponse(String message) {
-        return new ResponseDTO()
-                .setCode(ResponseCode.SUCCESS)
-                .setMessage(message);
-    }
 
     public static <T> ResponseDTO<T> buildSuccessResponse(String message, T data) {
         return new ResponseDTO()
@@ -29,12 +24,6 @@ public class ResponseBuilder {
                 .setData(data);
     }
 
-    public static <T> ResponseDTO<T> buildSuccessResponse(T data) {
-        return new ResponseDTO()
-                .setCode(ResponseCode.SUCCESS)
-                .setMessage(DEFAULT_SUCCESS_STATUS)
-                .setData(data);
-    }
 
     public static ResponseDTO buildFailedResponse() {
         return new ResponseDTO()
@@ -49,22 +38,10 @@ public class ResponseBuilder {
     }
 
 
-    public static ResponseDTO buildFailedResponse(String message) {
-        return new ResponseDTO()
-                .setCode(ResponseCode.FAIL)
-                .setMessage(message);
-    }
-
     public static <T> ResponseDTO<T> buildFailedResponse(String message, T data) {
         return new ResponseDTO()
                 .setCode(ResponseCode.FAIL)
                 .setMessage(message)
-                .setData(data);
-    }
-
-    public static <T> ResponseDTO<T> buildFailedResponse(T data) {
-        return new ResponseDTO()
-                .setCode(ResponseCode.FAIL)
                 .setData(data);
     }
     

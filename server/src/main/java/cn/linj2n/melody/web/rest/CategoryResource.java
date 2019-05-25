@@ -28,7 +28,7 @@ public class CategoryResource {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> listAllCategories() {
-        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(categoryService.listAllCategories()), HttpStatus.OK);
+        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(null, categoryService.listAllCategories()), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/v1/categories/{categoryId}",
@@ -44,10 +44,10 @@ public class CategoryResource {
     public ResponseEntity<?> deleteTagById(@PathVariable(value = "categoryId") Long categoryId) {
         logger.info("request to delete category[id={}]",categoryId);
         if (!categoryService.existsById(categoryId)) {
-            return new ResponseEntity<>(ResponseBuilder.buildFailedResponse("分类不存在"), HttpStatus.OK);
+            return new ResponseEntity<>(ResponseBuilder.buildFailedResponse("分类不存在", null), HttpStatus.OK);
         }
         categoryService.removeCategoryById(categoryId);
-        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse("删除成功"), HttpStatus.OK);
+        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse("删除成功", null), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/v1/categories",
