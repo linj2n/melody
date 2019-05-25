@@ -28,4 +28,5 @@ public interface AttachmentService {
 
     Attachment changeMimeType(Attachment newAttachment);
 
+    Page<Attachment> queryAttachmentsByNameContaining(String name, Pageable pageable);
 }

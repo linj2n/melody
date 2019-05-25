@@ -116,11 +116,6 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public Page<Post> getpostsByTags(List<Long> tagIds, Pageable pageable) {
-        return postRepository.findAllByTags(tagIds, Long.valueOf(tagIds.size()), pageable);
-    }
-
-    @Override
     public Page<Post> findPostsByTitle(String title, Pageable pageable) {
         return postRepository.findByTitleContaining(title, pageable);
     }
