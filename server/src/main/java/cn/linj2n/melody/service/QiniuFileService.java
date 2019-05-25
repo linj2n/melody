@@ -7,11 +7,15 @@ public interface QiniuFileService {
 
     String getUploadToken();
 
-    void deleteFile(String fileKey);
+    void deleteFile(Long attachmentId);
 
-    QiniuFile renameFileKey(QiniuFile newFile);
+    QiniuFile getFileById(Long attachmentId);
 
-    QiniuFile changeMimeType(QiniuFile newFile);
+    QiniuFile renameFileKey(Long attachmentId, String newFileKey);
 
-    QiniuFile changeStoreType(QiniuFile newFile);
+    QiniuFile changeMimeType(Long attachmentId, String newMimeType);
+
+    QiniuFile changeStoreType(Long attachmentId, StorageType newStorageType);
+
+    QiniuFile updateQiniuFile(QiniuFile oldFile, QiniuFile newFile);
 }

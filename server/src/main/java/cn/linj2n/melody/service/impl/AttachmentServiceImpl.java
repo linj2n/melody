@@ -53,6 +53,7 @@ public class AttachmentServiceImpl implements AttachmentService {
     @Override
     @Transactional
     public void deleteAttachment(Long attachmentId) {
+        qiniuFileService.deleteFile(attachmentId);
         getAttachment(attachmentId).map(attachment -> {
             attachment.setQiniuFile(null);
             attachmentRepository.delete(attachment);
@@ -131,4 +132,11 @@ public class AttachmentServiceImpl implements AttachmentService {
         return attachmentRepository.findAttachmentByNameAndIdNot(name, id).isPresent();
     }
 
+    @Override
+    public Page<Attachment> queryAttachmentsByNameContaining(String name, Pageable pageable) {
+        return attachmentRepository.findByNameContaining(name, pageable).map(attachment -> {
+            attachment.getQiniuFile();
+            return attachment;
+        });
+    }
 }

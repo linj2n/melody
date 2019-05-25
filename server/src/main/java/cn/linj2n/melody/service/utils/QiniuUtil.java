@@ -5,7 +5,6 @@ import com.qiniu.storage.model.FileInfo;
 
 public class QiniuUtil {
     public static void mapToQiniuFile(FileInfo fileInfo, QiniuFile qiniuFile) {
-        qiniuFile.setKey(fileInfo.key);
         qiniuFile.setType(fileInfo.type);
         qiniuFile.setMimeType(fileInfo.mimeType);
         qiniuFile.setHash(fileInfo.hash);

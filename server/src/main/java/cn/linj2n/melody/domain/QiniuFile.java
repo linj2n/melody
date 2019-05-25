@@ -1,11 +1,11 @@
 package cn.linj2n.melody.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -16,7 +16,7 @@ public class QiniuFile {
     /**
      * 主键
      */
-    @Column(name = "id")
+    @Id
     private Long id;
 
     /**
@@ -48,4 +48,21 @@ public class QiniuFile {
      */
     @Column(name = "qiniu_put_time")
     private long putTime;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    @JsonIgnore
+    private Attachment attachment;
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("id", id)
+                .append("key", key)
+                .append("hash", hash)
+                .append("type", type)
+                .append("mimeType", mimeType)
+                .append("putTime", putTime)
+                .toString();
+    }
 }

@@ -4,8 +4,10 @@ import cn.linj2n.melody.config.MelodyProperties;
 import cn.linj2n.melody.domain.QiniuFile;
 import cn.linj2n.melody.repository.QiniuFileRepository;
 import cn.linj2n.melody.service.QiniuFileService;
+import cn.linj2n.melody.service.utils.QiniuUtil;
 import com.qiniu.common.QiniuException;
 import com.qiniu.storage.BucketManager;
+import com.qiniu.storage.model.FileInfo;
 import com.qiniu.storage.model.StorageType;
 import com.qiniu.util.Auth;
 import com.qiniu.util.StringMap;
@@ -13,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class QiniuFileServiceImpl implements QiniuFileService {
@@ -28,10 +31,11 @@ public class QiniuFileServiceImpl implements QiniuFileService {
     private QiniuFileRepository fileRepository;
 
     @Autowired
-    public QiniuFileServiceImpl(MelodyProperties melodyProperties, Auth qiniuAuth, BucketManager qiniuBucketManager) {
+    public QiniuFileServiceImpl(MelodyProperties melodyProperties, Auth qiniuAuth, BucketManager qiniuBucketManager, QiniuFileRepository fileRepository) {
         this.melodyProperties = melodyProperties;
         this.qiniuAuth = qiniuAuth;
         this.qiniuBucketManager = qiniuBucketManager;
+        this.fileRepository = fileRepository;
     }
 
     @Override
@@ -52,49 +56,87 @@ public class QiniuFileServiceImpl implements QiniuFileService {
     }
 
     @Override
-    public void deleteFile(String fileKey) {
+    @Transactional
+    public void deleteFile(Long attachmentId) {
+        QiniuFile file = fileRepository.findOne(attachmentId);
         try {
-            qiniuBucketManager.delete(getBucket(), fileKey);
+            qiniuBucketManager.delete(getBucket(), file.getKey());
         } catch (QiniuException ex) {
             logger.error("Failed to delete file from Qiniu, fileKey: {}, error code: {} , error msg: {}.",
                     ex.code(), ex.response.toString());
         }
+        fileRepository.delete(file);
     }
 
     @Override
-    public QiniuFile renameFileKey(QiniuFile newFile) {
-        QiniuFile oldFile = fileRepository.findOne(newFile.getId());
+    public QiniuFile renameFileKey(Long attachmentId, String newFileKey) {
+        QiniuFile file = fileRepository.findOne(attachmentId);
         String fromBucket = getBucket(), toBucket = getBucket();
         try {
-            qiniuBucketManager.move(fromBucket, oldFile.getKey(), toBucket, newFile.getKey());
+            qiniuBucketManager.move(fromBucket, file.getKey(), toBucket, newFileKey);
         } catch (QiniuException ex) {
             logger.error("Failed to rename key from Qiniu, [fromBucket: {}, fromKey: {}, toBucket: {}, toKey: {}]; error code: {}, error msg: {}",
-                    fromBucket, oldFile.getKey(), toBucket, newFile.getKey(), ex.code(), ex.response.toString());
+                    fromBucket, file.getKey(), toBucket, newFileKey, ex.code(), ex.response.toString());
         }
-        return fileRepository.save(newFile);
+        file.setKey(newFileKey);
+        return fileRepository.save(file);
     }
 
     @Override
-    public QiniuFile changeMimeType(QiniuFile newFile) {
-
+    public QiniuFile changeMimeType(Long attachmentId, String newMimeType) {
+        QiniuFile file = fileRepository.findOne(attachmentId);
         try {
-            qiniuBucketManager.changeMime(getBucket(), newFile.getKey(), newFile.getMimeType());
+            qiniuBucketManager.changeMime(getBucket(), file.getKey(), newMimeType);
         } catch (QiniuException ex) {
             logger.error("Failed to change MimeType for Key: {}, error msg: {}",
-                    newFile.getKey(), ex.response.toString());
+                    file.getKey(), ex.response.toString());
         }
-        return fileRepository.save(newFile);
+        file.setMimeType(newMimeType);
+        return fileRepository.save(file);
     }
 
     @Override
-    public QiniuFile changeStoreType(QiniuFile newFile) {
+    public QiniuFile changeStoreType(Long attachmentId, StorageType newStoreageType) {
+        QiniuFile file = fileRepository.findOne(attachmentId);
         try {
-            qiniuBucketManager.changeType(getBucket(), newFile.getKey(), StorageType.values()[newFile.getType()]);
+            qiniuBucketManager.changeType(getBucket(), file.getKey(), newStoreageType);
         } catch (QiniuException ex) {
             logger.error("Failed to change store type for Key: {}, error msg: {}",
-                    newFile.getKey(), ex.response.toString());
+                    file.getKey(), ex.response.toString());
         }
-        return fileRepository.save(newFile);
+        file.setType(newStoreageType.ordinal());
+        return fileRepository.save(file);
+    }
+
+    @Override
+    public QiniuFile getFileById(Long attachmentId) {
+        return fileRepository.findOne(attachmentId);
+    }
+
+    @Override
+    public QiniuFile updateQiniuFile(QiniuFile oldFile, QiniuFile newFile) {
+        FileInfo fileInfo = null;
+        try {
+            if (!oldFile.getMimeType().equals(newFile.getMimeType())) {
+                qiniuBucketManager.changeMime(getBucket(), oldFile.getKey(), newFile.getMimeType());
+            }
+            if (oldFile.getType() != newFile.getType()) {
+                qiniuBucketManager.changeType(getBucket(), oldFile.getKey(), StorageType.values()[newFile.getType()]);
+            }
+            if (!oldFile.getKey().equals(newFile.getKey())) {
+                String fromBucket = getBucket(), toBucket = getBucket();
+                qiniuBucketManager.move(fromBucket, oldFile.getKey(), toBucket, newFile.getKey());
+            }
+            fileInfo = qiniuBucketManager.stat(getBucket(), newFile.getKey());
+        } catch (QiniuException ex) {
+            logger.error("Failed to update file info: {}, error msg: {}",
+                    oldFile.getKey(), ex.response.toString());
+            throw new RuntimeException(ex.response.toString());
+        }
+        if (fileInfo != null) {
+            QiniuUtil.mapToQiniuFile(fileInfo, newFile);
+        }
+        return newFile;
     }
 
     private String getBucket() {
