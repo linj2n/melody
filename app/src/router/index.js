@@ -77,13 +77,13 @@ export const asyncRouterMap = [
 
   // TODO: Categories component
   {
-    path: '/attach',
+    path: '/attachments',
     component: Layout,
     children: [
       {
         path: '',
-        name: 'Attach',
-        component: () => import('@/views/attach/index'),
+        name: 'Attachments',
+        component: () => import('@/views/attachments/index'),
         meta: { title: '附 件', icon: 'icon_file' }
       }
     ]
