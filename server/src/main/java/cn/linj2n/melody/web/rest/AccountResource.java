@@ -83,11 +83,11 @@ public class AccountResource {
     @RequestMapping(value = "/v1/account",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getAccountInfo(HttpServletResponse response) {
+    public ResponseEntity<?> getAccountInfo() {
 
         return userService.getUserByLogin(SecurityUtil.getCurrentUserLogin())
-                .map(user -> new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(dtoModelMapper.convertToDTO(user)),HttpStatus.OK))
-                .orElse(new ResponseEntity<>(ResponseBuilder.buildFailedResponse(ResponseCode.INTERNAL_SERVER_ERROR),HttpStatus.INTERNAL_SERVER_ERROR));
+                .map(user -> new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(null, dtoModelMapper.convertToDTO(user)),HttpStatus.OK))
+                .orElse(new ResponseEntity<>(ResponseBuilder.buildFailedResponse(ResponseCode.INTERNAL_SERVER_ERROR.toString(), null),HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
     @RequestMapping(value = "/v1/account/password_reset/{resetKey}",
@@ -95,8 +95,8 @@ public class AccountResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> changePassword(@PathVariable(value = "resetKey") final String resetKey, @ModelAttribute(value = "newPassword") final String newPassword,Locale local) {
         logger.info("Start to request password_reset . resetKey: {}", resetKey);
-        ResponseDTO successResponse = ResponseBuilder.buildSuccessResponse(messageSource.getMessage("account.passwordReset.success",null,local));
-        ResponseDTO failedResponse = ResponseBuilder.buildSuccessResponse(messageSource.getMessage("account.passwordReset.failed",null,local));
+        ResponseDTO successResponse = ResponseBuilder.buildSuccessResponse(messageSource.getMessage("account.passwordReset.success",null,local), null);
+        ResponseDTO failedResponse = ResponseBuilder.buildSuccessResponse(messageSource.getMessage("account.passwordReset.failed",null,local), null);
         return userService.resetPassword(newPassword,resetKey)
                 .map(user -> {
                     return new ResponseEntity<>(successResponse, HttpStatus.OK);
@@ -110,8 +110,8 @@ public class AccountResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> requestPasswordReset(@ModelAttribute(value = "needResetEmail") String needResetEmail, Locale local) {
         logger.info("Start to request password_reset . needResetEmail: {}", needResetEmail);
-        ResponseDTO successResponse = ResponseBuilder.buildSuccessResponse(messageSource.getMessage("account.passwordResetRequest.success",null,local));
-        ResponseDTO failedResponse = ResponseBuilder.buildSuccessResponse(messageSource.getMessage("account.passwordResetRequest.failed",null,local));
+        ResponseDTO successResponse = ResponseBuilder.buildSuccessResponse(messageSource.getMessage("account.passwordResetRequest.success",null,local), null);
+        ResponseDTO failedResponse = ResponseBuilder.buildSuccessResponse(messageSource.getMessage("account.passwordResetRequest.failed",null,local), null);
         return userService.requestPasswordReset(needResetEmail)
                 .map(user -> {
                     emailService.sendPasswordResetMail(user, BASE_URL);
@@ -129,6 +129,6 @@ public class AccountResource {
                                 @RequestParam(value = "email", required = false, defaultValue = "") final String email) {
         Map<String,Boolean> result = new HashMap<>();
         result.put("existed",userService.checkIfExitUserActivatedByLoginOrEmail(login, email));
-        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(result),HttpStatus.OK);
+        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(null, result),HttpStatus.OK);
     }
 }
