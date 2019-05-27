@@ -37,7 +37,10 @@ public class AttachmentResource {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<?> listAllAttachments(Pageable pageable) {
+    public ResponseEntity<?> listAllAttachments(@RequestParam(value = "title", required = false) String title,  Pageable pageable) {
+        if (title != null && !title.isEmpty()) {
+            return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(null, attachmentService.queryAttachmentsByNameContaining(title, pageable)), HttpStatus.OK);
+        }
         return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(null, attachmentService.listAllAttachmentByPage(pageable)), HttpStatus.OK);
     }
 
