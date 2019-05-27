@@ -12,14 +12,11 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: create-drop
-# 账号等敏感信息设置在 ~/.spring-boot-devtools.yml 文件中，格式如下
-#spring:
-#  mail:
-#    username: your-email-address
-#    password: your-verification-code
   mail:
-    host: smtp.163.com
-    port: 465
+    host:
+    port:
+    username:
+    password:
     properties:
       smtp:
         starttls:
