@@ -43,6 +43,7 @@
           style="margin-bottom: 20px;"
         >
           <el-card
+            class="attachment-card"
             :body-style="{ padding: '0px' }"
             shadow="hover"
             @click.native="handleEdit(attachment)"
@@ -75,24 +76,74 @@
     </div>
     <el-dialog
       v-model="tempAttachment"
-      title="附件"
+      title="附件信息"
       :visible.sync="dialogVisible"
-      width="80%"
-    ><div class="image-container">
-       <el-image
-         :src="tempAttachment.qiniuFile.key | fileSrc(qiniuPath)"
-         fit="contain"
-       />
-     </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-      </span>
+      width="70%"
+    ><div>
+      <el-row :gutter="20">
+        <el-col :span="16">
+          <el-image
+            :src="tempAttachment.qiniuFile.key | fileSrc(qiniuPath)"
+            class="image"
+            fit="scale-down"
+          />
+        </el-col>
+        <el-col
+          :span="8"
+          style="padding-left: 20px;"
+          :model="tempAttachment"
+          class="attachment-info-form"
+        >
+          <el-form label-position="top" label-width="80px" size="small">
+            <el-form-item label="名称">
+              <el-input v-model="tempAttachment.name" />
+            </el-form-item>
+            <el-form-item label="路径">
+              <el-input v-model="tempAttachment.name" />
+            </el-form-item>
+            <el-form-item label="存储类型">
+              <el-radio-group v-model="tempAttachment.qiniuFile.type">
+                <el-radio :label="0">标准存储</el-radio>
+                <el-radio :label="1">低频存储</el-radio>
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item label="MIME类型">
+              <el-input v-model="tempAttachment.qiniuFile.mimeType" />
+            </el-form-item>
+            <div class="info-item">
+              <label>文件大小/尺寸</label>
+              <span class="attachment-time">{{
+                tempAttachment.qiniuFile.putTime | toSeconds | formatUnix
+              }}</span>
+            </div>
+            <div class="info-item">
+              <label>更新时间</label>
+              <span class="attachment-time">{{
+                tempAttachment.qiniuFile.putTime | toSeconds | formatUnix
+              }}</span>
+            </div>
+            <div class="info-item">
+              <label>Markdown格式</label>
+              <span
+                class="copy-link"
+                @click="handleCopy(srcUrlMarkdownVal, $event)"
+              >{{ srcUrlMarkdownVal }}</span
+              >
+            </div>
+            <el-form-item>
+              <el-button type="primary">更 新</el-button>
+            </el-form-item>
+          </el-form>
+        </el-col>
+      </el-row>
+    </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
 import moment from 'moment'
+import clip from '@/utils/clipboard' // use clipboard directly
 import { getToken } from '@/api/qiniu'
 import { fetchAttachments } from '@/api/attachment'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
@@ -103,6 +154,9 @@ export default {
   filters: {
     fileSrc(key, domain) {
       return domain + key
+    },
+    toMarkDown(srcUrl, name) {
+      return `![${name}](${srcUrl})`
     },
     toSeconds(nanoseconds) {
       if (nanoseconds) {
@@ -142,6 +196,15 @@ export default {
       }
     }
   },
+  computed: {
+    // 计算属性的 getter
+    srcUrlMarkdownVal: function() {
+      // `this` 指向 vm 实例
+      const name = this.tempAttachment.name
+      const path = this.qiniuPath + this.tempAttachment.key
+      return `![${name}](${path})`
+    }
+  },
   created() {
     this.listAttachments()
   },
@@ -178,6 +241,9 @@ export default {
       this.query.page = 1
       this.listAttachments()
     },
+    handleCopy(text, event) {
+      clip(text, event)
+    },
     handleRemove(file, fileList) {
       console.log(file, fileList)
     },
@@ -194,6 +260,9 @@ export default {
 }
 </script>
 <style>
+.attachment-card {
+  cursor: pointer;
+}
 .attachment-name {
   font-size: 13px;
   color: #999;
@@ -245,7 +314,24 @@ export default {
   vertical-align: middle;
   margin: 10px;
 }
-.image-container {
+.attachment-info-form {
+  border-left: 1px solid #e6e6e6;
+}
+.info-item {
+  margin-bottom: 18px;
+}
+.info-item label {
+  float: none;
+  display: block;
+  text-align: left;
+  padding: 0 0 10px;
+}
+.copy-link {
+  cursor: pointer;
+  margin-left: 10px;
+}
+.copy-link:hover {
+  color: rgb(64, 158, 255);
 }
 </style>
 
