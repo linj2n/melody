@@ -44,6 +44,12 @@ public class QiniuFile {
     private String mimeType;
 
     /**
+     * 七牛云存储对象的大小
+     */
+    @Column(name = "qiniu_fsize")
+    private long size;
+
+    /**
      * 七牛云存储对象上传时间，Unix时间戳格式，且单位是 100纳秒。
      */
     @Column(name = "qiniu_put_time")
