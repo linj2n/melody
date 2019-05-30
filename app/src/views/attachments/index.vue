@@ -43,8 +43,8 @@
           style="margin-bottom: 20px;"
         >
           <el-card
-            class="attachment-card"
             :body-style="{ padding: '0px' }"
+            class="attachment-card"
             shadow="hover"
             @click.native="handleEdit(attachment)"
           >
@@ -67,8 +67,8 @@
       </el-row>
       <pagination
         v-show="total > 0"
-        style="background-color: #f0f2f5"
         :total="total"
+        style="background-color: #f0f2f5"
         :page.sync="query.page"
         :limit.sync="query.size"
         @pagination="listAttachments"
@@ -76,8 +76,8 @@
     </div>
     <el-dialog
       v-model="tempAttachment"
-      title="附件信息"
       :visible.sync="dialogVisible"
+      title="附件信息"
       width="70%"
     ><div>
       <el-row :gutter="20">
@@ -90,8 +90,8 @@
         </el-col>
         <el-col
           :span="8"
-          style="padding-left: 20px;"
           :model="tempAttachment"
+            style="padding-left: 20px;"
           class="attachment-info-form"
         >
           <el-form label-position="top" label-width="80px" size="small">
