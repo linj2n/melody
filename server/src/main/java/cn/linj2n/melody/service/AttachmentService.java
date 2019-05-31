@@ -9,28 +9,15 @@ import java.util.Optional;
 
 public interface AttachmentService {
 
-    boolean checkIfExistsByName(String name);
+    Page<Attachment> listAllAttachmentByPage(Pageable pageable);
 
     boolean checkIfExistsByName(String name, Long id);
 
     Optional<Attachment> getAttachment(Long id);
 
-    Optional<Attachment> getAttachmentByName(String name);
-
     void deleteAttachment(Long attachmentId);
 
-    void updateAttachment(Attachment newAttachment);
-
-    Attachment addAttachment(Attachment newAttachment);
-
-    Attachment renameAttachment(Attachment newAttachment);
-
-    Attachment changeMimeType(Attachment newAttachment);
+    Attachment updateAttachment(Attachment newAttachment);
 
     Page<Attachment> queryAttachmentsByNameContaining(String name, Pageable pageable);
-
-    void updateAttachment(AttachmentDTO attachmentDTO);
-
-    Page<AttachmentDTO> listAllAttachmentByPage(Pageable pageable);
-
 }

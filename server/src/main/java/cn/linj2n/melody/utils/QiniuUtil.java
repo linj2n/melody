@@ -1,4 +1,4 @@
-package cn.linj2n.melody.service.utils;
+package cn.linj2n.melody.utils;
 
 import cn.linj2n.melody.domain.QiniuFile;
 import com.qiniu.storage.model.FileInfo;

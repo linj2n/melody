@@ -4,7 +4,7 @@ import cn.linj2n.melody.config.MelodyProperties;
 import cn.linj2n.melody.domain.QiniuFile;
 import cn.linj2n.melody.repository.QiniuFileRepository;
 import cn.linj2n.melody.service.QiniuFileService;
-import cn.linj2n.melody.service.utils.QiniuUtil;
+import cn.linj2n.melody.utils.QiniuUtil;
 import com.qiniu.common.QiniuException;
 import com.qiniu.storage.BucketManager;
 import com.qiniu.storage.model.FileInfo;
