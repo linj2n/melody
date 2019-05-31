@@ -16,3 +16,11 @@ export function fetchAttachments(query) {
     }
   })
 }
+
+export function updateAttachment(attachment) {
+  return request({
+    url: `/api/v1/attachments/${attachment.id}`,
+    method: 'put',
+    data: attachment
+  })
+}

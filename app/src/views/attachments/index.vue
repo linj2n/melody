@@ -38,7 +38,7 @@
       <el-row :gutter="20">
         <el-col
           v-for="attachment in attachments"
-          :key="attachment.qiniuFile.key"
+          :key="attachment.id"
           :span="4"
           style="margin-bottom: 20px;"
         >
@@ -48,17 +48,12 @@
             shadow="hover"
             @click.native="handleEdit(attachment)"
           >
-            <img
-              :src="attachment.qiniuFile.key | fileSrc(qiniuPath)"
-              class="image"
-            >
+            <img :src="attachment.qiniuFile.url" class="image" >
             <div style="padding: 10px;">
-              <span class="attachment-name">{{
-                attachment.qiniuFile.key
-              }}</span>
+              <span class="attachment-name">{{ attachment | storeName }}</span>
               <div class="bottom clearfix">
                 <span class="attachment-time">
-                  {{ attachment.qiniuFile.putTime | toSeconds | formatUnix }}
+                  {{ attachment.qiniuFile.putTime | formatUnix }}
                 </span>
               </div>
             </div>
@@ -68,9 +63,9 @@
       <pagination
         v-show="total > 0"
         :total="total"
-        style="background-color: #f0f2f5"
         :page.sync="query.page"
         :limit.sync="query.size"
+        style="background-color: #f0f2f5"
         @pagination="listAttachments"
       />
     </div>
@@ -83,7 +78,7 @@
       <el-row :gutter="20">
         <el-col :span="16">
           <el-image
-            :src="tempAttachment.qiniuFile.key | fileSrc(qiniuPath)"
+            :src="tempAttachment.qiniuFile.url"
             class="image"
             fit="scale-down"
           />
@@ -91,7 +86,7 @@
         <el-col
           :span="8"
           :model="tempAttachment"
-            style="padding-left: 20px;"
+          style="padding-left: 20px;"
           class="attachment-info-form"
         >
           <el-form label-position="top" label-width="80px" size="small">
@@ -99,7 +94,7 @@
               <el-input v-model="tempAttachment.name" />
             </el-form-item>
             <el-form-item label="路径">
-              <el-input v-model="tempAttachment.name" />
+              <el-input v-model="tempAttachment.qiniuFile.path" />
             </el-form-item>
             <el-form-item label="存储类型">
               <el-radio-group v-model="tempAttachment.qiniuFile.type">
@@ -111,27 +106,34 @@
               <el-input v-model="tempAttachment.qiniuFile.mimeType" />
             </el-form-item>
             <div class="info-item">
-              <label>文件大小/尺寸</label>
-              <span class="attachment-time">{{
-                tempAttachment.qiniuFile.putTime | toSeconds | formatUnix
-              }}</span>
+              <label>文件大小</label>
+              <span 
+class="attachment-time"
+              >{{ tempAttachment.qiniuFile.size }} KB</span
+              >
             </div>
             <div class="info-item">
               <label>更新时间</label>
               <span class="attachment-time">{{
-                tempAttachment.qiniuFile.putTime | toSeconds | formatUnix
+                tempAttachment.qiniuFile.putTime | formatUnix
               }}</span>
             </div>
             <div class="info-item">
               <label>Markdown格式</label>
               <span
                 class="copy-link"
-                @click="handleCopy(srcUrlMarkdownVal, $event)"
-              >{{ srcUrlMarkdownVal }}</span
+                @click="
+                  handleCopy(getSrcUrlMarkdownValue(tempAttachment), $event)
+                "
+              >{{ getSrcUrlMarkdownValue(tempAttachment) }}</span
               >
             </div>
             <el-form-item>
-              <el-button type="primary">更 新</el-button>
+              <el-button 
+type="primary" 
+@click="saveAttachment"
+              >更 新</el-button
+              >
             </el-form-item>
           </el-form>
         </el-col>
@@ -145,23 +147,17 @@
 import moment from 'moment'
 import clip from '@/utils/clipboard' // use clipboard directly
 import { getToken } from '@/api/qiniu'
-import { fetchAttachments } from '@/api/attachment'
+import { fetchAttachments, updateAttachment } from '@/api/attachment'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 export default {
   name: 'AttachmentList',
   components: { Pagination },
   filters: {
-    fileSrc(key, domain) {
-      return domain + key
-    },
-    toMarkDown(srcUrl, name) {
-      return `![${name}](${srcUrl})`
-    },
-    toSeconds(nanoseconds) {
-      if (nanoseconds) {
-        return Math.round(nanoseconds / 10000000)
-      }
+    storeName(attachment) {
+      const path = attachment.qiniuFile.path
+      const name = attachment.name
+      return `${path}${name}`
     },
     formatUnix(value) {
       if (value) {
@@ -172,7 +168,6 @@ export default {
   data() {
     return {
       dialogVisible: false,
-      qiniuPath: 'http://qiniuyunimage.cdn.linj2n.cn/',
       attachments: [],
       total: 0,
       query: {
@@ -186,29 +181,31 @@ export default {
         name: '',
         description: '',
         qiniuFile: {
-          id: null,
-          key: '',
+          path: '',
           hash: '',
           type: null,
           mimeType: '',
-          putTime: null
+          putTime: null,
+          url: null,
+          size: null
         }
       }
-    }
-  },
-  computed: {
-    // 计算属性的 getter
-    srcUrlMarkdownVal: function() {
-      // `this` 指向 vm 实例
-      const name = this.tempAttachment.name
-      const path = this.qiniuPath + this.tempAttachment.key
-      return `![${name}](${path})`
     }
   },
   created() {
     this.listAttachments()
   },
   methods: {
+    getSrcUrlMarkdownValue(attachment) {
+      const url = attachment.qiniuFile.url
+      const name = attachment.name
+      return `![${name}](${url})`
+    },
+    getStoreName(attachment) {
+      const path = attachment.qiniuFile.path
+      const name = attachment.name
+      return `${path}${name}`
+    },
     listAttachments() {
       fetchAttachments(this.query).then(response => {
         this.attachments = response.data.content
@@ -233,8 +230,22 @@ export default {
         })
       })
     },
+    saveAttachment() {
+      const attachment = Object.assign({}, this.tempAttachment)
+      updateAttachment(attachment).then(response => {
+        const newAttachment = response.data
+        this.tempAttachment = Object.assign({}, newAttachment)
+        this.attachments.splice(this.attachments.findIndex(a => a.id === newAttachment.id), 1, newAttachment)
+        this.$message({
+          message: response.message,
+          type: 'success'
+        })
+      })
+    },
     handleEdit(attachment) {
       this.tempAttachment = Object.assign({}, attachment)
+      const qiniuFile = Object.assign({}, this.tempAttachment.qiniuFile)
+      this.tempAttachment.qiniuFile = qiniuFile
       this.dialogVisible = true
     },
     handleFilter() {
