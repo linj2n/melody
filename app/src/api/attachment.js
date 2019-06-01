@@ -24,3 +24,10 @@ export function updateAttachment(attachment) {
     data: attachment
   })
 }
+
+export function deleteAttachment(id) {
+  return request({
+    url: `/api/v1/attachments/${id}`,
+    method: 'delete'
+  })
+}

@@ -128,13 +128,48 @@ class="attachment-time"
               >{{ getSrcUrlMarkdownValue(tempAttachment) }}</span
               >
             </div>
-            <el-form-item>
-              <el-button 
-type="primary" 
-@click="saveAttachment"
-              >更 新</el-button
+            <el-popover
+              v-model="deletePopoverVisible"
+              placement="top"
+              width="160"
+            >
+              <p>确定删除吗？</p>
+              <div style="text-align: right; margin: 0">
+                <el-button
+                  size="small"
+                  type="text"
+                  @click="deletePopoverVisible = false"
+                >取消</el-button
+                >
+                <el-button
+                  :loading="deleteButtonLoading"
+                  type="primary"
+                  size="small"
+                  @click="handleRemoveConfirm(tempAttachment.id)"
+                >确定</el-button
+                >
+              </div>
+              <el-button
+                slot="reference"
+                :loading="deleteButtonLoading"
+                size="small"
+                type="danger"
+              >删 除</el-button
               >
-            </el-form-item>
+            </el-popover>
+            <el-button
+              style="margin-left: 10px"
+              size="small"
+              @click="editDialogVisible = false"
+            >取 消</el-button
+            >
+            <el-button
+              :loading="updateButtonLoading"
+              size="mini"
+              type="primary"
+              @click="saveAttachment"
+            >更 新</el-button
+            >
           </el-form>
         </el-col>
       </el-row>
@@ -147,7 +182,7 @@ type="primary"
 import moment from 'moment'
 import clip from '@/utils/clipboard' // use clipboard directly
 import { getToken } from '@/api/qiniu'
-import { fetchAttachments, updateAttachment } from '@/api/attachment'
+import { fetchAttachments, updateAttachment, deleteAttachment } from '@/api/attachment'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 export default {
@@ -168,6 +203,9 @@ export default {
   data() {
     return {
       dialogVisible: false,
+      updateButtonLoading: false,
+      deleteButtonLoading: false,
+      deletePopoverVisible: false,
       attachments: [],
       total: 0,
       query: {
@@ -232,7 +270,9 @@ export default {
     },
     saveAttachment() {
       const attachment = Object.assign({}, this.tempAttachment)
+      this.updateButtonLoading = true
       updateAttachment(attachment).then(response => {
+        this.updateButtonLoading = false
         const newAttachment = response.data
         this.tempAttachment = Object.assign({}, newAttachment)
         this.attachments.splice(this.attachments.findIndex(a => a.id === newAttachment.id), 1, newAttachment)
@@ -246,6 +286,8 @@ export default {
       this.tempAttachment = Object.assign({}, attachment)
       const qiniuFile = Object.assign({}, this.tempAttachment.qiniuFile)
       this.tempAttachment.qiniuFile = qiniuFile
+      this.deleteButtonLoading = false
+      this.updateButtonLoading = false
       this.dialogVisible = true
     },
     handleFilter() {
@@ -255,17 +297,17 @@ export default {
     handleCopy(text, event) {
       clip(text, event)
     },
-    handleRemove(file, fileList) {
-      console.log(file, fileList)
-    },
-    handlePreview(file) {
-      console.log(file)
-    },
-    handleExceed(files, fileList) {
-      this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
-    },
-    beforeRemove(file, fileList) {
-      return this.$confirm(`确定移除 ${file.name}？`)
+    handleRemoveConfirm(id) {
+      this.deleteButtonLoading = true
+      deleteAttachment(id).then(response => {
+        this.attachments.splice(this.attachments.findIndex(a => a.id === id), 1)
+        this.deletePopoverVisible = false
+        this.dialogVisible = false
+        this.$message({
+          message: response.message,
+          type: 'success'
+        })
+      })
     }
   }
 }
