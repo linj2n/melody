@@ -23,15 +23,9 @@
         >
           搜 索
         </el-button>
-        <el-button
-          class="filter-item"
-          size="small"
-          type="primary"
-          icon="el-icon-upload"
-          style="margin-left: 10px;"
-        >
-          上传
-        </el-button>
+        <el-upload>
+          <el-button size="small" type="primary">点击上传</el-button>
+        </el-upload>
       </template>
     </div>
     <div class="attachments-body">
