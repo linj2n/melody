@@ -56,16 +56,13 @@ public class QiniuFileServiceImpl implements QiniuFileService {
     }
 
     @Override
-    @Transactional
-    public void deleteFile(Long attachmentId) {
-        QiniuFile file = fileRepository.findOne(attachmentId);
+    public void deleteFile(String fileKey) {
         try {
-            qiniuBucketManager.delete(getBucket(), file.getKey());
+            qiniuBucketManager.delete(getBucket(), fileKey);
         } catch (QiniuException ex) {
             logger.error("Failed to delete file from Qiniu, fileKey: {}, error code: {} , error msg: {}.",
                     ex.code(), ex.response.toString());
         }
-        fileRepository.delete(file);
     }
 
     @Override

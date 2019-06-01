@@ -7,7 +7,7 @@ public interface QiniuFileService {
 
     String getUploadToken();
 
-    void deleteFile(Long attachmentId);
+    void deleteFile(String fileKey);
 
     QiniuFile getFileById(Long attachmentId);
 
