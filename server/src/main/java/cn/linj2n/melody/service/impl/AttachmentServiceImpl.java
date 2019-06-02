@@ -48,8 +48,6 @@ public class AttachmentServiceImpl implements AttachmentService {
     @Override
     @Transactional
     public void deleteAttachment(Long attachmentId) {
-//        qiniuFileService.deleteFile(attachmentId);
-
         getAttachment(attachmentId).map(attachment -> {
             qiniuFileService.deleteFile(attachment.getQiniuFile().getKey());
             attachment.setQiniuFile(null);
