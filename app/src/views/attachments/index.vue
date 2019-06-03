@@ -23,7 +23,11 @@
         >
           搜 索
         </el-button>
-        <el-upload>
+        <el-upload
+          :data="dataObj"
+          :before-upload="beforeUpload"
+          action="http://upload-z2.qiniup.com"
+        >
           <el-button size="small" type="primary">点击上传</el-button>
         </el-upload>
       </template>
@@ -221,7 +225,8 @@ export default {
           url: null,
           size: null
         }
-      }
+      },
+      dataObj: { token: '', key: '' }
     }
   },
   created() {
