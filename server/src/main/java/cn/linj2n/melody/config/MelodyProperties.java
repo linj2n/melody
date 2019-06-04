@@ -21,9 +21,11 @@ public class MelodyProperties {
 
         private String bucket;
 
-        private String domain;
+        private String uploadUrl;
 
         private String externalDefaultLinkDomain;
+
+        private String callBackHandlingUrl;
 
         public String getAccessKey() {
             return accessKey;
@@ -49,12 +51,12 @@ public class MelodyProperties {
             this.bucket = bucket;
         }
 
-        public String getDomain() {
-            return domain;
+        public String getUploadUrl() {
+            return uploadUrl;
         }
 
-        public void setDomain(String domain) {
-            this.domain = domain;
+        public void setUploadUrl(String uploadUrl) {
+            this.uploadUrl = uploadUrl;
         }
 
         public String getExternalDefaultLinkDomain() {
@@ -63,6 +65,14 @@ public class MelodyProperties {
 
         public void setExternalDefaultLinkDomain(String externalDefaultLinkDomain) {
             this.externalDefaultLinkDomain = externalDefaultLinkDomain;
+        }
+
+        public String getCallBackHandlingUrl() {
+            return callBackHandlingUrl;
+        }
+
+        public void setCallBackHandlingUrl(String callBackHandlingUrl) {
+            this.callBackHandlingUrl = callBackHandlingUrl;
         }
     }
 }
