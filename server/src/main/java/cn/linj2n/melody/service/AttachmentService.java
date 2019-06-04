@@ -1,6 +1,7 @@
 package cn.linj2n.melody.service;
 
 import cn.linj2n.melody.domain.Attachment;
+import cn.linj2n.melody.domain.QiniuFile;
 import cn.linj2n.melody.web.dto.AttachmentDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,4 +21,6 @@ public interface AttachmentService {
     Attachment updateAttachment(Attachment newAttachment);
 
     Page<Attachment> queryAttachmentsByNameContaining(String name, Pageable pageable);
+
+    Attachment createAttachment(String qiniuFileKey);
 }

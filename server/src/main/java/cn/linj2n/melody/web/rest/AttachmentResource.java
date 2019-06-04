@@ -1,6 +1,7 @@
 package cn.linj2n.melody.web.rest;
 
 import cn.linj2n.melody.domain.Attachment;
+import cn.linj2n.melody.domain.QiniuFile;
 import cn.linj2n.melody.service.AttachmentService;
 import cn.linj2n.melody.service.QiniuFileService;
 import cn.linj2n.melody.web.dto.AttachmentDTO;
@@ -29,13 +30,31 @@ public class AttachmentResource {
 
     private AttachmentService attachmentService;
 
+    private QiniuFileService qiniuFileService;
+
     private DTOModelMapper dtoModelMapper;
 
     @Autowired
-    public AttachmentResource(AttachmentService attachmentService, DTOModelMapper dtoModelMapper) {
+    public AttachmentResource(AttachmentService attachmentService, QiniuFileService qiniuFileService, DTOModelMapper dtoModelMapper) {
         this.attachmentService = attachmentService;
+        this.qiniuFileService = qiniuFileService;
         this.dtoModelMapper = dtoModelMapper;
     }
+
+    @RequestMapping(
+            value = "/v1/attachments",
+            method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<?> createAttachment(@RequestBody QiniuFile qiniuFile) {
+        return new ResponseEntity<>(
+                ResponseBuilder.buildSuccessResponse(
+                        "附件上传成功",
+                        dtoModelMapper.convertToDTO(attachmentService.createAttachment(qiniuFile.getKey()))
+                )
+                , HttpStatus.OK);
+    }
+
 
     @RequestMapping(
             value = "/v1/attachments",

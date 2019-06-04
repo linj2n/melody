@@ -1,6 +1,7 @@
 package cn.linj2n.melody.service.impl;
 
 import cn.linj2n.melody.domain.Attachment;
+import cn.linj2n.melody.domain.QiniuFile;
 import cn.linj2n.melody.repository.AttachmentRepository;
 import cn.linj2n.melody.service.AttachmentService;
 import cn.linj2n.melody.service.QiniuFileService;
@@ -91,4 +92,16 @@ public class AttachmentServiceImpl implements AttachmentService {
             return attachment;
         });
     }
+
+    @Override
+    public Attachment createAttachment(String qiniuFileKey) {
+        // TODO: Handling invalid qiniu file key
+        QiniuFile qiniuFile = qiniuFileService.getRemoteFileInfoByKey(qiniuFileKey);
+        Attachment newAttachment = new Attachment();
+        newAttachment.setName(qiniuFileKey);
+        newAttachment.setQiniuFile(qiniuFile);
+        qiniuFile.setAttachment(newAttachment);
+        return attachmentRepository.save(newAttachment);
+    }
+
 }
