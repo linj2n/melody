@@ -1,6 +1,7 @@
 package cn.linj2n.melody.service.impl;
 
 import cn.linj2n.melody.config.MelodyProperties;
+import cn.linj2n.melody.domain.Attachment;
 import cn.linj2n.melody.domain.QiniuFile;
 import cn.linj2n.melody.repository.QiniuFileRepository;
 import cn.linj2n.melody.service.QiniuFileService;
@@ -41,18 +42,16 @@ public class QiniuFileServiceImpl implements QiniuFileService {
     @Override
     public String getUploadToken() {
         StringMap putPolicy = new StringMap();
-        putPolicy.put("callbackUrl", "http://requestbin.fullcontact.com/11mtq281");
-        putPolicy.put("callbackBody", "key=$(key)&hash=$(etag)&bucket=$(bucket)&fsize=$(fsize)");
+//        putPolicy.put("callbackUrl", melodyProperties.getQiniu().getCallBackHandlingUrl());
+        putPolicy.put("callbackUrl", "http://requestbin.fullcontact.com/1e43ky51");
+        putPolicy.put("callbackBody", "{\"key\":\"$(key)\",\"hash\":\"$(etag)\",\"fsize\":$(fsize)}");
         putPolicy.put("callbackBodyType", "application/json");
         long expireSeconds = 3600;
         return qiniuAuth.uploadToken(
                 melodyProperties.getQiniu().getBucket(),
-                null);
-//        return qiniuAuth.uploadToken(
-//                melodyProperties.getQiniu().getBucket(),
-//                null,
-//                expireSeconds,
-//                putPolicy);
+                null,
+                expireSeconds,
+                putPolicy);
     }
 
     @Override
@@ -134,6 +133,26 @@ public class QiniuFileServiceImpl implements QiniuFileService {
             QiniuUtil.mapToQiniuFile(fileInfo, newFile);
         }
         return newFile;
+    }
+
+    @Override
+    public QiniuFile getRemoteFileInfoByKey(String key) {
+        FileInfo fileInfo = null;
+        QiniuFile qiniuFile = new QiniuFile();
+        qiniuFile.setKey(key);
+        try {
+            fileInfo = qiniuBucketManager.stat(getBucket(), key);
+        } catch (QiniuException ex) {
+            logger.error("Failed to get file info by Key:[{}]; error msg: {}.", key, ex.response.toString());
+            throw new RuntimeException(ex.response.toString());
+        }
+        QiniuUtil.mapToQiniuFile(fileInfo, qiniuFile);
+        return qiniuFile;
+    }
+
+    @Override
+    public QiniuFile addQiniuFile(QiniuFile qiniuFile) {
+        return fileRepository.save(qiniuFile);
     }
 
     private String getBucket() {

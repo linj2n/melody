@@ -9,6 +9,7 @@ public class QiniuUtil {
         qiniuFile.setMimeType(fileInfo.mimeType);
         qiniuFile.setHash(fileInfo.hash);
         qiniuFile.setPutTime(fileInfo.putTime);
+        qiniuFile.setSize(fileInfo.fsize);
     }
 
     public static String getFileNameInKey(String qiniuKey) {
