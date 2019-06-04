@@ -17,6 +17,7 @@ public class QiniuFile {
      * 主键
      */
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /**
@@ -55,8 +56,8 @@ public class QiniuFile {
     @Column(name = "qiniu_put_time")
     private long putTime;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "attachment_id", nullable = false)
     @JsonIgnore
     private Attachment attachment;
 
