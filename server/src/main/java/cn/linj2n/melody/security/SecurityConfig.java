@@ -5,6 +5,7 @@ import cn.linj2n.melody.repository.UserRepository;
 import cn.linj2n.melody.security.AjaxAuthenticationFailureHandler;
 import cn.linj2n.melody.web.filter.AuthCookieGeneratorFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -43,6 +44,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private AuthCookieGeneratorFilter authCookieGeneratorFilter;
 
+    @Autowired
+    private QiniuAuthenticationFilter qiniuAuthenticationFilter;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -59,12 +63,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf()
-                    .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                    .ignoringAntMatchers("/api/blank")
-                .and()
-                    .addFilterAfter(authCookieGeneratorFilter, FilterSecurityInterceptor.class)
-                    .exceptionHandling()
-                .and()
+//                    .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+//                    .ignoringAntMatchers("/api/blank")
+
+//                .and()
+//                    .addFilterAfter(authCookieGeneratorFilter, FilterSecurityInterceptor.class)
+//                    .exceptionHandling()
+//                .and()
+                .disable()
                     .cors()
                 .and()
                     .authorizeRequests()
@@ -109,6 +115,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
             }
         };
+    }
+
+    @Bean
+    public FilterRegistrationBean qiniuAuthenticationFilterRegistrationBean(){
+        FilterRegistrationBean regBean = new FilterRegistrationBean();
+        regBean.setFilter(qiniuAuthenticationFilter);
+        regBean.setOrder(1);
+        regBean.addUrlPatterns("/api/v1/attachments/create");
+        return regBean;
     }
 }
 
