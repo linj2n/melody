@@ -7,11 +7,6 @@ import cn.linj2n.melody.service.QiniuFileService;
 import cn.linj2n.melody.web.dto.AttachmentDTO;
 import cn.linj2n.melody.web.utils.DTOModelMapper;
 import cn.linj2n.melody.web.utils.ResponseBuilder;
-import com.qiniu.common.Zone;
-import com.qiniu.storage.BucketManager;
-import com.qiniu.storage.Configuration;
-import com.qiniu.storage.model.FileInfo;
-import com.qiniu.util.Auth;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 
 @RestController
 @RequestMapping(value = "/api")
@@ -42,11 +36,12 @@ public class AttachmentResource {
     }
 
     @RequestMapping(
-            value = "/v1/attachments",
+            value = "/v1/attachments/create",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<?> createAttachment(@RequestBody QiniuFile qiniuFile) {
+        logger.info("request to create new attachment, qiniu file: {}.", qiniuFile.toString());
         return new ResponseEntity<>(
                 ResponseBuilder.buildSuccessResponse(
                         "附件上传成功",
