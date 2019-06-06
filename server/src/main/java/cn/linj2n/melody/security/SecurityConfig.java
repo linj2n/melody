@@ -61,40 +61,37 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf()
-                    .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                    .ignoringAntMatchers("/api/blank")
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .ignoringAntMatchers("/api/blank", "/api/v1/attachments/create")
                 .and()
-                    .addFilterAfter(authCookieGeneratorFilter, FilterSecurityInterceptor.class)
-                    .exceptionHandling()
+                .addFilterAfter(authCookieGeneratorFilter, FilterSecurityInterceptor.class)
+                .exceptionHandling()
                 .and()
-                    .cors()
+                .cors()
                 .and()
-                    .authorizeRequests()
-                    .antMatchers(HttpMethod.OPTIONS).permitAll()
-                    .antMatchers("/api/blank").permitAll()
-                    .antMatchers("/api/v1/account/password_reset").permitAll()
-                    .antMatchers("/api/v1/account/registration").permitAll()
-                    .antMatchers("/api/v1/account/password_reset/**").permitAll()
-                    .antMatchers("/api/v1/account").authenticated()
-                    .antMatchers("/admin/**").permitAll()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.OPTIONS).permitAll()
+                .antMatchers("/api/blank").permitAll()
+                .antMatchers("/api/v1/account/password_reset").permitAll()
+                .antMatchers("/api/v1/account/registration").permitAll()
+                .antMatchers("/api/v1/account/password_reset/**").permitAll()
+                .antMatchers("/api/v1/account").authenticated()
+                .antMatchers("/admin/**").permitAll()
 //                    .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                 .and()
-                    .formLogin()
-                    .loginProcessingUrl("/api/v1/account/authentication").permitAll()
+                .formLogin()
+                .loginProcessingUrl("/api/v1/account/authentication").permitAll()
 //                    .successHandler(ajaxAuthenticationSuccessHandler)
-                    .defaultSuccessUrl("/api/v1/account")
-                    .failureHandler(ajaxAuthenticationFailureHandler).permitAll()
+                .defaultSuccessUrl("/api/v1/account")
+                .failureHandler(ajaxAuthenticationFailureHandler).permitAll()
                 .and()
-                    .logout()
-                    .logoutUrl("/api/v1/logout").permitAll()
+                .logout()
+                .logoutUrl("/api/v1/logout").permitAll()
 //                    .logoutSuccessHandler(ajaxLogoutSuccessHandler)
-                    .logoutSuccessUrl("/api/v1/account/logout")
-                    .deleteCookies("JSESSIONID","AUTH").permitAll();
+                .logoutSuccessUrl("/api/v1/account/logout")
+                .deleteCookies("JSESSIONID","AUTH").permitAll();
 
-        http
-                .requestMatcher(new AntPathRequestMatcher("/api/v1/attachments/create"))
-                .csrf()
-                .disable();
+
     }
     @Bean
     public WebMvcConfigurer corsConfigurer() {
