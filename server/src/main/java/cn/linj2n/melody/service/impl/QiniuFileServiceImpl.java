@@ -154,6 +154,11 @@ public class QiniuFileServiceImpl implements QiniuFileService {
         return fileRepository.save(qiniuFile);
     }
 
+    @Override
+    public boolean isValidCallBack(String originAuthorization, byte[] body) {
+        return qiniuAuth.isValidCallback(originAuthorization, melodyProperties.getQiniu().getCallBackHandlingUrl(), body, "application/json");
+    }
+
     private String getBucket() {
         return melodyProperties.getQiniu().getBucket();
     }

@@ -24,4 +24,6 @@ public interface QiniuFileService {
 
     QiniuFile addQiniuFile(QiniuFile qiniuFile);
 
+    boolean isValidCallBack(String originAuthorization, byte[] body);
+
 }

@@ -19,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -44,9 +45,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private AuthCookieGeneratorFilter authCookieGeneratorFilter;
 
-    @Autowired
-    private QiniuAuthenticationFilter qiniuAuthenticationFilter;
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -63,14 +61,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf()
-//                    .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-//                    .ignoringAntMatchers("/api/blank")
-
-//                .and()
-//                    .addFilterAfter(authCookieGeneratorFilter, FilterSecurityInterceptor.class)
-//                    .exceptionHandling()
-//                .and()
-                .disable()
+                    .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                    .ignoringAntMatchers("/api/blank")
+                .and()
+                    .addFilterAfter(authCookieGeneratorFilter, FilterSecurityInterceptor.class)
+                    .exceptionHandling()
+                .and()
                     .cors()
                 .and()
                     .authorizeRequests()
@@ -94,6 +90,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                    .logoutSuccessHandler(ajaxLogoutSuccessHandler)
                     .logoutSuccessUrl("/api/v1/account/logout")
                     .deleteCookies("JSESSIONID","AUTH").permitAll();
+
+        http
+                .requestMatcher(new AntPathRequestMatcher("/api/v1/attachments/create"))
+                .csrf()
+                .disable();
     }
     @Bean
     public WebMvcConfigurer corsConfigurer() {
@@ -112,18 +113,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         // 允许请求携带的 Headers
                         .allowedHeaders("*")
                         .exposedHeaders("AUTH");
-
             }
         };
-    }
-
-    @Bean
-    public FilterRegistrationBean qiniuAuthenticationFilterRegistrationBean(){
-        FilterRegistrationBean regBean = new FilterRegistrationBean();
-        regBean.setFilter(qiniuAuthenticationFilter);
-        regBean.setOrder(1);
-        regBean.addUrlPatterns("/api/v1/attachments/create");
-        return regBean;
     }
 }
 
