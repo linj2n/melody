@@ -57,7 +57,6 @@ public class AttachmentResource {
             return new ResponseEntity<>(ResponseBuilder.buildFailedResponse("服务器出错，附件创建的失败", null), HttpStatus.UNAUTHORIZED);
         }
         logger.info("Qiniu callback request authentication succeeded.");
-//        logger.info("callbackBody : {}.", new String(callbackBody));
         String fileKey = new JSONObject(new String(callbackBody)).get("key").toString();
         logger.info("request to create new attachment, qiniu file: {}.", fileKey);
         return new ResponseEntity<>(
