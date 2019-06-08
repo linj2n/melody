@@ -1,14 +1,11 @@
 package cn.linj2n.melody.web.rest;
 
 import cn.linj2n.melody.domain.Attachment;
-import cn.linj2n.melody.domain.QiniuFile;
 import cn.linj2n.melody.service.AttachmentService;
 import cn.linj2n.melody.service.QiniuFileService;
 import cn.linj2n.melody.web.dto.AttachmentDTO;
 import cn.linj2n.melody.web.utils.DTOModelMapper;
 import cn.linj2n.melody.web.utils.ResponseBuilder;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import com.google.gson.JsonObject;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 import org.slf4j.Logger;
