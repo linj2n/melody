@@ -2,7 +2,6 @@ package cn.linj2n.melody.web.rest;
 
 
 import cn.linj2n.melody.domain.Tag;
-import cn.linj2n.melody.repository.TagRepository;
 import cn.linj2n.melody.service.TagService;
 import cn.linj2n.melody.web.utils.ResponseBuilder;
 import org.slf4j.Logger;
@@ -13,7 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api")
