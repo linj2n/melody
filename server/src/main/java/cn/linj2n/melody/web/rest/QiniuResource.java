@@ -1,5 +1,6 @@
 package cn.linj2n.melody.web.rest;
 
+import cn.linj2n.melody.config.MelodyProperties;
 import cn.linj2n.melody.service.QiniuFileService;
 import cn.linj2n.melody.web.utils.ResponseBuilder;
 import com.qiniu.common.QiniuException;
@@ -42,9 +43,13 @@ public class QiniuResource {
     private static final Logger logger = LoggerFactory.getLogger(QiniuResource.class);
 
     private QiniuFileService qiniuFileService;
+
+    private MelodyProperties melodyProperties;
+
     @Autowired
-    public QiniuResource(QiniuFileService qiniuFileService) {
+    public QiniuResource(QiniuFileService qiniuFileService, MelodyProperties melodyProperties) {
         this.qiniuFileService = qiniuFileService;
+        this.melodyProperties = melodyProperties;
     }
 
     @RequestMapping(
@@ -54,7 +59,28 @@ public class QiniuResource {
     public ResponseEntity<?> getToken() {
         Map<String, String> data = new HashMap<>();
         data.put("uploadToken", qiniuFileService.getUploadToken());
+        data.put("uploadUrl", melodyProperties.getQiniu().getUploadUrl());
         return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(null, data),HttpStatus.OK);
     }
 
+    @RequestMapping(
+            value = "/v1/qiniu/upload-url",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getUploadUrl() {
+        Map<String, String> data = new HashMap<>();
+        data.put("uploadUrl", melodyProperties.getQiniu().getUploadUrl());
+        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(null, data),HttpStatus.OK);
+    }
+
+    @RequestMapping(
+            value = "/v1/attach",
+            method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<?> addAttach(HttpServletRequest request) {
+        logger.info("hit /v1/attach");
+        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse("upload successfuuly", null), HttpStatus.OK);
+    }
+    
 }
