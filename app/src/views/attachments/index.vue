@@ -23,13 +23,15 @@
         >
           搜 索
         </el-button>
-        <el-upload
-          :data="dataObj"
-          :before-upload="beforeUpload"
-          action="http://upload-z2.qiniup.com"
+        <el-button
+          class="filter-item"
+          size="small"
+          type="primary"
+          icon="el-icon-upload"
+          @click="uploadDialogVisible = true"
         >
-          <el-button size="small" type="primary">点击上传</el-button>
-        </el-upload>
+          上 传
+        </el-button>
       </template>
     </div>
     <div class="attachments-body">
@@ -67,6 +69,40 @@
         @pagination="listAttachments"
       />
     </div>
+    <el-dialog
+      :visible.sync="uploadDialogVisible"
+      title="上传附件"
+      @close="handleFilter"
+    >
+      <el-row>
+        <el-col :span="24">
+          <el-upload
+            ref="upload"
+            :data="dataObj"
+            :before-upload="beforeUpload"
+            :on-error="handlingUploadError"
+            :on-progress="onProgress"
+            :auto-upload="false"
+            :action="uploadUrl"
+            drag
+          >
+            <i class="el-icon-upload" />
+            <div class="el-upload__text">
+              将文件拖到此处，或<em>点击选取文件</em>
+            </div>
+          </el-upload>
+        </el-col>
+      </el-row>
+      <el-row type="flex" justify="center" style="margin-top: 20px">
+        <el-col :span="6">
+          <el-button 
+style="width: 100%" 
+type="success" @click="submitUpload"
+          >上传</el-button
+          >
+        </el-col>
+      </el-row>
+    </el-dialog>
     <el-dialog
       v-model="tempAttachment"
       :visible.sync="dialogVisible"
@@ -179,7 +215,7 @@ class="attachment-time"
 <script>
 import moment from 'moment'
 import clip from '@/utils/clipboard' // use clipboard directly
-import { getToken } from '@/api/qiniu'
+import { getToken, fecthUploadUrl } from '@/api/qiniu'
 import { fetchAttachments, updateAttachment, deleteAttachment } from '@/api/attachment'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
@@ -201,10 +237,12 @@ export default {
   data() {
     return {
       dialogVisible: false,
+      uploadDialogVisible: false,
       updateButtonLoading: false,
       deleteButtonLoading: false,
       deletePopoverVisible: false,
       attachments: [],
+      uploadUrl: '',
       total: 0,
       query: {
         title: '',
@@ -231,8 +269,14 @@ export default {
   },
   created() {
     this.listAttachments()
+    this.getUploadUrl()
   },
   methods: {
+    getUploadUrl() {
+      fecthUploadUrl().then(response => {
+        this.uploadUrl = response.data.uploadUrl
+      })
+    },
     getSrcUrlMarkdownValue(attachment) {
       const url = attachment.qiniuFile.url
       const name = attachment.name
@@ -266,6 +310,19 @@ export default {
           reject(false)
         })
       })
+    },
+    handlingUploadError(err, file, fileList) {
+      console.log(err)
+      this.$message.error('服务器出错，上传失败。')
+    },
+    handlingUploadSuccess(response, file, fileList) {
+      this.$message.error('上传成功')
+    },
+    onProgress(e, file) {
+      console.log(e.percent, file)
+    },
+    submitUpload() {
+      this.$refs.upload.submit()
     },
     saveAttachment() {
       const attachment = Object.assign({}, this.tempAttachment)
@@ -384,6 +441,12 @@ export default {
 }
 .copy-link:hover {
   color: rgb(64, 158, 255);
+}
+.el-upload {
+  display: block;
+}
+.el-upload-dragger {
+  width: 100%;
 }
 </style>
 
