@@ -1,7 +1,6 @@
 package cn.linj2n.melody.service.impl;
 
 import cn.linj2n.melody.config.MelodyProperties;
-import cn.linj2n.melody.domain.Attachment;
 import cn.linj2n.melody.domain.QiniuFile;
 import cn.linj2n.melody.repository.QiniuFileRepository;
 import cn.linj2n.melody.service.QiniuFileService;

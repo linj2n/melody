@@ -1,7 +1,6 @@
 package cn.linj2n.melody.service.impl;
 
 import cn.linj2n.melody.domain.Tag;
-import cn.linj2n.melody.repository.PostRepository;
 import cn.linj2n.melody.repository.TagRepository;
 import cn.linj2n.melody.service.TagService;
 import org.slf4j.Logger;
