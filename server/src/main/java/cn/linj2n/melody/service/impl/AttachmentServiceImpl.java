@@ -71,6 +71,7 @@ public class AttachmentServiceImpl implements AttachmentService {
                                 .updateQiniuFile(oldAttachment.getQiniuFile(),
                                         newAttachment.getQiniuFile()
                                 ));
+                        newAttachment.getQiniuFile().setAttachment(newAttachment);
                         // Update attachment in database and return new value
                         return attachmentRepository.save(newAttachment);
                     })
