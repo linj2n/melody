@@ -45,7 +45,7 @@ public class PostResource {
     @RequestMapping(value = "/v1/posts/{postId}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> updatePost(@PathVariable(value = "postId") Long postId) {
+    public ResponseEntity<?> getPost(@PathVariable(value = "postId") Long postId) {
         return postService.getPost(postId)
                 .map(dtoModelMapper::convertToDTO)
                 .map(postDTO -> {
