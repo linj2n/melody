@@ -7,7 +7,6 @@
       <template>
         <el-input
           v-model="query.title"
-          size="small"
           placeholder="附件名称"
           style="width: 300px"
           class="filter-item"
@@ -15,7 +14,6 @@
         />
         <el-button
           class="filter-item"
-          size="small"
           type="info"
           icon="el-icon-search"
           plain
@@ -25,7 +23,6 @@
         </el-button>
         <el-button
           class="filter-item"
-          size="small"
           type="primary"
           icon="el-icon-upload"
           @click="uploadDialogVisible = true"
@@ -218,7 +215,6 @@ import clip from '@/utils/clipboard' // use clipboard directly
 import { getToken, fecthUploadUrl } from '@/api/qiniu'
 import { fetchAttachments, updateAttachment, deleteAttachment } from '@/api/attachment'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
-
 export default {
   name: 'AttachmentList',
   components: { Pagination },
@@ -380,33 +376,27 @@ export default {
   font-size: 13px;
   color: #999;
 }
-
 .bottom {
   margin-top: 13px;
   margin-bottom: 13px;
   line-height: 12px;
 }
-
 .button {
   padding: 0;
   float: right;
 }
-
 .image {
   width: 100%;
   display: block;
 }
-
 .clearfix:before,
 .clearfix:after {
   display: table;
   content: "";
 }
-
 .clearfix:after {
   clear: both;
 }
-
 .attachments-header {
   padding: 0px 10px;
   background-color: #ffffff;
@@ -449,4 +439,3 @@ export default {
   width: 100%;
 }
 </style>
-
