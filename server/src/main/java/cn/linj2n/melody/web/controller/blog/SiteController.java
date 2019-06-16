@@ -80,9 +80,9 @@ public class SiteController {
     public String getPageById(@PathVariable(value = "postId") Long postId, ModelMap modelMap) {
         // TODO: handle the valid postId
         Post post = postService.getPost(postId).orElse(new Post());
+        postService.increasePostViews(postId);
         PostDTO postDTO = dtoModelMapper.convertToDTO(post);
         modelMap.addAttribute("post",postDTO);
-
         modelMap.addAttribute("prePost", dtoModelMapper.convertToDTO(postService.getPost(post.getId() - 1L).orElse(null)));
         modelMap.addAttribute("nextPost", dtoModelMapper.convertToDTO(postService.getPost(post.getId() + 1L).orElse(null)));
         return themes + "posts";
