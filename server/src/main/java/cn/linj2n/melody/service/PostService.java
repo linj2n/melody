@@ -13,8 +13,6 @@ import java.util.TreeMap;
 
 public interface PostService {
 
-    void removePostByTitle(String title);
-
     void removePost(Long id);
 
     Optional<Post> getPost(String postTitle);
@@ -38,4 +36,8 @@ public interface PostService {
     Page<Post> findPostsByTitle(String title, Pageable pageable);
 
     Page<Post> findBySearch(List<Long> tagIdList,List<Long> categoryList, String title, Pageable pageable);
+
+    void increasePostViews(Long postId);
+
+    void updatePost(Long postId, long views);
 }
