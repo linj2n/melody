@@ -1,6 +1,7 @@
 package cn.linj2n.melody.config;
 
 
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +11,15 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "melody", ignoreUnknownFields = false)
 public class MelodyProperties {
+
     private final Qiniu qiniu = new Qiniu();
+
+    private final Redis redisProperties = new Redis();
+
+    public Redis getRedis() {
+        return redisProperties;
+    }
+
     public Qiniu getQiniu(){
         return qiniu;
     }
@@ -73,6 +82,46 @@ public class MelodyProperties {
 
         public void setCallBackHandlingUrl(String callBackHandlingUrl) {
             this.callBackHandlingUrl = callBackHandlingUrl;
+        }
+    }
+
+    public static class Redis {
+
+        private String host;
+        private int port;
+        private String password;
+        private boolean usePool;
+
+        public String getHost() {
+            return host;
+        }
+
+        public void setHost(String host) {
+            this.host = host;
+        }
+
+        public int getPort() {
+            return port;
+        }
+
+        public void setPort(int port) {
+            this.port = port;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+
+        public boolean getUsePool() {
+            return usePool;
+        }
+
+        public void setUsePool(boolean usePool) {
+            this.usePool = usePool;
         }
     }
 }
