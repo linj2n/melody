@@ -191,7 +191,7 @@ class="attachment-time"
             <el-button
               style="margin-left: 10px"
               size="small"
-              @click="editDialogVisible = false"
+              @click="dialogVisible = false"
             >取 消</el-button
             >
             <el-button
