@@ -31,12 +31,12 @@ public class QiNiuConfig {
 
     @Bean
     public UploadManager uploadManager() {
-        return new UploadManager(new com.qiniu.storage.Configuration(Zone.autoZone()));
+        return new UploadManager(new com.qiniu.storage.Configuration(Zone.zone2()));
     }
 
     @Bean
     public BucketManager bucketManager() {
-        return new BucketManager(auth(), new com.qiniu.storage.Configuration(Zone.autoZone()));
+        return new BucketManager(auth(), new com.qiniu.storage.Configuration(Zone.zone2()));
     }
 
 }
