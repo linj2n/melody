@@ -71,6 +71,11 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile("org.springframework.boot:spring-boot-starter-hateoas")
 
+	// 添加 Spring Data Redis 的依赖
+//	compile 'org.springframework.boot:spring-boot-starter-redis'
+	compile 'org.springframework.data:spring-data-redis'
+	compile 'redis.clients:jedis:2.9.0'
+
 	// 添加 MySQL连接驱动 的依赖
 	compile('mysql:mysql-connector-java:6.0.5')
 
@@ -111,7 +116,12 @@ dependencies {
 	compile group: 'org.jsoup', name: 'jsoup', version: '1.7.2'
 
 	// qiniu
-	compile 'com.qiniu:qiniu-java-sdk:7.2.17'
+	compile 'com.qiniu:qiniu-java-sdk:7.2.22'
+
+	// 设定 okhttp, gson 依赖的版本，使其与 qiniu-jdk 所依赖的版本一致
+	compile group: 'com.squareup.okhttp3', name: 'okhttp', version: '3.11.0'
+	compile group: 'com.google.code.gson', name: 'gson', version: '2.8.5'
+
 
 	compile 'org.json:json:20180813'
 
