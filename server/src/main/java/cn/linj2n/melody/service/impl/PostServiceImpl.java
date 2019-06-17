@@ -86,7 +86,7 @@ public class PostServiceImpl implements PostService{
 
     @PreDestroy
     public void destroy() {
-        logger.debug("Closing post service, try to save all cache debugrmation.");
+        logger.debug("Closing post service, try to save all cache information.");
         savePostFromCache(Integer.MAX_VALUE);
     }
 
