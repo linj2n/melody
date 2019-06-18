@@ -17,4 +17,12 @@ public class Option {
 
     @Column(name = "value")
     private String value;
+
+    public Option() {
+    }
+
+    public Option(String name, String value) {
+        this.name = name;
+        this.value = value;
+    }
 }

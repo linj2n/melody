@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class ConfigServiceImpl implements ConfigService {
@@ -24,10 +26,25 @@ public class ConfigServiceImpl implements ConfigService {
     }
 
     @Override
+    public Map<String, String> fecthAllOptionMap() {
+        return optionRepository
+                .findAll()
+                .stream()
+                .collect(Collectors.toMap(Option::getName, Option::getValue));
+    }
+
+    @Override
     public List<Option> updateOptions(List<Option> options) {
         options.forEach(option -> {
             optionRepository.save(option);
         });
         return options;
+    }
+
+    @Override
+    public void updateOptions(Map<String, String> optionMap) {
+        optionMap.forEach((name, value)-> {
+            optionRepository.save(new Option(name, value));
+        });
     }
 }

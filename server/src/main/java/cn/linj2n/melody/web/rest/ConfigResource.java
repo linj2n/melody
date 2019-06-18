@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/api")
@@ -33,13 +34,14 @@ public class ConfigResource {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> listAllSiteConfigOptions() {
-        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(null, configService.listAllOptions()), HttpStatus.OK);
+        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(null, configService.fecthAllOptionMap()), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/v1/config",
-            method = RequestMethod.POST,
+            method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> updateConfig(@RequestBody List<Option> options) {
-        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(null, configService.updateOptions(options)), HttpStatus.OK);
+    public ResponseEntity<?> updateConfig(@RequestBody Map<String, String> optionMap) {
+        configService.updateOptions(optionMap);
+        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse("更新成功", null), HttpStatus.OK);
     }
 }
