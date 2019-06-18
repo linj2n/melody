@@ -97,7 +97,7 @@ export const asyncRouterMap = [
       {
         path: '',
         name: 'Setting',
-        component: () => import('@/views/form/index'),
+        component: () => import('@/views/setting/index'),
         meta: { title: '配 置', icon: 'user' }
       }
     ]
