@@ -1,6 +1,5 @@
 package cn.linj2n.melody.service;
 
-import cn.linj2n.melody.domain.Attachment;
 import cn.linj2n.melody.domain.QiniuFile;
 import com.qiniu.storage.model.StorageType;
 
