@@ -29,3 +29,17 @@ spring:
             enable: true
   messages:
     basename: i18n/messages
+
+melody:
+  qiniu:
+    accessKey:
+    secretKey:
+    bucket:
+    uploadUrl:
+    externalDefaultLinkDomain:
+    callBackHandlingUrl:
+  redis:
+    host: localhost
+    port: 6379
+    password: your-password
+    usePool: true
