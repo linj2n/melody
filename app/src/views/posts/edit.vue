@@ -98,8 +98,8 @@
         <el-form-item label="概述">
           <el-input
             v-model="postInfo.summary"
-            type="textarea"
             :rows="5"
+            type="textarea"
             class="setting-item"
           />
         </el-form-item>
@@ -112,10 +112,13 @@
               size="mini"
               type="text"
               @click="deletePopoverVisible = false"
-            >取消</el-button>
-            <el-button
-type="primary"
-size="mini" @click="handleDeleteConfirm">确定</el-button>
+            >取消</el-button
+            >
+            <el-button 
+type="primary" 
+size="mini" @click="handleDeleteConfirm"
+            >确定</el-button
+            >
           </div>
           <el-button slot="reference" type="danger">删 除</el-button>
         </el-popover>
@@ -223,8 +226,9 @@ export default {
       listAllTags().then(response => {
         this.tagOptions = response.data
       }).catch(err => {
+        console.log(err)
         this.$message({
-          message: response.message,
+          message: err,
           type: 'error'
         })
       })
