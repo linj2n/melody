@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -31,6 +32,17 @@ public class ConfigServiceImpl implements ConfigService {
                 .findAll()
                 .stream()
                 .collect(Collectors.toMap(Option::getName, Option::getValue));
+    }
+
+    @Override
+    public Map<String, String> fecthOptionMap(List<String> optionNames) {
+        Map<String, String> optionMap = new HashMap<>();
+        Map<String, String> allOptionMap = fecthAllOptionMap();
+        for (String name : optionNames) {
+            String value = allOptionMap.get(name);
+            optionMap.put(name, value);
+        }
+        return optionMap;
     }
 
     @Override

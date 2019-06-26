@@ -8,12 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/api")
@@ -31,8 +32,14 @@ public class ConfigResource {
     @RequestMapping(value = "/v1/config",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> listAllSiteConfigOptions() {
-        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(null, configService.fecthAllOptionMap()), HttpStatus.OK);
+    public ResponseEntity<?> fetchSiteConfigOptions(@RequestParam(value = "optionName", required = false) List<String> optionNames/*@RequestParam Map<String, String> optionMap*/) {
+        return new ResponseEntity<>(
+                ResponseBuilder.buildSuccessResponse(
+                        "获取配置信息成功",
+                        configService.fecthOptionMap(optionNames)
+                ),
+                HttpStatus.OK
+        );
     }
 
     @RequestMapping(value = "/v1/config",
@@ -40,6 +47,9 @@ public class ConfigResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateConfig(@RequestBody Map<String, String> optionMap) {
         configService.updateOptions(optionMap);
-        return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse("更新成功", null), HttpStatus.OK);
+        return new ResponseEntity<>(
+                ResponseBuilder.buildSuccessResponse("更新成功", null),
+                HttpStatus.OK
+        );
     }
 }

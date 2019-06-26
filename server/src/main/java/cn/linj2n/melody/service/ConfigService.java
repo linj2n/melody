@@ -10,6 +10,8 @@ public interface ConfigService {
 
     Map<String, String> fecthAllOptionMap();
 
+    Map<String, String> fecthOptionMap(List<String> optionNames);
+
     List<Option> updateOptions(List<Option> options);
 
     void updateOptions(Map<String, String> optionMap);
