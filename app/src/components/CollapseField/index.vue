@@ -1,13 +1,13 @@
 <template>
-  <div :class="{ active: open.isActive }" class="collapse-field">
+  <div :class="{ active: field.isActive }" class="collapse-field">
     <div class="collapse-field-title-view">
       <h4 class="collapse-field-title">{{ label }}</h4>
-      <div class="collapse-field-descr">{{ description }}</div>
-      <div class="collapse-field-button" @click="toggleClick(open)">
-        {{ open.isActive ? "收起" : "编辑" }}
+      <div class="collapse-field-descr">{{ field.description }}</div>
+      <div class="collapse-field-button" @click="toggleClick(field)">
+        {{ field.isActive ? "收起" : "编辑" }}
       </div>
     </div>
-    <div :class="{ active: open.isActive }" class="collapse-field-content">
+    <div :class="{ active: field.isActive }" class="collapse-field-content">
       <slot />
     </div>
   </div>
@@ -20,20 +20,16 @@ export default {
       type: String,
       default: 'title'
     },
-    description: {
-      type: String,
-      default: 'description'
-    },
-    open: {
+    field: {
       type: Object,
-      default: function () {
+      default: function() {
         return {}
       }
     }
   },
   methods: {
-    toggleClick (open) {
-      this.$emit('toggleClick', open)
+    toggleClick(field) {
+      this.$emit('toggleClick', field)
     }
   }
 }
