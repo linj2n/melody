@@ -92,7 +92,9 @@
                         <el-input v-model="profile.email" />
                       </el-form-item>
                       <el-form-item style="margin-bottom: 0px;">
-                        <el-button type="primary">保存</el-button>
+                        <el-button type="primary" @click="handleUpdateEmail">
+                          保存
+                        </el-button>
                       </el-form-item>
                     </el-form>
                   </template>
@@ -132,25 +134,35 @@
         </el-tabs>
       </el-card>
     </el-row>
-    <el-dialog :visible.sync="verifyDialogVisible" title="身份认证" width="50%">
+    <el-dialog
+      :visible.sync="verifyDialogVisible"
+      title="身份认证"
+      width="30%"
+      class="verifyDialog"
+    >
       <span>为了保护你的帐号安全，请验证身份，验证成功后进行下一步操作</span>
+      <el-form style="margin-top: 20px;">
+        <el-form-item>
+          <el-select
+            v-model="profile.email"
+            placeholder="请选择"
+            style="width: 100%;"
+          >
+            <el-option
+              :key="profile.email"
+              :label="'使用邮箱 ' + profile.email + ' 获取验证码'"
+              :value="profile.email"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item style="width: 100%;">
+          <el-input v-model="resetKey" style="width: 228px;" />
+          <el-button @click="requestToSendResetKey">获取验证码</el-button>
+        </el-form-item>
+      </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-form>
-          <el-form-item>
-            <el-select v-model="profile.email" placeholder="请选择">
-              <el-option
-                :key="profile.email"
-                :label="'使用邮箱 ' + profile.email + ' 获取验证码'"
-                :value="profile.email"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-input v-model="resetKey" /><el-button>获取验证码</el-button>
-          </el-form-item>
-        </el-form>
         <el-button @click="verifyDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="verifyDialogVisible = false">
+        <el-button type="primary" @click="validateResetKey">
           确 定
         </el-button>
       </span>
@@ -160,7 +172,7 @@
 
 <script>
 import CollapseField from '@/components/CollapseField'
-import { getInfo, validateResetKey, requestToSendResetKey } from '@/api/user'
+import { getInfo, validateResetKey, requestToSendResetKey, changeEmail } from '@/api/user'
 
 export default {
   name: 'System',
@@ -183,6 +195,7 @@ export default {
       avatarEditing: {
         url: null
       },
+      currToggleField: {},
       activeName: 'Backup',
       resetKey: null,
       profile: {},
@@ -209,8 +222,26 @@ export default {
         this.$message.success(response.message)
       })
     },
+    validateResetKey() {
+      validateResetKey(this.profile.email, this.resetKey).then(response => {
+        const isValid = response.data.result
+        const message = response.message
+        if (!isValid) {
+          console.log(message)
+          this.$message({
+            message: message,
+            type: 'error'
+          })
+        } else {
+          this.currToggleField.isActive = true
+          this.verifyDialogVisible = false
+        }
+      })
+    },
     handleUpdateEmail() {
-
+      changeEmail(this.profile.email, this.resetKey).then(response => {
+        console.log(response)
+      })
     },
     handleUpdatePassword() {
 
@@ -219,21 +250,28 @@ export default {
 
     },
     toggleClick(field) {
-      let isValid = false
-      validateResetKey(this.profile.email, this.profile.resetKey).then(response => {
-        isValid = response.data.result
-      })
-      if (!isValid) {
-        this.resetKey = null
-        this.verifyDialogVisible = true
+      if (field.isActive === true) {
+        field.isActive = false
         return
       }
-      field.isActive = !field.isActive
+      validateResetKey(this.profile.email, this.resetKey).then(response => {
+        const isValid = response.data.result
+        if (!isValid) {
+          this.resetKey = null
+          this.verifyDialogVisible = true
+          this.currToggleField = field
+        } else {
+          field.isActive = !field.isActive
+        }
+      })
     }
   }
 }
 </script>
 <style>
+.verifyDialog .el-dialog__body {
+  padding-bottom: 10px;
+}
 .card-container {
   background-color: #f0f2f5;
   padding: 20px;
