@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{email.sendVerificationCode.title(${user.verificationCode})}">Account password reset</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<p th:text="#{email.sendVerificationCode.greeting(${user.login})}">
+    Dear
+</p>
+<p th:text="#{email.sendVerificationCode.text1}">
+    For your account, a password reset was requested, please click on the URL below to reset it:
+</p>
+    <h2 th:text="${user.verificationCode}" style="color: red;">verification code</h2>
+
+<p>
+
+</p>
+
+<p>
+    <span th:text="#{email.sendVerificationCode.text2}"></span>
+        <a th:href="@{|${baseUrl}/login|}" >重置密码</a>
+    <br/>
+    <span th:text="#{email.signature}">linj2n@163.com</span>
+</p>
+</body>
+</html>
