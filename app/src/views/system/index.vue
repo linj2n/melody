@@ -15,55 +15,6 @@
                   </div>
                 </div>
               </el-col>
-              <el-col :span="16">
-                <el-form
-                  label-position="top"
-                  label-width="80px"
-                  class="option-form"
-                >
-                  <el-form-item label="用户名">
-                    <el-col :span="20" style="padding-left: 0px;">
-                      <el-input :disabled="true" v-model="profile.username" />
-                    </el-col>
-                    <el-col :span="4" style="padding-left: 20px;">
-                      <el-button type="text">编辑</el-button>
-                    </el-col>
-                  </el-form-item>
-                  <el-form-item label="邮箱">
-                    <el-col :span="20" style="padding-left: 0px">
-                      <el-input :disabled="true" v-model="profile.email" />
-                    </el-col>
-                    <el-col :span="4" style="padding-left: 20px">
-                      <el-button type="text">编辑</el-button>
-                    </el-col>
-                  </el-form-item>
-                  <el-form-item label="密码">
-                    <el-input v-model="profile.avatarUrl" />
-                  </el-form-item>
-                  <!-- <el-form-item label="">
-                <el-input/>
-              </el-form-item> -->
-                  <el-form-item size="large">
-                    <el-button type="primary">
-                      保存
-                    </el-button>
-                  </el-form-item>
-                </el-form>
-              </el-col>
-            </el-row>
-          </el-tab-pane>
-          <el-tab-pane label="博客备份" name="Backup">
-            <el-row :gutter="20">
-              <el-col :span="8">
-                <div class="profile-avatar-container">
-                  <div
-                    style="z-index: 1; height: 150px; width: 150px;"
-                    class="pan-item"
-                  >
-                    <img :src="profile.avatarUrl" class="pan-thumb" >
-                  </div>
-                </div>
-              </el-col>
               <el-col :span="16" style="margin-top: 50px; padding-right: 50px;">
                 <CollapseField
                   :field="usernameEditing"
@@ -72,11 +23,13 @@
                 >
                   <template>
                     <el-form :inline="true" style="margin-left: 10px;">
-                      <el-form-item style="margin-bottom: 0px;">
+                      <el-form-item required style="margin-bottom: 0px;">
                         <el-input v-model="profile.username" />
                       </el-form-item>
                       <el-form-item style="margin-bottom: 0px;">
-                        <el-button type="primary">保存</el-button>
+                        <el-button type="primary" @click="handleUpdateUsername">
+                          保存
+                        </el-button>
                       </el-form-item>
                     </el-form>
                   </template>
@@ -88,7 +41,7 @@
                 >
                   <template>
                     <el-form :inline="true" style="margin-left: 10px;">
-                      <el-form-item style="margin-bottom: 0px;">
+                      <el-form-item prop="email" style="margin-bottom: 0px;">
                         <el-input v-model="profile.email" />
                       </el-form-item>
                       <el-form-item style="margin-bottom: 0px;">
@@ -105,25 +58,31 @@
                   @toggleClick="toggleClick"
                 >
                   <template>
-                    <el-form style="margin-left: 10px; margin-right: 20px;">
-                      <el-form-item prop="pass">
+                    <el-form
+                      ref="passwordForm"
+                      :model="passwordForm"
+                      :rules="rules"
+                      status-icon
+                      label-width="100px"
+                    >
+                      <el-form-item label="密码" prop="password">
                         <el-input
-                          v-model="profile.pass"
+                          v-model="passwordForm.password"
                           type="password"
-                          placeholder="输入新密码"
                           autocomplete="off"
                         />
                       </el-form-item>
-                      <el-form-item prop="checkPass">
+                      <el-form-item label="确认密码" prop="checkPassword">
                         <el-input
-                          v-model="profile.checkPass"
+                          v-model="passwordForm.checkPassword"
                           type="password"
-                          placeholder="重复输入密码"
                           autocomplete="off"
                         />
                       </el-form-item>
                       <el-form-item>
-                        <el-button type="primary">提交</el-button>
+                        <el-button type="primary" @click="handleUpdatePassword">
+                          提交
+                        </el-button>
                       </el-form-item>
                     </el-form>
                   </template>
@@ -156,13 +115,15 @@
           </el-select>
         </el-form-item>
         <el-form-item style="width: 100%;">
-          <el-input v-model="resetKey" style="width: 228px;" />
-          <el-button @click="requestToSendResetKey">获取验证码</el-button>
+          <el-input v-model="verificationCode" style="width: 228px;" />
+          <el-button @click="requestToSendVerificationCode">
+            获取验证码
+          </el-button>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="verifyDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="validateResetKey">
+        <el-button type="primary" @click="validateVerificationCode">
           确 定
         </el-button>
       </span>
@@ -172,13 +133,44 @@
 
 <script>
 import CollapseField from '@/components/CollapseField'
-import { getInfo, validateResetKey, requestToSendResetKey, changeEmail } from '@/api/user'
+import { getInfo, validateVerificationCode, requestToSendVerificationCode, changeEmail, changePassword, changeUsername } from '@/api/user'
 
 export default {
   name: 'System',
   components: { CollapseField },
   data() {
+    var validatePassword = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入密码'))
+      } else {
+        if (this.passwordForm.checkPassword !== '') {
+          this.$refs.passwordForm.validateField('checkPassword')
+        }
+        callback()
+      }
+    }
+    var validatePassword2 = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请再次输入密码'))
+      } else if (value !== this.passwordForm.password) {
+        callback(new Error('两次输入密码不一致!'))
+      } else {
+        callback()
+      }
+    }
     return {
+      passwordForm: {
+        password: '',
+        checkPassword: ''
+      },
+      rules: {
+        password: [
+          { validator: validatePassword, trigger: 'blur' }
+        ],
+        checkPassword: [
+          { validator: validatePassword2, trigger: 'blur' }
+        ]
+      },
       isActive: false,
       usernameEditing: {
         description: null,
@@ -196,10 +188,9 @@ export default {
         url: null
       },
       currToggleField: {},
-      activeName: 'Backup',
-      resetKey: null,
+      activeName: 'ProfileSetting',
+      verificationCode: null,
       profile: {},
-      profileView: {},
       verifyDialogVisible: false
     }
   },
@@ -207,23 +198,36 @@ export default {
     this.fetchProfile()
   },
   methods: {
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          alert('submit!')
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields()
+    },
     fetchProfile() {
       getInfo().then(response => {
-        const { username, email, avatarUrl, password, checkPass } = response.data
-        this.profile = { username, email, avatarUrl, password, checkPass }
+        const { username, email, avatarUrl } = response.data
+        this.profile = { username, email, avatarUrl }
         this.usernameEditing.description = username
         this.emailEditing.description = email
         this.passwordEditing.description = '已设置'
         this.avatarEditing = avatarUrl
       })
     },
-    requestToSendResetKey() {
-      requestToSendResetKey(this.profile.email).then(response => {
+    requestToSendVerificationCode() {
+      requestToSendVerificationCode().then(response => {
         this.$message.success(response.message)
       })
     },
-    validateResetKey() {
-      validateResetKey(this.profile.email, this.resetKey).then(response => {
+    validateVerificationCode() {
+      validateVerificationCode(this.verificationCode).then(response => {
         const isValid = response.data.result
         const message = response.message
         if (!isValid) {
@@ -239,25 +243,53 @@ export default {
       })
     },
     handleUpdateEmail() {
-      changeEmail(this.profile.email, this.resetKey).then(response => {
-        console.log(response)
+      changeEmail(this.profile.email, this.verificationCode).then(response => {
+        if (response.code === 20000) {
+          this.emailEditing.description = this.profile.email
+          this.$message.success(response.message)
+        } else if (response.code === 40000) {
+          this.profile.email = this.emailEditing.description
+          this.verificationCode = null
+          this.verifyDialogVisible = true
+        }
       })
     },
     handleUpdatePassword() {
-
+      changePassword(this.passwordForm.password, this.verificationCode).then(response => {
+        if (response.code === 20000) {
+          this.passwordEditing.isActive = false
+          this.$message.success(response.message)
+          this.$store.dispatch('LogOut').then(() => {
+            location.reload() // 为了重新实例化vue-router对象 避免bug
+          })
+        } else if (response.code === 40000) {
+          this.verificationCode = null
+          this.verifyDialogVisible = true
+        }
+      })
     },
     handleUpdateUsername() {
-
+      changeUsername(this.profile.username, this.verificationCode).then(response => {
+        if (response.code === 20000) {
+          this.usernameEditing.description = this.profile.username
+          this.usernameEditing.isActive = false
+          this.$message.success(response.message)
+        } else if (response.code === 40000) {
+          this.profile.username = this.usernameEditing.description
+          this.verificationCode = null
+          this.verifyDialogVisible = true
+        }
+      })
     },
     toggleClick(field) {
       if (field.isActive === true) {
         field.isActive = false
         return
       }
-      validateResetKey(this.profile.email, this.resetKey).then(response => {
+      validateVerificationCode(this.verificationCode).then(response => {
         const isValid = response.data.result
         if (!isValid) {
-          this.resetKey = null
+          this.verificationCode = null
           this.verifyDialogVisible = true
           this.currToggleField = field
         } else {
