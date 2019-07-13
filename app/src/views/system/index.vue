@@ -23,8 +23,12 @@
                 >
                   <template>
                     <el-form :inline="true" style="margin-left: 10px;">
-                      <el-form-item required style="margin-bottom: 0px;">
-                        <el-input v-model="profile.username" />
+                      <el-form-item required style="margin-bottom: 0px; ">
+                        <el-input
+                          v-model="profile.username"
+                          placeholder="用户名"
+                          style="width: 278px;"
+                        />
                       </el-form-item>
                       <el-form-item style="margin-bottom: 0px;">
                         <el-button type="primary" @click="handleUpdateUsername">
@@ -42,7 +46,11 @@
                   <template>
                     <el-form :inline="true" style="margin-left: 10px;">
                       <el-form-item prop="email" style="margin-bottom: 0px;">
-                        <el-input v-model="profile.email" />
+                        <el-input
+                          v-model="profile.email"
+                          placeholder="邮箱地址"
+                          style="width: 278px;"
+                        />
                       </el-form-item>
                       <el-form-item style="margin-bottom: 0px;">
                         <el-button type="primary" @click="handleUpdateEmail">
@@ -63,24 +71,30 @@
                       :model="passwordForm"
                       :rules="rules"
                       status-icon
-                      label-width="100px"
+                      style="margin-left: 10px; margin-right: 20px;"
                     >
-                      <el-form-item label="密码" prop="password">
+                      <el-form-item prop="password" style="width: 278px;">
                         <el-input
                           v-model="passwordForm.password"
                           type="password"
+                          placeholder="输入新密码"
                           autocomplete="off"
                         />
                       </el-form-item>
-                      <el-form-item label="确认密码" prop="checkPassword">
+                      <el-form-item prop="checkPassword" style="width: 278px;">
                         <el-input
                           v-model="passwordForm.checkPassword"
                           type="password"
+                          placeholder="重复输入密码"
                           autocomplete="off"
                         />
                       </el-form-item>
                       <el-form-item>
-                        <el-button type="primary" @click="handleUpdatePassword">
+                        <el-button
+                          type="primary"
+                          style="width: 178px;"
+                          @click="handleUpdatePassword"
+                        >
                           提交
                         </el-button>
                       </el-form-item>
@@ -159,6 +173,9 @@ export default {
       }
     }
     return {
+      currToggleField: {},
+      activeName: 'ProfileSetting',
+      verifyDialogVisible: false,
       passwordForm: {
         password: '',
         checkPassword: ''
@@ -171,7 +188,6 @@ export default {
           { validator: validatePassword2, trigger: 'blur' }
         ]
       },
-      isActive: false,
       usernameEditing: {
         description: null,
         isActive: false
@@ -187,30 +203,14 @@ export default {
       avatarEditing: {
         url: null
       },
-      currToggleField: {},
-      activeName: 'ProfileSetting',
-      verificationCode: null,
       profile: {},
-      verifyDialogVisible: false
+      verificationCode: null
     }
   },
   created() {
     this.fetchProfile()
   },
   methods: {
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          alert('submit!')
-        } else {
-          console.log('error submit!!')
-          return false
-        }
-      })
-    },
-    resetForm(formName) {
-      this.$refs[formName].resetFields()
-    },
     fetchProfile() {
       getInfo().then(response => {
         const { username, email, avatarUrl } = response.data
