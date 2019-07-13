@@ -74,6 +74,9 @@ public class PostServiceImpl implements PostService{
     private void savePostFromCache(int size) {
         logger.debug("Start to save post information in batch [size:{}]. " + size);
         int cacheSize = postsCache.size(CACHE_POST_ID).intValue();
+        if (cacheSize == 0) {
+            return ;
+        }
         List<Long> ids = new ArrayList<>();
         for (int i = 0; i < size && i < cacheSize; i ++) {
             ids.add(postsCache.pop(CACHE_POST_ID));

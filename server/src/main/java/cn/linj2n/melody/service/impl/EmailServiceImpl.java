@@ -61,7 +61,7 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     @Async
-    public void sendPasswordResetMail(User user, String baseUrl) {
+    public void sendPasswordResetLinkToUserMail(User user, String baseUrl) {
         logger.debug("Sending password reset e-mail to '{}'", user.getEmail());
         /* Only support zh_CN language */
         Locale locale = new Locale("zh","CN");
@@ -73,4 +73,19 @@ public class EmailServiceImpl implements EmailService {
         sendEmail(user.getEmail(),subject,content,false,true);
         logger.info("Execute method asynchronously. {}", Thread.currentThread().getName());
     }
+
+    @Override
+    @Async
+    public void sendVerificationCode(User user, String baseUrl) {
+        logger.info("Sending profile reset key to email[{}]", user.getEmail());
+        Locale locale = new Locale("zh","CN");
+        Context context = new Context(locale);
+        context.setVariable("user", user);
+        context.setVariable("baseUrl", baseUrl);
+        String content = templateEngine.process("mails/verification-code-email", context);
+        String subject = messageSource.getMessage("email.sendVerificationCode.title", new Object[] {user.getVerificationCode()}, locale);
+        sendEmail(user.getEmail(),subject,content,false,true);
+        logger.info("Execute method asynchronously. {}", Thread.currentThread().getName());
+    }
+
 }

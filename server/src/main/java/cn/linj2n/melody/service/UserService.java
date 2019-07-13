@@ -11,7 +11,23 @@ public interface UserService {
 
     Optional<User> requestPasswordReset(String email);
 
+    Optional<User> requestProfileResetKey(String email);
+
+    void generateVerificationCode(User user);
+
+    boolean validateVerificationCode(User user, String code);
+
+    boolean validateResetKey(String email, String resetKey);
+
     Optional<User> resetPassword(String newPassword, String resetKey);
+
+    void changePassword(User user, String newPassword);
+
+    void changeEmail(User user, String newEmail);
+
+    void changeUsername(User user, String username);
+
+    Optional<User> resetEmail(String newEmail, String resetKey);
 
     Boolean checkIfExitUserActivatedByLoginOrEmail(String login,String email);
 

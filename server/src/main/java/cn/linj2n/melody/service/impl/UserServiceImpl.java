@@ -6,6 +6,7 @@ import cn.linj2n.melody.repository.AuthorityRepository;
 import cn.linj2n.melody.repository.UserRepository;
 import cn.linj2n.melody.service.UserService;
 import cn.linj2n.melody.service.utils.RandomUtil;
+import cn.linj2n.melody.web.errors.ExceptionThrownInService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ import java.util.Set;
 @Service
 @Transactional
 public class UserServiceImpl implements UserService{
+
+    private static final int  DEF_EXPIRATION = 60 * 5;
 
     private Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -90,25 +93,95 @@ public class UserServiceImpl implements UserService{
                 .filter(User::getActivated)
                 .map(user -> {
                     logger.info("Request password reset [email= {}].",email);
-                    user.setResetKey(RandomUtil.generateResetKey());
-                    user.setResetDate(ZonedDateTime.now());
+                    user.setResetCode(RandomUtil.generateResetCode());
+                    user.setResetCodeCreatedTime(ZonedDateTime.now());
                     userRepository.save(user);
                     return user;
                 });
     }
 
     @Override
+    public Optional<User> requestProfileResetKey(String email) {
+        return userRepository.findOneByEmail(email)
+                .filter(User::getActivated)
+                .map(user -> {
+                    logger.info("Request to fetch profile reset key [email = {}].", email);
+                    user.setResetCode(RandomUtil.generateVerificationCode());
+                    user.setResetCodeCreatedTime(ZonedDateTime.now());
+                    userRepository.save(user);
+                    return user;
+                });
+
+    }
+
+    @Override
+    public void generateVerificationCode(User user) {
+        logger.info("Request to fetch profile reset key [email = {}].", user.getEmail());
+        user.setVerificationCode(RandomUtil.generateVerificationCode());
+        user.setVerificationCodeCreatedTime(ZonedDateTime.now());
+        userRepository.save(user);
+    }
+
+    @Override
+    public boolean validateResetKey(String email, String resetKey) {
+        // TODO:
+//        return userRepository.findOneByEmail(email)
+//                .map(user -> validateResetKey(user, resetKey))
+//                .orElse(false);
+        return false;
+    }
+
+    @Override
+    public boolean validateVerificationCode(User user, String code) {
+        if (code == null || code.isEmpty() || user.getVerificationCode() == null) {
+            return false;
+        }
+        ZonedDateTime fiveMinutesAgo = ZonedDateTime.now().minusSeconds(DEF_EXPIRATION);
+        return user.getVerificationCode().equals(code)
+                && user.getVerificationCodeCreatedTime().isAfter(fiveMinutesAgo);
+
+    }
+
+    @Override
     public Optional<User> resetPassword(String newPassword, String resetKey) {
-        return userRepository.findOneByResetKey(resetKey)
+        return userRepository.findOneByResetCode(resetKey)
                 .map(user -> {
                     logger.info("Reset password [resetKey = {}].",resetKey);
                     logger.info("Reset password [newPassword = {}].",newPassword);
                     String encryptedPassword = passwordEncoder.encode(newPassword);
                     user.setPassword(encryptedPassword);
-                    user.setResetDate(null);
-                    user.setResetKey(null);
+                    user.setResetCode(null);
+                    user.setResetCodeCreatedTime(null);
                     return user;
                 });
+    }
+
+    @Override
+    public void changePassword(User user, String newPassword) {
+        String encryptedPassword = passwordEncoder.encode(newPassword);
+        user.setPassword(encryptedPassword);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void changeEmail(User user, String newEmail) {
+        user.setEmail(newEmail);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void changeUsername(User user, String username) {
+        user.setUsername(username);
+        user.setLogin(username);
+        userRepository.save(user);
+    }
+
+    @Override
+    public Optional<User> resetEmail(String newEmail, String resetKey) {
+        if (newEmail == null || newEmail.isEmpty()) {
+            throw new ExceptionThrownInService("ExceptionThrownInService");
+        }
+        return Optional.empty();
     }
 
     @Override
@@ -119,7 +192,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public Optional<User> getUserByPasswordResetKey(String key) {
-        return userRepository.findOneByResetKey(key).filter(User::getActivated);
+        return userRepository.findOneByResetCode(key).filter(User::getActivated);
     }
 
     @Override
