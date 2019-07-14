@@ -5,10 +5,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class PasswordModificationDTO {
+public class PasswordModificationInfoDTO {
 
-    private String newPassword;
+    private String password;
 
-    private String token;
+    private String code;
 
 }
