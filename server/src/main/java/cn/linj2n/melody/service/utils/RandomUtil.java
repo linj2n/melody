@@ -7,7 +7,10 @@ import org.apache.commons.lang.RandomStringUtils;
  */
 public final class RandomUtil {
 
-    private static final int DEF_COUNT = 20;
+    private static final int RESET_CODE_DIGIT_COUNT = 20;
+
+    private static final int PROFILE_VERIFICATION_CODE_DIGIT_COUNT = 6;
+
 
     private RandomUtil() {
     }
@@ -18,7 +21,7 @@ public final class RandomUtil {
      * @return the generated password
      */
     public static String generatePassword() {
-        return RandomStringUtils.randomAlphanumeric(DEF_COUNT);
+        return RandomStringUtils.randomAlphanumeric(RESET_CODE_DIGIT_COUNT);
     }
 
     /**
@@ -27,15 +30,20 @@ public final class RandomUtil {
      * @return the generated activation key
      */
     public static String generateActivationKey() {
-        return RandomStringUtils.randomNumeric(DEF_COUNT);
+        return RandomStringUtils.randomNumeric(RESET_CODE_DIGIT_COUNT);
     }
 
     /**
-     * Generates a reset key.
+     * Generates a reset code.
      *
-     * @return the generated reset key
+     * @return the generated reset code
      */
-    public static String generateResetKey() {
-        return RandomStringUtils.randomNumeric(DEF_COUNT);
+    public static String generateResetCode() {
+        return RandomStringUtils.randomNumeric(RESET_CODE_DIGIT_COUNT);
     }
+
+    public static String generateVerificationCode() {
+        return RandomStringUtils.randomNumeric(PROFILE_VERIFICATION_CODE_DIGIT_COUNT);
+    }
+
 }
