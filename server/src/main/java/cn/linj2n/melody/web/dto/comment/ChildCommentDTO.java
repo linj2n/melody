@@ -2,7 +2,11 @@ package cn.linj2n.melody.web.dto.comment;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class ChildCommentDTO {
 
     @JsonProperty(value = "id")

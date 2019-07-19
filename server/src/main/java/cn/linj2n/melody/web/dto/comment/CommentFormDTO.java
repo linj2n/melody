@@ -1,26 +1,22 @@
-package cn.linj2n.melody.web.dto;
+package cn.linj2n.melody.web.dto.comment;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Email;
 
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import javax.validation.constraints.Size;
 
 @Getter
 @Setter
-public class CommentInfoDTO {
+public class CommentFormDTO {
 
-    private CommentAuthorInfoDTO author;
+    @Email
+    private String email;
 
-    private CommentAuthorInfoDTO replyToAuthor;
-
-    private Long replyToComment;
-
-    private Long postId;
-
-    private LocalDateTime createdAt;
+    private long replyToAuthorId;
 
     @NotNull
+    @Size(min = 8, max = 1000)
     private String content;
-
 }
