@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class RootCommentDTO {
+public class CommentDTO {
 
     @JsonProperty(value = "id")
     private long id;

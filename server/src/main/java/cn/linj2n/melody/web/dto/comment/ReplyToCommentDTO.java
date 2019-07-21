@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ChildCommentDTO {
+public class ReplyToCommentDTO {
 
     @JsonProperty(value = "id")
     private long id;
