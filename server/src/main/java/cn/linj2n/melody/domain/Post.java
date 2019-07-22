@@ -13,7 +13,9 @@ import javax.validation.constraints.NotNull;
 import java.time.Month;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -90,6 +92,13 @@ public class Post {
             inverseJoinColumns = {@JoinColumn(name = "tag_id", referencedColumnName = "id")})
     private Set<Tag> tags = new HashSet<>();
 
+    @OneToMany(
+            mappedBy = "post",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
+    )
+    private List<Comment> commentList = new ArrayList<>();
+
     /**
      * 文章创建时间
      */
@@ -104,14 +113,12 @@ public class Post {
 
     @PrePersist
     public void prePersist() {
-        createdAt = updatedAt = ZonedDateTime.now(ZoneId.of("Asia/Shanghai"));
-        System.out.println("createAt -------> " + createdAt);
+        createdAt = updatedAt = ZonedDateTime.now();
     }
 
     @PreUpdate
     public void preUpdate() {
         updatedAt = ZonedDateTime.now(ZoneId.of("Asia/Shanghai"));
-        System.out.println("updatedAt -------> " + updatedAt);
     }
 
     public ZonedDateTime getCreatedAt() {

@@ -74,15 +74,27 @@ public class User {
      * 用户重置码，用于找回密码
      */
     @Size(max = 50)
-    @Column(name = "reset_key", length = 50)
+    @Column(name = "reset_code", length = 50)
     @JsonIgnore
-    private String resetKey;
+    private String resetCode;
 
     /**
      * 用户重置码创建时间
      */
-    @Column(name = "reset_date", nullable = true)
-    private ZonedDateTime resetDate = null;
+    @Column(name = "reset_code_created_time", nullable = true)
+    private ZonedDateTime resetCodeCreatedTime= null;
+
+    /**
+     * 用户用来修改信息的验证码
+     */
+    @Column(name = "verification_code", nullable = true)
+    private String verificationCode;
+
+    /**
+     * 用户用来修改信息的验证码的创建时间
+     */
+    @Column(name = "verification_code_created_time", nullable = true)
+    private ZonedDateTime verificationCodeCreatedTime = null;
 
     /**
      * 用户头像资源 url
