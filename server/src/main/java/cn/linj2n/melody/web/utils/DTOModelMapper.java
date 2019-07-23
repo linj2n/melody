@@ -2,11 +2,15 @@ package cn.linj2n.melody.web.utils;
 
 import cn.linj2n.melody.config.MelodyProperties;
 import cn.linj2n.melody.domain.*;
+import cn.linj2n.melody.domain.enumeration.CommentAuthorRole;
 import cn.linj2n.melody.utils.QiniuUtil;
 import cn.linj2n.melody.web.dto.AttachmentDTO;
 import cn.linj2n.melody.web.dto.PostDTO;
 import cn.linj2n.melody.web.dto.QiniuFileDTO;
 import cn.linj2n.melody.web.dto.UserDTO;
+import cn.linj2n.melody.web.dto.comment.CommentAuthorDTO;
+import cn.linj2n.melody.web.dto.comment.CommentDTO;
+import cn.linj2n.melody.web.dto.comment.ReplyToCommentDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -54,6 +58,7 @@ public class DTOModelMapper {
             return null;
         }
         UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+        userDTO.setPassword("");
         userDTO.setAuthorities(user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet()));
         return userDTO;
     }
@@ -103,6 +108,41 @@ public class DTOModelMapper {
         attachmentDTO.setQiniuFileDTO(qiniuFileDTO);
 
         return attachmentDTO;
+    }
+
+
+    public CommentDTO convertToDTO(Comment comment) {
+        CommentDTO commentDTO = new CommentDTO();
+        commentDTO.setId(comment.getId());
+        commentDTO.setCreatedTime(comment.getCreatedAt().toEpochSecond());
+        commentDTO.setAuthor(convertToDTO(comment.getAuthor()));
+        commentDTO.setContent(comment.getContent());
+        commentDTO.setReplyCount(comment.getReplyCount());
+        return commentDTO;
+    }
+
+    public CommentAuthorDTO convertToDTO(CommentAuthor commentAuthor) {
+       CommentAuthorDTO commentAuthorDTO = new CommentAuthorDTO();
+       commentAuthorDTO.setId(commentAuthor.getId());
+       commentAuthorDTO.setAvatar(commentAuthor.getAvatar());
+       commentAuthorDTO.setName(commentAuthor.getName());
+       commentAuthorDTO.setPostAuthor(checkIfAdminAuthor(commentAuthor));
+       return commentAuthorDTO;
+    }
+
+    public ReplyToCommentDTO convertToReplyDTO(Comment comment) {
+        ReplyToCommentDTO reply = new ReplyToCommentDTO();
+        reply.setId(comment.getId());
+        reply.setContent(comment.getContent());
+        reply.setAuthor(convertToDTO(comment.getAuthor()));
+        reply.setReplyToAuthor(convertToDTO(comment.getReplyToAuthor()));
+        reply.setCreatedTime(comment.getCreatedAt().toEpochSecond());
+        return reply;
+    }
+
+
+    private boolean checkIfAdminAuthor(CommentAuthor commentAuthor) {
+        return commentAuthor.getRole().equals(CommentAuthorRole.ADMIN);
     }
 
 }
