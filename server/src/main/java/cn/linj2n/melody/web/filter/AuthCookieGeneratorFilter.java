@@ -27,7 +27,6 @@ public class AuthCookieGeneratorFilter extends OncePerRequestFilter {
         if (authResult == null || !authResult.equals(auctualAuthedResult)) {
             String pCookieName = "AUTH";
             Cookie cookie = new Cookie(pCookieName, auctualAuthedResult);
-//            cookie.setMaxAge(-1);
             cookie.setHttpOnly(false);
             cookie.setPath("/");
             response.addCookie(cookie);
