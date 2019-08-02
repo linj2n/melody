@@ -9,20 +9,18 @@ import java.time.ZonedDateTime;
 import java.util.Date;
 
 @Entity
-@Table(name = "resource_visit")
+@Table(name = "resource_uv")
 @Getter
 @Setter
-public class ResourceVisit {
+public class ResourceUniqueVisit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
     private String name;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "date")
     Date date;
 
     @Column(name = "count")
@@ -39,5 +37,4 @@ public class ResourceVisit {
     public void preUpdate() {
         updatedAt = ZonedDateTime.now(ZoneId.of("Asia/Shanghai"));
     }
-
 }

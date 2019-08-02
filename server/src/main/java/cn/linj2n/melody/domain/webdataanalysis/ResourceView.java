@@ -7,9 +7,10 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Date;
 
 @Entity
-@Table(name = "url_visit")
+@Table(name = "resource_view")
 @Getter
 @Setter
 public class ResourceView {
@@ -19,21 +20,18 @@ public class ResourceView {
 
     private String name;
 
+    @Temporal(TemporalType.DATE)
+    Date date;
+
+    @Column(name = "count")
+    private Long count;
+
     @ManyToOne(fetch = FetchType.EAGER)
-    private ResourceUrl resourceUrl;
-
-    @NotNull
-    @Column(name = "created_at", nullable = false)
-    private ZonedDateTime createdAt;
-
+    @JoinColumn(name = "resource_id")
+    private ResourceMeta resource;
 
     @Column(name = "updated_at",nullable = false)
     private ZonedDateTime updatedAt;
-
-    @PrePersist
-    public void prePersist() {
-        createdAt = ZonedDateTime.now(ZoneId.of("Asia/Shanghai"));
-    }
 
     @PreUpdate
     public void preUpdate() {

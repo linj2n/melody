@@ -27,6 +27,7 @@ public class ResourceMeta {
     @Column(name = "url")
     private String url;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "type")
     private ResourceType resourceType;
 }
