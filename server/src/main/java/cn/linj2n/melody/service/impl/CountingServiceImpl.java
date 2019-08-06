@@ -1,7 +1,7 @@
 package cn.linj2n.melody.service.impl;
 
 import cn.linj2n.melody.domain.Post;
-import cn.linj2n.melody.domain.webdataanalysis.ResourceUniqueVisit;
+import cn.linj2n.melody.domain.webdataanalysis.ResourceUniqueVisitor;
 import cn.linj2n.melody.domain.webdataanalysis.ResourceView;
 import cn.linj2n.melody.repository.ResourceUniqueVisitRepository;
 import cn.linj2n.melody.repository.ResourceViewRepository;
@@ -13,15 +13,20 @@ import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SetOperations;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+@Service
 public class CountingServiceImpl implements CountingService {
 
     private static final Logger logger = LoggerFactory.getLogger(CountingServiceImpl.class);
@@ -31,8 +36,6 @@ public class CountingServiceImpl implements CountingService {
     private static final int DEFAULT_EXPIRY_MIN = 0;
 
     private static final String POST_ = "post_";
-
-//    private static final String _ = "HOST_";
 
     @Autowired
     private ResourceViewRepository resourceViewRepository;
@@ -54,7 +57,9 @@ public class CountingServiceImpl implements CountingService {
 
     private static final String CACHE_POST_UV = "counting.post.uv";
 
-    private static final String CACHE_SITE_HIT = "counting.site";
+    private static final String CACHE_SITE_PV = "counting.site";
+
+    private static final String CACHE_SITE_UV = "visitorIds";
 
     private static final String SITE_PV = "site_pv";
 
@@ -64,51 +69,43 @@ public class CountingServiceImpl implements CountingService {
 
 
     @Override
-    public void increasePostUniqueVisit(String sessionId, Long postId) {
+    public void increasePostVisitCount(String visitorId, Long postId) {
         cacheSet.add(CACHE_POST_ID_LIST, postId);
-        if (isVisited(sessionId, postId)) {
-           return ;
+        if (!isVisited(visitorId, postId)) {
+            cache.increment(CACHE_POST_UV, POST_ + postId, 1L);
+            markVisitedTag(visitorId, postId);
         }
-        markVisitedTag(sessionId, postId);
-        cache.increment(CACHE_POST_UV, POST_ + postId, 1L);
-    }
-
-    @Override
-    public void increasePostView(Long postId) {
-        cacheSet.add(CACHE_POST_ID_LIST, postId);
         cache.increment(CACHE_POST_PV, POST_ + postId, 1L);
     }
 
     @Override
-    public void increaseHostUniqueVisit() {
-        cache.increment(CACHE_SITE_HIT, SITE_UV, 1L);
-    }
-
-    @Override
-    public void increaseHostView() {
-        cache.increment(CACHE_SITE_HIT, SITE_PV, 1L);
+    public void increaseSiteVisitCount(String visitorId) {
+        redisTemplate.opsForHyperLogLog().add(CACHE_SITE_UV, visitorId);
+        redisTemplate.expire(CACHE_SITE_UV, getExpireTime(), TimeUnit.SECONDS);
+        cache.increment(CACHE_SITE_PV, SITE_PV, 1L);
     }
 
     private boolean isVisited(String sessionId, Long postId) {
         return redisTemplate.opsForValue().getBit(sessionId, postId);
     }
 
-    private void markVisitedTag(String sessionId, Long postId) {
-        redisTemplate.opsForValue().setBit(sessionId, postId, true);
-        redisTemplate.expire(sessionId, getExpireTime(), TimeUnit.SECONDS);
+    private void markVisitedTag(String visitorId, Long postId) {
+        redisTemplate.opsForValue().setBit(visitorId, postId, true);
+        redisTemplate.expire(visitorId, getExpireTime(), TimeUnit.SECONDS);
     }
 
     private long getExpireTime() {
-        return LocalDateTime.of(LocalDateTime.now().toLocalDate(), LocalTime.of(DEFAULT_EXPIRY_HOUR, DEFAULT_EXPIRY_MIN))
-                .getSecond();
+        LocalDate tomorrowDate = LocalDateTime.now().toLocalDate().plusDays(1L);
+        LocalTime expiryTime = LocalTime.of(DEFAULT_EXPIRY_HOUR, DEFAULT_EXPIRY_MIN);
+        return LocalDateTime.of(tomorrowDate, expiryTime).atZone(ZoneId.systemDefault()).toEpochSecond();
     }
 
     private int getSitePvCount() {
-        return cache.get(CACHE_SITE_HIT, SITE_PV);
+        return cache.get(CACHE_SITE_PV, SITE_PV);
     }
 
-    private int getSiteUvCount() {
-        return cache.get(CACHE_SITE_HIT, SITE_UV);
+    private long getSiteUvCount() {
+        return redisTemplate.opsForHyperLogLog().size(CACHE_SITE_UV);
     }
 
     private int getPostUvCount(long postId) {
@@ -119,12 +116,13 @@ public class CountingServiceImpl implements CountingService {
         return cache.get(CACHE_POST_PV, POST_ + postId);
     }
 
-    @Scheduled(cron = "0 0 3 * * *")
+//    @Scheduled(cron = "0 0 3 * * *")
+//    @Scheduled()
     public void saveDataFromCache() {
         logger.debug("Scheduled to save counting information." );
         int idCount = cacheSet.size(CACHE_POST_ID_LIST).intValue();
 
-        List<ResourceUniqueVisit> uvs = new ArrayList<>(idCount);
+        List<ResourceUniqueVisitor> uvs = new ArrayList<>(idCount);
         List<ResourceView> pvs = new ArrayList<>(idCount);
 
         // Add site uv and pv
@@ -153,10 +151,10 @@ public class CountingServiceImpl implements CountingService {
         });
     }
 
-    private ResourceUniqueVisit createNewUV(String name, long count, Long postId) {
+    private ResourceUniqueVisitor createNewUV(String name, long count, Long postId) {
         Post post = new Post();
         post.setId(postId);
-        return new ResourceUniqueVisit(name, count, post, getYesterdayDate());
+        return new ResourceUniqueVisitor(name, count, post, getYesterdayDate());
     }
 
     private ResourceView createNewPV(String name, long count, Long postId) {
@@ -176,6 +174,5 @@ public class CountingServiceImpl implements CountingService {
         DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
         return dateFormat.format(getYesterdayDate());
     }
-
 
 }
