@@ -29,8 +29,8 @@ public interface CommentRepository extends JpaRepository<Comment, Long>{
             ,nativeQuery = true
     )
     void updateCommentDetail(@Param("commentId") Long commentId,
-                                    @Param("postId") Long postId,
-                                    @Param("authorId") Long authorId,
-                                    @Param("replyToAuthorId") Long replyToAuthorId,
-                                    @Param("parentCommentId") Long parentCommentId);
+                             @Param("postId") Long postId,
+                             @Param("authorId") Long authorId,
+                             @Param("replyToAuthorId") Long replyToAuthorId,
+                             @Param("parentCommentId") Long parentCommentId);
 }

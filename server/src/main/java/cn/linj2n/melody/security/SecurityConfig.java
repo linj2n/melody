@@ -90,8 +90,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                    .logoutSuccessHandler(ajaxLogoutSuccessHandler)
                 .logoutSuccessUrl("/api/v1/account/logout")
                 .deleteCookies("JSESSIONID","AUTH").permitAll();
-
-
     }
     @Bean
     public WebMvcConfigurer corsConfigurer() {

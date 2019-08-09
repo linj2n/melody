@@ -31,6 +31,7 @@ public class PostServiceImpl implements PostService{
     @Autowired
     private PostRepository postRepository;
 
+
     @Resource(name = "redisCountingTemplate")
     HashOperations<String, String, Integer> counting;
 
