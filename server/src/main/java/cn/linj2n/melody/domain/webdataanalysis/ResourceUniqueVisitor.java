@@ -13,7 +13,7 @@ import java.util.Date;
 @Table(name = "resource_uv")
 @Getter
 @Setter
-public class ResourceUniqueVisit {
+public class ResourceUniqueVisitor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +28,7 @@ public class ResourceUniqueVisit {
     private Long count;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "resource_id")
+    @JoinColumn(name = "resource_id", nullable = true)
     private Post post;
 
     @Column(name = "updated_at",nullable = false)
@@ -44,12 +44,11 @@ public class ResourceUniqueVisit {
         updatedAt = ZonedDateTime.now(ZoneId.of("Asia/Shanghai"));
     }
 
-    public ResourceUniqueVisit() {
+    public ResourceUniqueVisitor() {
 
     }
 
-
-    public ResourceUniqueVisit(String name, Long count, Post post, Date date) {
+    public ResourceUniqueVisitor(String name, Long count, Post post, Date date) {
         this.name = name;
         this.date = date;
         this.count = count;
