@@ -1,6 +1,7 @@
 package cn.linj2n.melody.domain;
 
 import cn.linj2n.melody.domain.enumeration.PostStatus;
+import cn.linj2n.melody.utils.DateUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.Getter;
@@ -113,12 +114,12 @@ public class Post {
 
     @PrePersist
     public void prePersist() {
-        createdAt = updatedAt = ZonedDateTime.now();
+        createdAt = updatedAt = DateUtil.nowDateTime();
     }
 
     @PreUpdate
     public void preUpdate() {
-        updatedAt = ZonedDateTime.now(ZoneId.of("Asia/Shanghai"));
+        updatedAt = DateUtil.nowDateTime();
     }
 
     public ZonedDateTime getCreatedAt() {
@@ -131,26 +132,6 @@ public class Post {
 
     public ZonedDateTime getUpdatedAt() {
         return updatedAt;
-    }
-
-    public void setUpdatedAt(ZonedDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public void addTag(Tag tag) {
-        tags.add(tag);
-    }
-
-    public void removeTag(Tag tag) {
-        tags.remove(tag);
-    }
-
-    public void addCategory(Category category) {
-        categories.add(category);
-    }
-
-    public void removeCategory(Category category) {
-        categories.remove(category);
     }
 
 

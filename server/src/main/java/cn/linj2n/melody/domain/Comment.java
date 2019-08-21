@@ -2,6 +2,8 @@ package cn.linj2n.melody.domain;
 
 import cn.linj2n.melody.domain.enumeration.CommentStatus;
 import cn.linj2n.melody.domain.enumeration.CommentType;
+import cn.linj2n.melody.utils.DateUtil;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
@@ -65,6 +67,7 @@ public class Comment {
     /**
      * The posts which the comment belongs to
      */
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_post_id")
     private Post post;
@@ -85,7 +88,7 @@ public class Comment {
 
     @PrePersist
     public void prePersist() {
-        createdAt = ZonedDateTime.now(ZoneId.of("Asia/Shanghai"));
+        createdAt = DateUtil.nowDateTime();
     }
 
 }
