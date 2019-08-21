@@ -1,25 +1,29 @@
 package cn.linj2n.melody.utils;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.*;
 
 public class DateUtil {
-    public static Date getYesterdayDate() {
-        final Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, -1);
-        return cal.getTime();
+
+    private static final ZoneId DEFAULT_ZONE = ZoneId.of("Asia/Shanghai");
+
+    public static ZonedDateTime nowDateTime() {
+        return ZonedDateTime.now(DEFAULT_ZONE);
     }
 
-    public static String getYesterdayDateString() {
-        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-        return dateFormat.format(getYesterdayDate());
+    public static LocalDate nowLocalDate() {
+        return ZonedDateTime.now(DEFAULT_ZONE).toLocalDate();
     }
 
-    public static Date daysAgo(int delta) {
-        final Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, -delta);
-        return cal.getTime();
+    public static ZonedDateTime getStartOfDay(LocalDate localDate) {
+        return ZonedDateTime.of(localDate, LocalTime.MIN, DEFAULT_ZONE);
     }
+
+    public static ZonedDateTime getEndOfDay(LocalDate localDate) {
+        return ZonedDateTime.of(localDate, LocalTime.MAX, DEFAULT_ZONE);
+    }
+
+    public static ZonedDateTime getStartOfYesterday() {
+       return ZonedDateTime.now(DEFAULT_ZONE).minusDays(1L).toLocalDate().atStartOfDay(DEFAULT_ZONE);
+    }
+
 }
