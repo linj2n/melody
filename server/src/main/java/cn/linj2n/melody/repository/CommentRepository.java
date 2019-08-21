@@ -11,10 +11,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Optional;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long>{
+
+    Long countByCreatedAtBetween(ZonedDateTime start, ZonedDateTime end);
 
     Optional<Comment> findOptionalById(Long id);
 
@@ -33,4 +38,5 @@ public interface CommentRepository extends JpaRepository<Comment, Long>{
                              @Param("authorId") Long authorId,
                              @Param("replyToAuthorId") Long replyToAuthorId,
                              @Param("parentCommentId") Long parentCommentId);
+
 }
