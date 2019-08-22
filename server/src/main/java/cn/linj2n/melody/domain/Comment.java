@@ -24,14 +24,14 @@ import java.util.List;
 public class Comment {
 
     /**
-     * Comment id
+     * 评论主键
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /**
-     * Comment content
+     * 评论的内容
      */
     @NotNull
     @Size(max = 65535)
@@ -40,7 +40,7 @@ public class Comment {
     private String content;
 
     /**
-     * Comment status: { BLOCK, ACTIVE }
+     * 评论的状态，包括 BLOCK, ACTIVE
      */
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -48,24 +48,33 @@ public class Comment {
     private CommentStatus commentStatus;
 
     /**
-     * Comment type: { REPLY_TO_POST, REPLY_TO_COMMENT }
+     * 评论的类型，包括 REPLY_TO_COMMENT, REPLY_TO_POST
      */
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
     private CommentType commentType;
 
+    /**
+     * 评论所属作者
+     */
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
     private CommentAuthor author;
 
+    /**
+     * 评论对象的作者
+     */
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
     private CommentAuthor replyToAuthor;
 
+    /**
+     * 评论的回复数
+     */
     @Column(name = "reply_count", nullable = false)
     private Long replyCount;
 
     /**
-     * The posts which the comment belongs to
+     * 评论所属的文章，指出评论贴在哪篇文章下
      */
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
@@ -73,14 +82,14 @@ public class Comment {
     private Post post;
 
     /**
-     * The comments of reply
+     * 评论所属的父评论，指出子评论贴在那条评论下
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_comment_id")
     private Comment parentComment;
 
     /**
-     * Created time of comment
+     * 评论的创建时间
      */
     @NotNull
     @Column(name = "created_at", nullable = false)
