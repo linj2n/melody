@@ -8,7 +8,8 @@ import java.util.Date;
 import java.util.List;
 
 public interface ResourceUniqueVisitRepository extends JpaRepository<ResourceUniqueVisitor, Long> {
-    List<ResourceUniqueVisitor>  findAllByNameAndDateBetweenOrderByDateAsc(String name, Date start, Date end);
+
+    List<ResourceUniqueVisitor>  findAllByNameAndDateBetweenOrderByDateDesc(String name, Date start, Date end);
 
     List<ResourceUniqueVisitor> findTop15ByNameOrderByDateDesc(String name);
 }
