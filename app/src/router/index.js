@@ -25,22 +25,22 @@ import Layout from '../views/layout/Layout'
 export const constantRouterMap = [
   { path: '/login', component: () => import('@/views/login/index'), hidden: true },
   { path: '/register', component: () => import('@/views/register/index'), hidden: true },
-  { path: '/404', component: () => import('@/views/404'), hidden: true },
-
-  {
-    path: '/',
-    component: Layout,
-    redirect: '/dashboard',
-    name: 'Dashboard',
-    hidden: true,
-    children: [{
-      path: 'dashboard',
-      component: () => import('@/views/dashboard/index')
-    }]
-  }
+  { path: '/404', component: () => import('@/views/404'), hidden: true }
 ]
 
 export const asyncRouterMap = [
+  {
+    path: '/dashboard',
+    component: Layout,
+    children: [
+      {
+        path: '',
+        name: 'Dashboard',
+        component: () => import('@/views/dashboard/index'),
+        meta: { title: '首 页', icon: 'dashboard' }
+      }
+    ]
+  },
   {
     path: '/posts',
     component: Layout,
@@ -50,7 +50,7 @@ export const asyncRouterMap = [
         path: '',
         name: 'posts',
         component: () => import('@/views/posts/list'),
-        meta: { title: '文 章', icon: 'documentation', roles: ['ROLE_ADMIN'] }
+        meta: { title: '文 章', icon: 'icon_compile', roles: ['ROLE_ADMIN'] }
       },
       {
         path: ':id/edit',
@@ -67,10 +67,10 @@ export const asyncRouterMap = [
     component: Layout,
     children: [
       {
-        path: 'index',
+        path: '',
         name: 'Tags',
         component: () => import('@/views/category/index'),
-        meta: { title: '标 签', icon: 'tree-table' }
+        meta: { title: '标 签', icon: 'icon_ding' }
       }
     ]
   },
@@ -84,12 +84,11 @@ export const asyncRouterMap = [
         path: '',
         name: 'Attachments',
         component: () => import('@/views/attachments/index'),
-        meta: { title: '附 件', icon: 'clipboard' }
+        meta: { title: '附 件', icon: 'icon_photo' }
       }
     ]
   },
 
-  // TODO: Setting component
   {
     path: '/setting',
     component: Layout,
@@ -98,7 +97,20 @@ export const asyncRouterMap = [
         path: '',
         name: 'Setting',
         component: () => import('@/views/setting/index'),
-        meta: { title: '配 置', icon: 'user' }
+        meta: { title: '配 置', icon: 'icon_principal' }
+      }
+    ]
+  },
+
+  {
+    path: '/system',
+    component: Layout,
+    children: [
+      {
+        path: '',
+        name: 'System',
+        component: () => import('@/views/system/index'),
+        meta: { title: '系 统', icon: 'icon_setting' }
       }
     ]
   },
