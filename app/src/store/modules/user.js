@@ -1,4 +1,4 @@
-import { login, logout, getInfo } from '@/api/login'
+import { login, logout, getInfo } from '@/api/user'
 import { getAuthState, removeAuthCookie } from '@/utils/auth'
 
 const user = {
@@ -52,7 +52,7 @@ const user = {
             reject('getInfo: roles must be a non-null array !')
           }
           commit('SET_NAME', data.username)
-          // commit('SET_AVATAR', data.avatar)
+          commit('SET_AVATAR', data.avatarUrl)
           resolve(response)
         }).catch(error => {
           reject(error)

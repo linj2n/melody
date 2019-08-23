@@ -30,31 +30,49 @@ export function logout() {
   })
 }
 
-export function validateResetKey(email, token) {
+export function validateVerificationCode(code) {
   return request({
-    url: '/api/v1/account/resetKey/_validate',
-    method: 'post',
-    data: {
-      email,
-      token
-    }
-  })
-}
-
-export function requestToSendResetKey() {
-  return request({
-    url: '/api/v1/account/resetKey',
+    url: `/api/v1/account/verification_code/${code}/_validate`,
     method: 'post'
   })
 }
 
-export function changeEmail(email, token) {
+export function requestToSendVerificationCode() {
+  return request({
+    url: '/api/v1/account/verification_code',
+    method: 'post'
+  })
+}
+
+export function changeEmail(email, code) {
   return request({
     url: '/api/v1/account/email',
     method: 'put',
     data: {
-      'email': email,
-      'token': 120502
+      email,
+      code
+    }
+  })
+}
+
+export function changeUsername(username, code) {
+  return request({
+    url: '/api/v1/account/username',
+    method: 'put',
+    data: {
+      username,
+      code
+    }
+  })
+}
+
+export function changePassword(password, code) {
+  return request({
+    url: '/api/v1/account/password',
+    method: 'put',
+    data: {
+      password,
+      code
     }
   })
 }
