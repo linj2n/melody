@@ -43,12 +43,10 @@
           type="primary"
           style="width:100%;"
           @click.native.prevent="handleLogin"
-        >Sign in</el-button>
+        >Sign in</el-button
+        >
       </el-form-item>
-      <div class="tips">
-        <span style="margin-right:20px;">username: admin</span>
-        <span>password: admin</span>
-      </div>
+      <div class="tips"/>
     </el-form>
   </div>
 </template>
@@ -116,6 +114,7 @@ export default {
           this.$store
             .dispatch('Login', this.loginForm)
             .then(() => {
+              console.log('login success')
               this.loading = false
               // 动态导航到 this.redirect
               this.$router.push({ path: '/' })
