@@ -71,27 +71,25 @@
               size="mini"
               type="text"
               @click="deletePopoverVisible = false"
-            >取消</el-button
             >
+              取消
+            </el-button>
             <el-button
               type="primary"
               size="mini"
               @click="handleDeleteConfirm(currentItem)"
-            >确定</el-button
             >
+              确定
+            </el-button>
           </div>
           <el-button slot="reference" type="danger">删 除</el-button>
         </el-popover>
-        <el-button 
-style="margin-left: 10px" 
-@click="editDialogVisible = false"
-        >取 消</el-button
-        >
-        <el-button 
-type="primary" 
-@click="handleEditConfirm(currentItem)"
-        >确 定</el-button
-        >
+        <el-button style="margin-left: 10px" @click="editDialogVisible = false">
+          取 消
+        </el-button>
+        <el-button type="primary" @click="handleEditConfirm(currentItem)">
+          确 定
+        </el-button>
       </span>
     </el-dialog>
   </div>

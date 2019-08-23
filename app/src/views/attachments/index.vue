@@ -92,11 +92,9 @@
       </el-row>
       <el-row type="flex" justify="center" style="margin-top: 20px">
         <el-col :span="6">
-          <el-button 
-style="width: 100%" 
-type="success" @click="submitUpload"
-          >上传</el-button
-          >
+          <el-button style="width: 100%" type="success" @click="submitUpload">
+            上传</el-button
+            >
         </el-col>
       </el-row>
     </el-dialog>
@@ -138,10 +136,9 @@ type="success" @click="submitUpload"
             </el-form-item>
             <div class="info-item">
               <label>文件大小</label>
-              <span 
-class="attachment-time"
-              >{{ tempAttachment.qiniuFile.size }} KB</span
-              >
+              <span class="attachment-time">
+                {{ tempAttachment.qiniuFile.size }} KB
+              </span>
             </div>
             <div class="info-item">
               <label>更新时间</label>

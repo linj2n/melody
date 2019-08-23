@@ -74,10 +74,12 @@
       <el-table-column min-width="300px" label="标题">
         <template slot-scope="{ row }">
           <a
+            :href="'http://localhost:8080/posts/' + row.id"
             class="link-type"
             target="_blank"
-            :href="'http://localhost:8080/posts/' + row.id"
-          >{{ row.title }}</a>
+          >
+            {{ row.title }}
+          </a>
         </template>
       </el-table-column>
 
