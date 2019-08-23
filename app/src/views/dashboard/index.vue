@@ -1,6 +1,11 @@
 <template>
   <div class="dashboard-editor-container">
-    <panel-group @handleSetLineChartData="handleSetLineChartData" />
+    <panel-group
+      :site-total-views="siteTotalViews"
+      :post-total-number="postTotalNumber"
+      :comment-total-number="commentTotalNumber"
+      @handleSetLineChartData="handleSetLineChartData"
+    />
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
       <line-chart :chart-data="lineChartData" />
     </el-row>
@@ -8,98 +13,154 @@
 </template>
 
 <script>
+import moment from 'moment'
 import PanelGroup from './components/PanelGroup'
-import TodoList from './components/TodoList'
 import LineChart from './components/LineChart'
-import { fetchSiteUniqueVisitorData, fetchSitePageViewData } from '@/api/traffic'
+import { fetchSiteTrafficData, fetchSiteTotalViews, fetchPostTotalNumber, fetchCommentTotalNumber, fetchCommentCountData } from '@/api/traffic'
 
 export default {
   name: 'Dashboard',
   components: {
     PanelGroup,
-    LineChart,
-    TodoList
+    LineChart
   },
   data() {
     return {
+      siteTotalViews: 0,
+      postTotalNumber: 0,
+      commentTotalNumber: 0,
       lineChartData: {}
     }
   },
+  mounted() {
+
+  },
   created() {
-    this.showVisitcountData()
+    this.getSiteTrafficData()
+    this.getSiteTotalViews()
+    this.getPostTotalNumber()
+    this.getCommentTotalNumber()
+    // this.showVisitcountData()
   },
   methods: {
     handleSetLineChartData(type) {
       // TODO: ugly design, need to refactor.
       if (type === 'visitCounts') {
-        this.showVisitcountData()
+        this.getSiteTrafficData()
       } else if (type === 'commentCounts') {
         this.showCommentCountData()
       } else {
         this.showPostCountData()
       }
     },
-    showCommentCountData() {
+    getSiteTrafficData() {
+      fetchSiteTrafficData().then(response => {
+        const dates = response.data.map(item => moment(item.bucket).format('MM/DD')).reverse()
+        const uniqueVisits = response.data.map(item => item.uniques).reverse()
+        const views = response.data.map(item => item.count).reverse()
+        this.lineChartData = {
+          xAxis: {
+            data: dates
+          },
+          series: [
+            {
+              name: '访客数',
+              smooth: false,
+              type: 'line',
+              itemStyle: {
+                normal: {
+                  color: '#3888fa',
+                  lineStyle: {
+                    color: '#3888fa',
+                    width: 2
+                  },
+                  areaStyle: {
+                    color: '#f3f8ff'
+                  }
+                }
+              },
+              yAxisIndex: 0,
+              data: uniqueVisits,
+              animationDuration: 2800,
+              animationEasing: 'quadraticOut'
+            },
+            {
+              name: '浏览次数', itemStyle: {
+                normal: {
+                  color: '#FF005A',
+                  lineStyle: {
+                    color: '#FF005A',
+                    width: 2
+                  }
+                }
+              },
+              smooth: false,
+              type: 'line',
 
+              data: views,
+              animationDuration: 2800,
+              animationEasing: 'cubicInOut'
+            }
+          ],
+          legend: {
+            data: ['访客数', '浏览次数']
+          }
+        }
+      })
+    },
+    getSiteTotalViews() {
+      fetchSiteTotalViews().then(response => {
+        this.siteTotalViews = response.data
+      })
+    },
+    getPostTotalNumber() {
+      fetchPostTotalNumber().then(response => {
+        this.postTotalNumber = response.data
+      })
+    },
+    getCommentTotalNumber() {
+      fetchCommentTotalNumber().then(response => {
+        this.commentTotalNumber = response.data
+      })
+    },
+    showCommentCountData() {
+      fetchCommentCountData().then(response => {
+        const dates = response.data.map(item => moment(item.bucket).format('MM/DD')).reverse()
+        const counts = response.data.map(item => item.count).reverse()
+        this.lineChartData = {
+          xAxis: {
+            data: dates
+          },
+          series: [
+            {
+              name: '评论数', itemStyle: {
+                normal: {
+                  color: '#3888fa',
+                  lineStyle: {
+                    color: '#3888fa',
+                    width: 2
+                  },
+                  areaStyle: {
+                    color: '#f3f8ff'
+                  }
+                }
+              },
+              smooth: false,
+              type: 'line',
+              yAxisIndex: 0,
+              data: counts,
+              animationDuration: 2800,
+              animationEasing: 'cubicInOut'
+            }
+          ],
+          legend: {
+            data: ['评论数']
+          }
+        }
+      })
     },
     showPostCountData() {
 
-    },
-    showVisitcountData() {
-      fetchSiteUniqueVisitorData().then(response => {
-        const dates = response.data.map(uv => uv.date)
-        const uniqueVisitorData = response.data.map(uv => uv.count)
-        console.log('uniqueVisitorArr: ', uniqueVisitorData)
-        fetchSitePageViewData().then(response => {
-          const pageViewData = response.data.map(pv => pv.count)
-          console.log('pageViewArr: ', pageViewData)
-          this.lineChartData = {
-            xAxis: {
-              data: dates
-            },
-            series: [
-              {
-                name: '访客数',
-                smooth: true,
-                type: 'line',
-                itemStyle: {
-                  normal: {
-                    color: '#3888fa',
-                    lineStyle: {
-                      color: '#3888fa',
-                      width: 2
-                    },
-                    areaStyle: {
-                      color: '#f3f8ff'
-                    }
-                  }
-                },
-                yAxisIndex: 0,
-                data: uniqueVisitorData,
-                animationDuration: 2800,
-                animationEasing: 'quadraticOut'
-              },
-              {
-                name: '浏览次数', itemStyle: {
-                  normal: {
-                    color: '#FF005A',
-                    lineStyle: {
-                      color: '#FF005A',
-                      width: 2
-                    }
-                  }
-                },
-                smooth: true,
-                type: 'line',
-                yAxisIndex: 1,
-                data: pageViewData,
-                animationDuration: 2800,
-                animationEasing: 'cubicInOut'
-              }
-            ]
-          }
-        })
-      })
     }
   }
 }
