@@ -194,5 +194,4 @@ public class PostServiceImpl implements PostService{
         }
         return postRepository.findByTitleContaining(title, pageable);
     }
-
 }
