@@ -126,7 +126,7 @@ https://github.com/kitian616/jekyll-TeXt-theme
                     <sup th:text="${postNums}">37</sup>
                 </a>
                 <a th:each="tag : ${allTags}"
-                   th:attr="data-sort=${#numbers.formatInteger(postNums - tag.posts.size(), 4)},data-encode=${tag.name}"
+                   th:attr="data-sort=${#numbers.formatInteger(postNums - tag.posts.size(), 4)}, data-encode=${#uris.escapeQueryParam(tag.name)}"
                    th:title="${tag.name}"
                    th:rel="${tag.posts.size()}"
                    th:inline="text"

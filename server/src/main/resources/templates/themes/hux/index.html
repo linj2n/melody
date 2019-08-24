@@ -70,17 +70,17 @@
                     </li>
 
                     <li>
-                        <a href="/about/">About</a>
+                        <a href="/about">About</a>
                     </li>
 
 
                     <li>
-                        <a href="/archive/">Archive</a>
+                        <a href="/archive">Archive</a>
                     </li>
 
 
                     <li>
-                        <a href="/portfolio/">Portfolio</a>
+                        <a href="/portfolio">Portfolio</a>
                     </li>
 
 
@@ -132,8 +132,8 @@ https://github.com/kitian616/jekyll-TeXt-theme
                         <a th:href="@{'/posts/' + ${post.id}}">
                             <h2 class="post-title" th:text="${post.title}"></h2>
                             <!--<h3 class="post-subtitle"></h3>-->
-                            <div th:if="${not post.content.isEmpty()}" class="post-content-preview" th:inline="text">
-                                [[${post.content}]]...
+                            <div class="post-content-preview" th:inline="text">
+                                [[${post.contentPreview}]]...
                             </div>
                         </a>
                         <p class="post-meta" th:inline="text">
@@ -144,10 +144,12 @@ https://github.com/kitian616/jekyll-TeXt-theme
                 </th:block>
                 <ul class="pager">
                     <li th:if="${postPage.hasPrevious()}" class="previous">
-                        <a th:href="@{/index(size=${postPage.getSize()},page=${postPage.nextPageable().getPageNumber()})}">&larr; Newer Posts</a>
+                        <a th:href="@{/index(size=${postPage.getSize()},page=${postPage.previousPageable().getPageNumber()})}">&larr;
+                            Newer Posts</a>
                     </li>
                     <li th:if="${postPage.hasNext()}" class="next">
-                        <a th:href="@{/index(size=${postPage.getSize()},page=${postPage.nextPageable().getPageNumber()})}">Older Posts &rarr;</a>
+                        <a th:href="@{/index(size=${postPage.getSize()},page=${postPage.nextPageable().getPageNumber()})}">Older
+                            Posts &rarr;</a>
                     </li>
                 </ul>
             </div>
@@ -161,12 +163,25 @@ https://github.com/kitian616/jekyll-TeXt-theme
             ">
                 <!-- Featured Tags-->
                 <section>
+                    <!-- jquery.tagcloud.js -->
+                    <script>
+                        /*<![CDATA[*/
+                        var tagCloudJsUrl = "\/blog\/themes\/huxpro\/js\/jquery.tagcloud.js";
+                        /*]]>*/
+                        async(tagCloudJsUrl, function () {
+                            $.fn.tagcloud.defaults = {
+                                //size: {start: 1, end: 1, unit: 'em'},
+                                color: {start: '#bbbbee', end: '#2f93b4'}
+                            };
+                            $('#tag_cloud a').tagcloud();
+                        })
+                    </script>
                     <h5><a th:href="@{/archives/}">FEATURED TAGS</a></h5>
                     <div class="tags">
                         <a th:each="tag : ${allTags}"
                            th:attr="data-encode=${tag.name}"
                            th:title="${tag.name}"
-                           th:href="@{'/archives/?tag=' + tag.name}"
+                           th:href="@{/archives/(tag=${tag.name})}"
                            th:inline="text"
                         >
                             [[${tag.name}]]
@@ -258,21 +273,6 @@ https://github.com/kitian616/jekyll-TeXt-theme
                 }
                 s.parentNode.insertBefore(o, s);
             }
-        </script>
-
-
-        <!-- jquery.tagcloud.js -->
-        <script>
-            /*<![CDATA[*/
-            var tagCloudJsUrl = "\/blog\/themes\/huxpro\/js\/jquery.tagcloud.js";
-            /*]]>*/
-            async(tagCloudJsUrl, function () {
-                $.fn.tagcloud.defaults = {
-                    //size: {start: 1, end: 1, unit: 'em'},
-                    color: {start: '#bbbbee', end: '#2f93b4'}
-                };
-                $('#tag_cloud a').tagcloud();
-            })
         </script>
 
         <script src="../../../static/blog/themes/huxpro/js/archive.js"></script>
