@@ -47,20 +47,14 @@ public class PostResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getPost(@PathVariable(value = "postId") Long postId) {
         return postService.getPost(postId)
-                .map(dtoModelMapper::convertToDTO)
-                .map(postDTO -> {
-                    logger.info("postInfo -> ",postDTO.toString());
-                    return new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(null, postDTO), HttpStatus.OK);
-                })
+                .map(post -> new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(null, post), HttpStatus.OK))
                 .orElse(new ResponseEntity<>(ResponseBuilder.buildFailedResponse("文章不存在", null), HttpStatus.OK));
     }
 
     @RequestMapping(value = "/v1/posts/{postId}",
             method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> updatePost(@RequestBody PostDTO postDTO) {
-        Post post = dtoModelMapper.convertToEntity(postDTO);
-        logger.info("post.content ----> {} ",post.getContent());
+    public ResponseEntity<?> updatePost(@RequestBody Post post) {
         Post newPost = postService.updatePost(post);
         if (newPost == null) {
             return new ResponseEntity<>(ResponseBuilder.buildFailedResponse("服务器错误，更新失败", null),HttpStatus.INTERNAL_SERVER_ERROR);
@@ -112,10 +106,13 @@ public class PostResource {
             return new ResponseEntity<>(ResponseBuilder.buildFailedResponse("参数错误", null), HttpStatus.OK);
         }
         logger.info("categoryIdList.size: {}, tagIdList.size: {}", categoryIdList.size(),tagIdList.size());
-        return new ResponseEntity<>(ResponseBuilder
-                .buildSuccessResponse(null, postService
-                        .findBySearch(tagIdList, categoryIdList, title, pageable)
-                        .map(dtoModelMapper::convertToDTO)),
+        return new ResponseEntity<>(
+                ResponseBuilder.buildSuccessResponse(
+                        null,
+                        postService
+                                .findBySearch(tagIdList, categoryIdList, title, pageable)
+                                .map(dtoModelMapper::convertToDTO)
+                ),
                 HttpStatus.OK);
     }
 
