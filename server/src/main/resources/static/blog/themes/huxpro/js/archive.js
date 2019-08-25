@@ -94,7 +94,8 @@ https://github.com/kitian616/jekyll-TeXt-theme
                     } else {
                         var tags = $articles.eq(j).data('tags').split(',');
                         for (k = 0; k < tags.length; k++) {
-                            if (tags[k] === tag || tags[k].replace(/\s/g,"%20") === tag) {
+                            console.log("encoding " + tags[k] + " : " + encodeURIComponent(tags[k]) + ", tag: " + tag);
+                            if (tags[k] === tag || encodeURIComponent(tags[k]) === tag) {
                                 result[i] || (result[i] = {});
                                 result[i][j] = true;
                                 break;
