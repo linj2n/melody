@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class ConfigServiceImpl implements ConfigService {
+
     private OptionRepository optionRepository;
 
     @Autowired
@@ -27,7 +28,7 @@ public class ConfigServiceImpl implements ConfigService {
     }
 
     @Override
-    public Map<String, String> fecthAllOptionMap() {
+    public Map<String, String> fetchAllOptionMap() {
         return optionRepository
                 .findAll()
                 .stream()
@@ -35,9 +36,9 @@ public class ConfigServiceImpl implements ConfigService {
     }
 
     @Override
-    public Map<String, String> fecthOptionMap(List<String> optionNames) {
+    public Map<String, String> fetchOptionMap(List<String> optionNames) {
         Map<String, String> optionMap = new HashMap<>();
-        Map<String, String> allOptionMap = fecthAllOptionMap();
+        Map<String, String> allOptionMap = fetchAllOptionMap();
         for (String name : optionNames) {
             String value = allOptionMap.get(name);
             optionMap.put(name, value);

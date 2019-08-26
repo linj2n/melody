@@ -8,9 +8,9 @@ import java.util.Map;
 public interface ConfigService {
     List<Option> listAllOptions();
 
-    Map<String, String> fecthAllOptionMap();
+    Map<String, String> fetchAllOptionMap();
 
-    Map<String, String> fecthOptionMap(List<String> optionNames);
+    Map<String, String> fetchOptionMap(List<String> optionNames);
 
     List<Option> updateOptions(List<Option> options);
 

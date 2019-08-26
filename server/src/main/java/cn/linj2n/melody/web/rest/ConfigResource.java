@@ -36,7 +36,7 @@ public class ConfigResource {
         return new ResponseEntity<>(
                 ResponseBuilder.buildSuccessResponse(
                         "获取配置信息成功",
-                        configService.fecthOptionMap(optionNames)
+                        configService.fetchOptionMap(optionNames)
                 ),
                 HttpStatus.OK
         );
