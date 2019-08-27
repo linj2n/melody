@@ -7,6 +7,7 @@ import cn.linj2n.melody.web.dto.Archive;
 import cn.linj2n.melody.web.dto.PostDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.time.Month;
 import java.util.List;
@@ -46,5 +47,5 @@ public interface SiteService {
 
     Optional<Category> getCategoryWithPostsById(long categoryId);
 
-    Page<PostDTO> listPostsByPage(PageRequest pageRequest);
+    Page<PostDTO> listPostsByPage(Pageable pageable);
 }

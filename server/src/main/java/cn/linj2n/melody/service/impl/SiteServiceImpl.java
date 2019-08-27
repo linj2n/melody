@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -257,9 +258,9 @@ public class SiteServiceImpl implements SiteService {
     }
 
     @Override
-    public Page<PostDTO> listPostsByPage(PageRequest pageRequest) {
+    public Page<PostDTO> listPostsByPage(Pageable pageable) {
         // TODO: Eliminate "unchecked" warnings.
-        Page<Post> postDTOPage = postRepository.findAll(PostSpecification.isPublished(), pageRequest);
+        Page<Post> postDTOPage = postRepository.findAll(PostSpecification.isPublished(), pageable);
         return postDTOPage.map(dtoModelMapper::convertToDTO);
     }
 }
