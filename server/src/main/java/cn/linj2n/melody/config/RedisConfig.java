@@ -64,6 +64,16 @@ public class RedisConfig {
         return redisTemplate;
     }
 
+    @Bean(name = "redisOptionTemplate")
+    RedisTemplate<String, String> redisOptionTemplate() {
+        RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(jedisConnectionFactory());
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+        redisTemplate.setHashValueSerializer(new StringRedisSerializer());
+        return redisTemplate;
+    }
+
 
     @Bean
     public CacheManager cacheManager() {
