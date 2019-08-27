@@ -1,4 +1,4 @@
-package cn.linj2n.melody.domain.webdataanalysis;
+package cn.linj2n.melody.domain.traffic;
 
 import cn.linj2n.melody.domain.Post;
 import cn.linj2n.melody.utils.DateUtil;
@@ -6,9 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Date;
 
 @Entity
 @Table(name = "resource_uv")
