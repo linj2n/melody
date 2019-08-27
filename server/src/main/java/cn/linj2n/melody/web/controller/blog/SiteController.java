@@ -2,17 +2,24 @@ package cn.linj2n.melody.web.controller.blog;
 
 
 import cn.linj2n.melody.domain.Category;
+import cn.linj2n.melody.domain.Option;
 import cn.linj2n.melody.domain.Post;
 import cn.linj2n.melody.domain.Tag;
+import cn.linj2n.melody.service.ConfigService;
+import cn.linj2n.melody.service.CountingService;
 import cn.linj2n.melody.service.PostService;
 import cn.linj2n.melody.service.SiteService;
 import cn.linj2n.melody.web.dto.PostDTO;
 import cn.linj2n.melody.web.utils.DTOModelMapper;
 import cn.linj2n.melody.web.utils.ViewUtils;
 import org.jsoup.Jsoup;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,6 +27,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 import static java.util.stream.Collectors.toList;
@@ -28,11 +36,7 @@ import static java.util.stream.Collectors.toList;
 @Controller
 public class SiteController {
 
-    private final static int DEFAULT_PAGE_NUMS = 0;
-
-    private final static int DEFAULT_PAGE_SIZE = 10;
-
-    private final static int DEFAULT_CONTENT_PREVIEW_SIZE = 300;
+    private final static Logger LOGGER = LoggerFactory.getLogger(SiteController.class);
 
     private PostService postService;
 
@@ -40,21 +44,32 @@ public class SiteController {
 
     private SiteService siteService;
 
+    private ConfigService configService;
+
+    private CountingService countingService;
+
     private ViewUtils viewUtils;
 
     private static String themes = "/themes/hux/";
 
     @Autowired
-    public SiteController(PostService postService, DTOModelMapper dtoModelMapper,  ViewUtils viewUtils, SiteService siteService) {
+    public SiteController(PostService postService, DTOModelMapper dtoModelMapper, SiteService siteService, ConfigService configService, CountingService countingService, ViewUtils viewUtils) {
         this.postService = postService;
         this.dtoModelMapper = dtoModelMapper;
-        this.viewUtils = viewUtils;
         this.siteService = siteService;
+        this.configService = configService;
+        this.countingService = countingService;
+        this.viewUtils = viewUtils;
     }
 
     @ModelAttribute("allTags")
     public List<Tag> getAllTags() {
         return siteService.listAllTagsWithPosts();
+    }
+
+    @ModelAttribute("config")
+    public Map<String, String> listAllOptions() {
+        return configService.fetchAllOptionMap();
     }
 
     @ModelAttribute("allCategories")
@@ -68,10 +83,11 @@ public class SiteController {
     }
 
     @RequestMapping(value = "/posts/{postId}")
-    public String getPageById(@PathVariable(value = "postId") Long postId, ModelMap modelMap) {
-        // TODO: handle the valid postId
+    public String getPageById(@PathVariable(value = "postId") Long postId, ModelMap modelMap, HttpServletRequest request) {
         Post post = postService.getPost(postId).orElse(new Post());
-        postService.increasePostViews(postId);
+        String sessionId = request.getSession(true).getId();
+        countingService.increasePostVisitCount(sessionId, postId);
+        postService.increasePostViews(post.getId());
         PostDTO postDTO = dtoModelMapper.convertToDTO(post);
         modelMap.addAttribute("post",postDTO);
         modelMap.addAttribute("prePost", dtoModelMapper.convertToDTO(postService.getPost(post.getId() - 1L).orElse(null)));
@@ -147,17 +163,8 @@ public class SiteController {
     }
 
     @RequestMapping(value = {"/","index"})
-    public String listPosts(ModelMap modelMap,  @RequestParam(name = "page",required = false) Integer pageNum, @RequestParam(name = "size",required = false) Integer pageSize) {
-        PageRequest request = new PageRequest(pageNum == null ? DEFAULT_PAGE_NUMS : pageNum - 1,
-                pageSize == null ? DEFAULT_PAGE_SIZE : pageSize);
-        Page<PostDTO> postDTOS = siteService.listPostsByPage(request).map(postDto -> {
-            String contentPreview = Jsoup.parse(postDto.getContent()).text();
-            postDto.setContent(contentPreview.length() > DEFAULT_CONTENT_PREVIEW_SIZE
-                    ? contentPreview.substring(0, DEFAULT_CONTENT_PREVIEW_SIZE)
-                    : contentPreview);
-            return postDto;
-        });
-        modelMap.addAttribute("postPage", postDTOS);
+    public String listPosts(ModelMap modelMap, @PageableDefault Pageable pageable) {
+        modelMap.addAttribute("postPage", siteService.listPostsByPage(pageable));
         return themes + "index";
     }
 }
