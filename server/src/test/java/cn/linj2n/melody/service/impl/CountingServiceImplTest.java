@@ -1,11 +1,11 @@
 package cn.linj2n.melody.service.impl;
 
-import cn.linj2n.melody.domain.Post;
-import cn.linj2n.melody.domain.webdataanalysis.ResourceUniqueVisitor;
-import cn.linj2n.melody.domain.webdataanalysis.ResourceView;
+import cn.linj2n.melody.domain.traffic.ResourceUniqueVisitor;
+import cn.linj2n.melody.domain.traffic.ResourceView;
 import cn.linj2n.melody.repository.ResourceUniqueVisitRepository;
 import cn.linj2n.melody.repository.ResourceViewRepository;
 import cn.linj2n.melody.utils.DateUtil;
+import cn.linj2n.melody.web.dto.TrafficEntryDTO;
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -21,8 +21,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
@@ -38,15 +40,29 @@ public class CountingServiceImplTest {
 
     private static final long DEF_POST_ID = 1;
 
+    private static final long MIN_VIEWS = 0;
+
+    private static final long MIN_UV = 0;
+
+    private static final long MAX_VIEWS = 10000;
+
+    private static final long MAX_UV = 2500;
+
+    private static final int DEF_LENGTH = 31;
+
+    private List<Long> mockSiteUniqueVisitorNums = new ArrayList<>();
+
+    private List<Long> mockSiteViewNums = new ArrayList<>();
+
     private List<ResourceUniqueVisitor> uvs = new ArrayList<>();
 
     private List<ResourceView> pvs = new ArrayList<>();
 
     private static final int DEF_SIZE = 28;
 
-    private List<String> mockSessionIds ;
+    private List<String> mockSessionIds = new ArrayList<>();
 
-    private List<Long> mockPostIds ;
+    private List<Long> mockPostIds = new ArrayList<>();
 
     @Autowired
     private CountingServiceImpl countingService;
@@ -79,12 +95,16 @@ public class CountingServiceImplTest {
 
     @Before
     public void prepare() {
-        resourceUniqueVisitRepository.deleteAll();
-        resourceViewRepository.deleteAll();
+        resetData();
         logger.info("Init data set for testing.");
 
         mockSessionIds = getRandomSessionIdList(DEF_SIZE + 1);
         mockPostIds = LongStream.rangeClosed(1, DEF_SIZE).boxed().collect(Collectors.toList());
+        mockSiteUniqueVisitorNums = new Random().longs(DEF_LENGTH, MIN_UV, MAX_UV).boxed().map(uv -> {
+            mockSiteViewNums.add(uv + (long) (Math.random() * (MAX_VIEWS - uv)));
+            return uv;
+        }).collect(Collectors.toList());
+
 
         mockPostIds.forEach(postId -> {
             String sessionId = mockSessionIds.get(postId.intValue());
@@ -99,13 +119,14 @@ public class CountingServiceImplTest {
                 countingService.increasePostVisitCount(sessionId, postId);
             }
         });
-        for (int i = 1; i <= 15; i ++) {
-            Post post = new Post();
-            post.setId(DEF_POST_ID);
-            ResourceView resourceView = new ResourceView(SITE_PV, Long.valueOf(i), post, DateUtil.daysAgo(i));
-            ResourceUniqueVisitor resourceUniqueVisitor = new ResourceUniqueVisitor(SITE_UV, Long.valueOf(i), post, DateUtil.daysAgo(i));
-            uvs.add(resourceUniqueVisitRepository.save(resourceUniqueVisitor));
-            pvs.add(resourceViewRepository.save(resourceView));
+
+        ZonedDateTime day = DateUtil.getStartOfYesterday().minusDays(1);
+        for (int i = 0; i < DEF_LENGTH; i ++) {
+            ResourceUniqueVisitor newUv = new ResourceUniqueVisitor(SITE_UV, day.minusDays(i), mockSiteUniqueVisitorNums.get(i), null);
+            ResourceView newPv = new ResourceView(SITE_PV, day.minusDays(i), mockSiteViewNums.get(i), null);
+
+            resourceViewRepository.save(newPv);
+            resourceUniqueVisitRepository.save(newUv);
         }
     }
 
@@ -134,21 +155,26 @@ public class CountingServiceImplTest {
     @Test
     public void test_saveCacheDataToDB() {
         countingService.saveCacheDataToDB();
+        return ;
+    }
+
+
+    @Test
+    public void test_listTheNumberOfCommentsForTheLast15Days() {
+        List<TrafficEntryDTO> result = countingService.listTheNumberOfCommentsForTheLast15Days();
+        assertEquals(15, result.size());
     }
 
     @Test
-    public void test_listSiteUniqueVisitorDataForTheLast15Days() {
-        assertEquals(15, countingService.listSiteUniqueVisitorDataForTheLast15Days().size());
-    }
-
-    public void test_listSiteViewDataForTheLast15Days() {
-        assertEquals(15, countingService.listSiteViewDataForTheLast15Days().size());
+    public void test_getTrafficDataForTheLast15Days() {
+        List<TrafficEntryDTO> result = countingService.getTrafficDataForTheLast15Days();
+        assertEquals(15, result.size());
     }
 
     @After
     public void finalize() {
         logger.info("finalize");
-        resetData();
+//        resetData();
     }
 
     private void resetData() {
