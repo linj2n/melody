@@ -11,6 +11,7 @@ import cn.linj2n.melody.web.dto.UserDTO;
 import cn.linj2n.melody.web.dto.comment.CommentAuthorDTO;
 import cn.linj2n.melody.web.dto.comment.CommentDTO;
 import cn.linj2n.melody.web.dto.comment.ReplyToCommentDTO;
+import org.jsoup.Jsoup;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,8 @@ import java.util.stream.Collectors;
 
 @Component
 public class DTOModelMapper {
+
+    private static final int MAX_LENGTH_OF_CONTENT_PREVIEW = 300;
 
     private ModelMapper modelMapper;
 
@@ -44,9 +47,19 @@ public class DTOModelMapper {
         if (post.getUpdatedAt() != null) {
             postDTO.setUpdatedAt(post.getUpdatedAt().toLocalDateTime());
         }
-//        postDTO.setContent(viewUtils.renderToHtml(post.getContent()));
-        postDTO.setContent(post.getContent());
+        postDTO.setContent(viewUtils.renderToHtml(post.getContent()));
+        postDTO.setContentPreview(getContentPreview(postDTO));
         return postDTO;
+    }
+
+    private String getContentPreview(PostDTO postDTO) {
+        if (!postDTO.getSummary().isEmpty()) {
+            return postDTO.getSummary();
+        }
+        String contentText = Jsoup.parse(postDTO.getContent()).text();
+        return contentText.length() > MAX_LENGTH_OF_CONTENT_PREVIEW
+                ? contentText.substring(0, MAX_LENGTH_OF_CONTENT_PREVIEW)
+                : contentText;
     }
 
     public Post convertToEntity(PostDTO postDTO) {

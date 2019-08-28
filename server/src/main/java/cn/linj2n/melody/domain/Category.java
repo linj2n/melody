@@ -45,7 +45,7 @@ public class Category {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode(){
         return name.hashCode();
     }
 
