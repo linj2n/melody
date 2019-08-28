@@ -11,13 +11,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Optional;
 
 @Repository
-public interface CommentRepository extends JpaRepository<Comment, Long>{
+public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     Long countByCreatedAtBetween(ZonedDateTime start, ZonedDateTime end);
 
@@ -31,7 +29,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long>{
     @Query(
             value = " UPDATE comment SET parent_post_id = :postId, parent_comment_id = :parentCommentId, author_id = :authorId, reply_to_author_id = :replyToAuthorId" +
                     " WHERE id = :commentId "
-            ,nativeQuery = true
+            , nativeQuery = true
     )
     void updateCommentDetail(@Param("commentId") Long commentId,
                              @Param("postId") Long postId,

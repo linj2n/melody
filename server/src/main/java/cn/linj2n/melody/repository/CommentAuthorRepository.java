@@ -12,7 +12,5 @@ public interface CommentAuthorRepository extends JpaRepository<CommentAuthor, Lo
     Optional<CommentAuthor> findOptionalById(Long id);
 
     Optional<CommentAuthor> findOptionalByEmail(String email);
-
-//    Long getAuthorIdByEmail(String email);
 }
 
