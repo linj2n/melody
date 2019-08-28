@@ -1,5 +1,6 @@
 package cn.linj2n.melody.web.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,23 +9,23 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class TrafficItemDTO {
+public class TrafficEntryDTO {
 
-    private Date bucket;
+    private LocalDate bucket;
 
     private Long count;
 
     private Long uniques;
 
-    public TrafficItemDTO() {
+    public TrafficEntryDTO() {
     }
 
-    public TrafficItemDTO(Date bucket, Long count) {
+    public TrafficEntryDTO(LocalDate bucket, Long count) {
         this.bucket = bucket;
         this.count = count;
     }
 
-    public TrafficItemDTO(Date bucket, Long count, Long uniques) {
+    public TrafficEntryDTO(LocalDate bucket, Long count, Long uniques) {
         this.bucket = bucket;
         this.count = count;
         this.uniques = uniques;
