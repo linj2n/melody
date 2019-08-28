@@ -1,6 +1,6 @@
 package cn.linj2n.melody.repository;
 
-import cn.linj2n.melody.domain.webdataanalysis.ResourceView;
+import cn.linj2n.melody.domain.traffic.ResourceView;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

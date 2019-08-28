@@ -1,7 +1,6 @@
 package cn.linj2n.melody.repository;
 
-import cn.linj2n.melody.domain.webdataanalysis.ResourceUniqueVisitor;
-import org.springframework.data.domain.Sort;
+import cn.linj2n.melody.domain.traffic.ResourceUniqueVisitor;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Date;

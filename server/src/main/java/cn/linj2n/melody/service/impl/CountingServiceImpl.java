@@ -1,11 +1,15 @@
 package cn.linj2n.melody.service.impl;
 
 import cn.linj2n.melody.domain.Post;
-import cn.linj2n.melody.domain.webdataanalysis.ResourceUniqueVisitor;
-import cn.linj2n.melody.domain.webdataanalysis.ResourceView;
+import cn.linj2n.melody.domain.traffic.ResourceUniqueVisitor;
+import cn.linj2n.melody.domain.traffic.ResourceView;
+import cn.linj2n.melody.repository.CommentRepository;
+import cn.linj2n.melody.repository.PostRepository;
 import cn.linj2n.melody.repository.ResourceUniqueVisitRepository;
 import cn.linj2n.melody.repository.ResourceViewRepository;
 import cn.linj2n.melody.service.CountingService;
+import cn.linj2n.melody.utils.DateUtil;
+import cn.linj2n.melody.web.dto.TrafficEntryDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +20,11 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
+import java.time.*;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class CountingServiceImpl implements CountingService {
@@ -35,6 +35,8 @@ public class CountingServiceImpl implements CountingService {
 
     private static final int DEFAULT_EXPIRY_MIN = 0;
 
+    private static final int NUMBER_OF_DAYS = 15;
+
     private static final String POST_ = "post_";
 
     @Autowired
@@ -42,6 +44,12 @@ public class CountingServiceImpl implements CountingService {
 
     @Autowired
     private ResourceUniqueVisitRepository resourceUniqueVisitRepository;
+
+    @Autowired
+    private PostRepository postRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -52,12 +60,11 @@ public class CountingServiceImpl implements CountingService {
     @Resource(name = "redisListTemplate")
     private SetOperations<String, Long> cacheSet;
 
-
     private static final String CACHE_POST_PV = "counting.post.pv";
 
     private static final String CACHE_POST_UV = "counting.post.uv";
 
-    private static final String CACHE_SITE_PV = "counting.site";
+    private static final String CACHE_SITE_PV = "counting.site.pv";
 
     private static final String CACHE_SITE_UV = "visitorIds";
 
@@ -66,7 +73,6 @@ public class CountingServiceImpl implements CountingService {
     private static final String SITE_UV = "site_uv";
 
     private static final String CACHE_POST_ID_LIST = "counting.postIds";
-
 
     @Override
     public void increasePostVisitCount(String visitorId, Long postId) {
@@ -83,6 +89,51 @@ public class CountingServiceImpl implements CountingService {
         redisTemplate.opsForHyperLogLog().add(CACHE_SITE_UV, visitorId);
         redisTemplate.expire(CACHE_SITE_UV, getExpireTime(), TimeUnit.SECONDS);
         cache.increment(CACHE_SITE_PV, SITE_PV, 1L);
+    }
+
+    @Override
+    public List<TrafficEntryDTO> listTheNumberOfCommentsForTheLast15Days() {
+        return Stream.iterate(DateUtil.nowLocalDate(), day -> day.minusDays(1))
+                .limit(NUMBER_OF_DAYS)
+                .map(localDate -> new TrafficEntryDTO(localDate, getTheNumberOfComments(localDate)))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TrafficEntryDTO> getTrafficDataForTheLast15Days() {
+        Map<LocalDate, Long> pvNumsMap = resourceViewRepository
+                .findTop15ByNameOrderByDateDesc(SITE_PV)
+                .stream()
+                .collect(Collectors.toMap(pv -> pv.getDate().toLocalDate(), ResourceView::getCount));
+
+        Map<LocalDate, Long> uvNumsMap = resourceUniqueVisitRepository
+                .findTop15ByNameOrderByDateDesc(SITE_UV)
+                .stream()
+                .collect(Collectors.toMap(uv -> uv.getDate().toLocalDate(), ResourceUniqueVisitor::getCount));
+
+        return Stream.iterate(DateUtil.nowLocalDate(), day -> day.minusDays(1))
+                .limit(NUMBER_OF_DAYS)
+                .map(localDate -> new TrafficEntryDTO(localDate, pvNumsMap.getOrDefault(localDate, 0L), uvNumsMap.getOrDefault(localDate, 0L)))
+                .collect(Collectors.toList());
+    }
+
+    private Long getTheNumberOfComments(LocalDate localDate) {
+        return commentRepository.countByCreatedAtBetween(DateUtil.getStartOfDay(localDate), DateUtil.getEndOfDay(localDate));
+    }
+
+    @Override
+    public Long getSiteTotalViews() {
+        return resourceViewRepository.getSiteTotalViews();
+    }
+
+    @Override
+    public Long getPostTotalNumber() {
+        return postRepository.count();
+    }
+
+    @Override
+    public Long getCommentTotalNumber() {
+        return commentRepository.count();
     }
 
     private boolean isVisited(String sessionId, Long postId) {
@@ -116,9 +167,8 @@ public class CountingServiceImpl implements CountingService {
         return cache.get(CACHE_POST_PV, POST_ + postId);
     }
 
-//    @Scheduled(cron = "0 0 3 * * *")
-//    @Scheduled()
-    public void saveDataFromCache() {
+    @Scheduled(cron = "0 0 3 * * *")
+    public void saveCacheDataToDB() {
         logger.debug("Scheduled to save counting information." );
         int idCount = cacheSet.size(CACHE_POST_ID_LIST).intValue();
 
@@ -126,16 +176,16 @@ public class CountingServiceImpl implements CountingService {
         List<ResourceView> pvs = new ArrayList<>(idCount);
 
         // Add site uv and pv
-        uvs.add(createNewUV(SITE_UV, getSitePvCount(), null));
-        pvs.add(createNewPV(SITE_PV, getSiteUvCount(), null));
+        uvs.add(createNewUV(SITE_UV, getSiteUvCount(), null, DateUtil.getStartOfYesterday()));
+        pvs.add(createNewPV(SITE_PV, getSitePvCount(), null, DateUtil.getStartOfYesterday()));
 
         // Add post uv and pv
         List<Long> postIds = new ArrayList<>(idCount);
         for (int i = 0; i < idCount; i ++) {
             Long postId = cacheSet.pop(CACHE_POST_ID_LIST);
             postIds.add(postId);
-            uvs.add(createNewUV(POST_ + postId, getPostUvCount(postId), postId));
-            pvs.add(createNewPV(POST_ + postId, getPostPvCount(postId), postId));
+            uvs.add(createNewUV(POST_ + postId, getPostUvCount(postId), postId, DateUtil.getStartOfYesterday()));
+            pvs.add(createNewPV(POST_ + postId, getPostPvCount(postId), postId, DateUtil.getStartOfYesterday()));
         }
 
         resourceViewRepository.save(pvs);
@@ -149,30 +199,28 @@ public class CountingServiceImpl implements CountingService {
             cache.put(CACHE_POST_UV, POST_ + postId, 0);
             cache.put(CACHE_POST_PV, POST_ + postId, 0);
         });
+        redisTemplate.opsForHyperLogLog().delete(CACHE_SITE_UV);
+        cache.delete(CACHE_SITE_PV, SITE_PV);
     }
 
-    private ResourceUniqueVisitor createNewUV(String name, long count, Long postId) {
-        Post post = new Post();
-        post.setId(postId);
-        return new ResourceUniqueVisitor(name, count, post, getYesterdayDate());
+    private ResourceUniqueVisitor createNewUV(String name, long count, Long postId, ZonedDateTime date) {
+        ResourceUniqueVisitor newUv = new ResourceUniqueVisitor(name, date, count);
+        if (postId != null) {
+            Post post = new Post();
+            post.setId(postId);
+            newUv.setPost(post);
+        }
+        return newUv;
     }
 
-    private ResourceView createNewPV(String name, long count, Long postId) {
-        Post post = new Post();
-        post.setId(postId);
-        name += getYesterdayDateString();
-        return new ResourceView(name, count, post, getYesterdayDate());
-    }
-
-    private Date getYesterdayDate() {
-        final Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, -1);
-        return cal.getTime();
-    }
-
-    private String getYesterdayDateString() {
-        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-        return dateFormat.format(getYesterdayDate());
+    private ResourceView createNewPV(String name, long count, Long postId, ZonedDateTime date) {
+        ResourceView newPv = new ResourceView(name, date, count);
+        if (postId != null) {
+            Post post = new Post();
+            post.setId(postId);
+            newPv.setPost(post);
+        }
+        return newPv;
     }
 
 }
