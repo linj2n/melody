@@ -13,8 +13,6 @@ public interface AttachmentRepository extends JpaRepository<Attachment, Long> {
 
     Optional<Attachment> findOptionalById(Long id);
 
-    Optional<Attachment> findOptionalByName(String name);
-
     Optional<Attachment> findAttachmentByNameAndIdNot(String name, Long id);
 
     Page<Attachment> findByNameContaining(String name, Pageable pageable);

@@ -12,5 +12,4 @@ public interface AuthorityRepository extends JpaRepository<Authority,Long> {
 
     Optional<Authority> findOneByName(String name);
 
-
 }
