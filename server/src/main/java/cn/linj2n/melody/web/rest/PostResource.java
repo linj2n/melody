@@ -47,15 +47,16 @@ public class PostResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getPost(@PathVariable(value = "postId") Long postId) {
         return postService.getPost(postId)
-                .map(post -> new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(null, post), HttpStatus.OK))
+                .map(dtoModelMapper::convertToDTO)
+                .map(postDTO -> new ResponseEntity<>(ResponseBuilder.buildSuccessResponse(null, postDTO), HttpStatus.OK))
                 .orElse(new ResponseEntity<>(ResponseBuilder.buildFailedResponse("文章不存在", null), HttpStatus.OK));
     }
 
     @RequestMapping(value = "/v1/posts/{postId}",
             method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> updatePost(@RequestBody Post post) {
-        Post newPost = postService.updatePost(post);
+    public ResponseEntity<?> updatePost(@RequestBody PostDTO postDTO) {
+        Post newPost = postService.updatePost(dtoModelMapper.convertToEntity(postDTO));
         if (newPost == null) {
             return new ResponseEntity<>(ResponseBuilder.buildFailedResponse("服务器错误，更新失败", null),HttpStatus.INTERNAL_SERVER_ERROR);
         }
