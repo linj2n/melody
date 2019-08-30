@@ -4,6 +4,8 @@ import cn.linj2n.melody.domain.Category;
 import cn.linj2n.melody.domain.Tag;
 import cn.linj2n.melody.domain.enumeration.PostStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -12,6 +14,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 
+@Getter
+@Setter
 public class PostDTO {
 
     /**
@@ -27,6 +31,12 @@ public class PostDTO {
      * 文章概要
      */
     private String summary;
+
+    /**
+     * 文章内容预览
+     */
+
+    private String contentPreview;
 
     /**
      * 文章内容
