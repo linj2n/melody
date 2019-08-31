@@ -30,8 +30,9 @@ export const constantRouterMap = [
 
 export const asyncRouterMap = [
   {
-    path: '/dashboard',
+    path: '/',
     component: Layout,
+    redirect: '/dashboard',
     children: [
       {
         path: '',
