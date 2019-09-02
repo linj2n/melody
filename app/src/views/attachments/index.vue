@@ -290,7 +290,6 @@ export default {
       const _self = this
       return new Promise((resolve, reject) => {
         getToken().then(response => {
-          console.log('upload token' + response.data.uploadToken)
           // const key = response.data.qiniu_key
           const token = response.data.uploadToken
           _self._data.dataObj.token = token

@@ -30,11 +30,9 @@ export default {
   },
   methods: {
     listPosts() {
-      console.log('hit listPosts')
       this.$emit('listPosts', this.item.id)
     },
     handleEdit() {
-      console.log('hit handleEdit')
       this.$emit('handleEdit', Object.assign({}, this.item))
     }
   }

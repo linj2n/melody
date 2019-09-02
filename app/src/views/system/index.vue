@@ -231,7 +231,6 @@ export default {
         const isValid = response.data.result
         const message = response.message
         if (!isValid) {
-          console.log(message)
           this.$message({
             message: message,
             type: 'error'
