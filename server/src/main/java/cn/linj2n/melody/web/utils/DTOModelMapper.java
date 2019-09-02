@@ -47,20 +47,20 @@ public class DTOModelMapper {
         if (post.getUpdatedAt() != null) {
             postDTO.setUpdatedAt(post.getUpdatedAt().toLocalDateTime());
         }
-        postDTO.setContent(viewUtils.renderToHtml(post.getContent()));
-        postDTO.setContentPreview(getContentPreview(postDTO));
+//        postDTO.setContent(viewUtils.renderToHtml(post.getContent()));
+        postDTO.setContentPreview(postDTO.getSummary());
         return postDTO;
     }
 
-    private String getContentPreview(PostDTO postDTO) {
-        if (!postDTO.getSummary().isEmpty()) {
-            return postDTO.getSummary();
-        }
-        String contentText = Jsoup.parse(postDTO.getContent()).text();
-        return contentText.length() > MAX_LENGTH_OF_CONTENT_PREVIEW
-                ? contentText.substring(0, MAX_LENGTH_OF_CONTENT_PREVIEW)
-                : contentText;
-    }
+//    private String getContentPreview(PostDTO postDTO) {
+//        if (!postDTO.getSummary().isEmpty()) {
+//            return postDTO.getSummary();
+//        }
+//        String contentText = Jsoup.parse(postDTO.getContent()).text();
+//        return contentText.length() > MAX_LENGTH_OF_CONTENT_PREVIEW
+//                ? contentText.substring(0, MAX_LENGTH_OF_CONTENT_PREVIEW)
+//                : contentText;
+//    }
 
     public Post convertToEntity(PostDTO postDTO) {
         return modelMapper.map(postDTO, Post.class);
