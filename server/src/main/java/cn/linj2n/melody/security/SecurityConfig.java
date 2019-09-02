@@ -72,6 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .antMatchers("/api/blank").permitAll()
+                .antMatchers("/api/v1/**").hasAuthority("ROLE_ADMIN")
                 .antMatchers("/api/v1/account/password_reset").permitAll()
                 .antMatchers("/api/v1/account/registration").permitAll()
                 .antMatchers("/api/v1/account/password_reset/**").permitAll()
@@ -86,9 +87,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureHandler(ajaxAuthenticationFailureHandler).permitAll()
                 .and()
                 .logout()
-                .logoutUrl("/api/v1/logout").permitAll()
+                .logoutUrl("/api/v1/account/logout").permitAll()
 //                    .logoutSuccessHandler(ajaxLogoutSuccessHandler)
-                .logoutSuccessUrl("/api/v1/account/logout")
                 .deleteCookies("JSESSIONID","AUTH").permitAll();
     }
     @Bean
