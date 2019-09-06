@@ -46,7 +46,7 @@
         >Sign in</el-button
         >
       </el-form-item>
-      <div class="tips"/>
+      <div class="tips" />
     </el-form>
   </div>
 </template>
@@ -74,8 +74,8 @@ export default {
     return {
       // 表单项数据
       loginForm: {
-        username: 'admin',
-        password: 'admin'
+        username: '',
+        password: ''
       },
       // 表单校验规则
       loginRules: {
@@ -114,7 +114,6 @@ export default {
           this.$store
             .dispatch('Login', this.loginForm)
             .then(() => {
-              console.log('login success')
               this.loading = false
               // 动态导航到 this.redirect
               this.$router.push({ path: '/' })
