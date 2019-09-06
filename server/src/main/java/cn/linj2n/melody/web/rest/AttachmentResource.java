@@ -42,7 +42,7 @@ public class AttachmentResource {
     }
 
     @RequestMapping(
-            value = "/v1/attachments/create",
+            value = "/v1/attachments/_create",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
