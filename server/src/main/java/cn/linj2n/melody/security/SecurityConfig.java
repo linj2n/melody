@@ -59,10 +59,44 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf()
+//        http
+//                .csrf()
+//                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+//                .ignoringAntMatchers("/api/blank", "/api/v1/attachments/create", "/api/attachments/create")
+//                .and()
+//                .addFilterAfter(authCookieGeneratorFilter, FilterSecurityInterceptor.class)
+//                .exceptionHandling()
+//                .and()
+//                .cors()
+//                .and()
+//                .authorizeRequests()
+//                .antMatchers(HttpMethod.OPTIONS).permitAll()
+//                .antMatchers("/api/blank").permitAll()
+////                .antMatchers("/api/attachments/create").permitAll()
+//                .antMatchers("/api/v1/**").hasAuthority("ROLE_ADMIN")
+//                .antMatchers("/api/v1/account/password_reset").permitAll()
+//                .antMatchers("/api/v1/account/registration").permitAll()
+//                .antMatchers("/api/v1/account/password_reset/**").permitAll()
+//                .antMatchers("/api/v1/attachments/create").permitAll()
+//                .antMatchers("/api/v1/account").authenticated()
+//                .antMatchers("/admin/**").permitAll()
+//                .and()
+//                .formLogin()
+//                .loginProcessingUrl("/api/v1/account/authentication").permitAll()
+////                    .successHandler(ajaxAuthenticationSuccessHandler)
+//                .defaultSuccessUrl("/api/v1/account")
+//                .failureHandler(ajaxAuthenticationFailureHandler).permitAll()
+//                .and()
+//                .logout()
+//                .logoutUrl("/api/v1/account/logout").permitAll()
+////                    .logoutSuccessHandler(ajaxLogoutSuccessHandler)
+//                .deleteCookies("JSESSIONID","AUTH").permitAll();
+
+
+
+        http.csrf()
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                .ignoringAntMatchers("/api/blank", "/api/v1/attachments/create")
+                .ignoringAntMatchers("/api/blank", "/api/v1/attachments/_create")
                 .and()
                 .addFilterAfter(authCookieGeneratorFilter, FilterSecurityInterceptor.class)
                 .exceptionHandling()
@@ -72,23 +106,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .antMatchers("/api/blank").permitAll()
-                .antMatchers("/api/v1/**").hasAuthority("ROLE_ADMIN")
-                .antMatchers("/api/v1/account/password_reset").permitAll()
-                .antMatchers("/api/v1/account/registration").permitAll()
-                .antMatchers("/api/v1/account/password_reset/**").permitAll()
+                .antMatchers("/api/v1/account/password_reset", "/api/v1/account/registration", "/api/v1/account/password_reset/**").permitAll()
                 .antMatchers("/api/v1/account").authenticated()
-                .antMatchers("/admin/**").permitAll()
-//                    .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers("/api/v1/attachments/_create").permitAll()
+                .antMatchers("/api/v1/attachments/\\d+").hasAuthority("ROLE_ADMIN")
+                .antMatchers("/api/**").hasAuthority("ROLE_ADMIN")
                 .and()
                 .formLogin()
                 .loginProcessingUrl("/api/v1/account/authentication").permitAll()
-//                    .successHandler(ajaxAuthenticationSuccessHandler)
                 .defaultSuccessUrl("/api/v1/account")
                 .failureHandler(ajaxAuthenticationFailureHandler).permitAll()
                 .and()
                 .logout()
                 .logoutUrl("/api/v1/account/logout").permitAll()
-//                    .logoutSuccessHandler(ajaxLogoutSuccessHandler)
                 .deleteCookies("JSESSIONID","AUTH").permitAll();
     }
     @Bean
@@ -104,7 +134,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         // 允许那些方法进行跨域请求
                         .allowedMethods("OPTIONS", "GET", "POST","PUT","DELETE")
                         // 允许的源地址，开启 cookie 共享时必须指定具体的源地址
-                        .allowedOrigins("http://127.0.0.1:9999")
+                        .allowedOrigins("http://127.0.0.1:9999", "http://admin.linj2n.cn")
                         // 允许请求携带的 Headers
                         .allowedHeaders("*")
                         .exposedHeaders("AUTH");
