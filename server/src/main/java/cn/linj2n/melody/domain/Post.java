@@ -35,7 +35,7 @@ public class Post {
     /**
      * 文章标题
      */
-    @Column(name="title")
+    @Column(name = "title")
     private String title = "Untitled";
 
     /**
@@ -49,6 +49,12 @@ public class Post {
      */
     @Type(type = "text")
     private String content;
+
+    /**
+     * 文章封面链接
+     */
+    @Column(name = "background_img_url")
+    private String backgroundImgUrl;
 
     /**
      * 文章状态

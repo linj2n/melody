@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.List;
@@ -42,6 +43,11 @@ public class PostDTO {
      * 文章内容
      */
     private String content;
+
+    /**
+     * 文章封面链接
+     */
+    private String backgroundImgUrl;
 
     /**
      * 文章状态
