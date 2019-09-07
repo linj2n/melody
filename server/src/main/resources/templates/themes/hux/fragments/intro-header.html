@@ -13,7 +13,7 @@
                     <div class="site-heading" th:id="${short} == true ? 'tag-heading' : ''">
                         <h1 th:if="${type} == 'Archives'">归档</h1>
                         <h1 th:if="${type} == 'Categories'">分类</h1>
-                        <span class="subheading">Done beats perfect</span>
+                        <span class="subheading" th:text="${config.siteSubtitle}"> subheading </span>
                     </div>
                 </div>
             </div>
@@ -25,7 +25,7 @@
 
         header.intro-header{
             position: relative;
-            background-image: url([[@{/blog/themes/huxpro/img/post-bg-universe.jpg}]]);
+            background-image: url([[@{${post.backgroundImgUrl} != null ? ${#uris.escapeQueryParam(post.backgroundImgUrl)}: '/blog/themes/huxpro/img/tag-bg.jpg'}]]);
             background: ;
         }
 
@@ -56,13 +56,13 @@
 </th:block>
 <th:block th:fragment="index-intro-header">
 
-    <header class="intro-header" th:style="'background-image: url(' + @{/blog/themes/huxpro/img/post-bg-universe.jpg} + ')'">
+    <header class="intro-header" th:style="'background-image: url(' + @{/blog/themes/huxpro/img/tag-bg.jpg} + ')'">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <div class="site-heading">
-                        <h2 >linj2n's Blog</h2>
-                        <span class="meta">Done beats perfect</span>
+                        <h2 th:text="${config.siteTitle}">linj2n's Blog</h2>
+                        <span class="meta" th:text="${config.siteSubtitle}">Done beats perfect</span>
                     </div>
                 </div>
             </div>
