@@ -95,6 +95,9 @@
             <el-radio-button label="DRAFT">草稿</el-radio-button>
           </el-radio-group>
         </el-form-item>
+        <el-form-item label="封面">
+          <el-input v-model="postInfo.backgroundImgUrl" class="setting-item" />
+        </el-form-item>
         <el-form-item label="概述">
           <el-input
             v-model="postInfo.summary"
@@ -154,7 +157,7 @@ const postInfoForm = {
   categories: null,
   url: null
 }
-const findOrCreateNewItemInOptions = function(name, targetSet) {
+const findOrCreateNewItemInOptions = function (name, targetSet) {
   var targetItem = targetSet.find(item => item.name === name)
   if (!targetItem) {
     var newItem = {}
@@ -170,7 +173,7 @@ export default {
     MarkdownEditor,
     MdInput
   },
-  data() {
+  data () {
     return {
       fecthPostLoading: true,
       settingDialogVisible: false,
@@ -182,36 +185,36 @@ export default {
   },
   computed: {
     tagOptionsValue: {
-      get() {
+      get () {
         return this.postInfo.tags && this.postInfo.tags.map(tag => tag.name)
       },
-      set(values) {
+      set (values) {
         const vm = this
-        vm.postInfo.tags = values.map(function(value) {
+        vm.postInfo.tags = values.map(function (value) {
           return findOrCreateNewItemInOptions(value, vm.tagOptions)
         })
       }
     },
     categoryOptionsValue: {
-      get() {
+      get () {
         return this.postInfo.categories && this.postInfo.categories.map(category => category.name)
       },
-      set(values) {
+      set (values) {
         const vm = this
-        vm.postInfo.categories = values.map(function(value) {
+        vm.postInfo.categories = values.map(function (value) {
           return findOrCreateNewItemInOptions(value, vm.categoryOptions)
         })
       }
     }
   },
-  created() {
+  created () {
     const id = this.$route.params && this.$route.params.id
     this.fecthPostInfo(id)
     this.getCategoryOptions()
     this.getTagOptions()
   },
   methods: {
-    fecthPostInfo(id) {
+    fecthPostInfo (id) {
       this.fecthPostLoading = true
       fecthPost(id).then(response => {
         this.postInfo = Object.assign({}, response.data)
@@ -221,7 +224,7 @@ export default {
         this.$router.push({ path: '/posts' })
       })
     },
-    getTagOptions() {
+    getTagOptions () {
       listAllTags().then(response => {
         this.tagOptions = response.data
       }).catch(err => {
@@ -232,12 +235,12 @@ export default {
         })
       })
     },
-    getCategoryOptions() {
+    getCategoryOptions () {
       listAllCategories().then(response => {
         this.categoryOptions = response.data
       })
     },
-    updatePost() {
+    updatePost () {
       updatePost(this.postInfo).then(response => {
         this.settingDialogVisible = false
         this.$message({
@@ -246,7 +249,7 @@ export default {
         })
       })
     },
-    handleDeleteConfirm() {
+    handleDeleteConfirm () {
       const vm = this
       removePost(this.postInfo.id).then(response => {
         vm.deletePopoverVisible = false
@@ -255,7 +258,7 @@ export default {
           type: 'success',
           duration: 500,
           showClose: false,
-          onClose: function() {
+          onClose: function () {
             vm.settingDialogVisible = false
             vm.$router.push({ path: '/posts' })
           }
