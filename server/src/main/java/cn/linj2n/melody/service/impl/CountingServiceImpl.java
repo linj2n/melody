@@ -151,12 +151,12 @@ public class CountingServiceImpl implements CountingService {
         return LocalDateTime.of(tomorrowDate, expiryTime).atZone(ZoneId.systemDefault()).toEpochSecond();
     }
 
-    private int getSitePvCount() {
-        return cache.get(CACHE_SITE_PV, SITE_PV);
+    private Optional<Integer> getSitePvCount() {
+        return Optional.of(cache.get(CACHE_SITE_PV, SITE_PV));
     }
 
-    private long getSiteUvCount() {
-        return redisTemplate.opsForHyperLogLog().size(CACHE_SITE_UV);
+    private Optional<Long> getSiteUvCount() {
+        return Optional.of(redisTemplate.opsForHyperLogLog().size(CACHE_SITE_UV));
     }
 
     private int getPostUvCount(long postId) {
@@ -176,8 +176,8 @@ public class CountingServiceImpl implements CountingService {
         List<ResourceView> pvs = new ArrayList<>(idCount);
 
         // Add site uv and pv
-        uvs.add(createNewUV(SITE_UV, getSiteUvCount(), null, DateUtil.getStartOfYesterday()));
-        pvs.add(createNewPV(SITE_PV, getSitePvCount(), null, DateUtil.getStartOfYesterday()));
+        uvs.add(createNewUV(SITE_UV, getSiteUvCount().orElse(0L), null, DateUtil.getStartOfYesterday()));
+        pvs.add(createNewPV(SITE_PV, getSitePvCount().orElse(0), null, DateUtil.getStartOfYesterday()));
 
         // Add post uv and pv
         List<Long> postIds = new ArrayList<>(idCount);
