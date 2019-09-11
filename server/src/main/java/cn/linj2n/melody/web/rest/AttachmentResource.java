@@ -4,10 +4,10 @@ import cn.linj2n.melody.domain.Attachment;
 import cn.linj2n.melody.service.AttachmentService;
 import cn.linj2n.melody.service.QiniuFileService;
 import cn.linj2n.melody.web.dto.AttachmentDTO;
+import cn.linj2n.melody.web.dto.qiniu.QiniuCallBackResult;
 import cn.linj2n.melody.web.utils.DTOModelMapper;
 import cn.linj2n.melody.web.utils.ResponseBuilder;
-import org.apache.commons.io.IOUtils;
-import org.json.JSONObject;
+import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/api")
@@ -48,18 +51,17 @@ public class AttachmentResource {
     )
     public ResponseEntity<?> createAttachment(HttpServletRequest request) throws IOException {
         final String callbackAuthHeader = request.getHeader(QINIU_AUTHORIZATION_HEADER);
-        byte[] callbackBody = IOUtils.toByteArray(request.getInputStream());
-        if (!qiniuFileService.isValidCallBack(callbackAuthHeader, callbackBody)) {
+        String callbackBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+        if (!qiniuFileService.isValidCallBack(callbackAuthHeader, callbackBody.getBytes(StandardCharsets.UTF_8))) {
             logger.info("Qiniu callback request authentication failed.");
             return new ResponseEntity<>(ResponseBuilder.buildFailedResponse("服务器出错，附件创建的失败", null), HttpStatus.UNAUTHORIZED);
         }
         logger.info("Qiniu callback request authentication succeeded.");
-        String fileKey = new JSONObject(new String(callbackBody)).get("key").toString();
-        logger.info("request to create new attachment, qiniu file: {}.", fileKey);
+        QiniuCallBackResult result = new Gson().fromJson(callbackBody, QiniuCallBackResult.class);
         return new ResponseEntity<>(
                 ResponseBuilder.buildSuccessResponse(
                         "附件上传成功",
-                        dtoModelMapper.convertToDTO(attachmentService.createAttachment(fileKey))
+                        dtoModelMapper.convertToDTO(attachmentService.createAttachment(result.getKey()))
                 )
                 , HttpStatus.OK);
     }
