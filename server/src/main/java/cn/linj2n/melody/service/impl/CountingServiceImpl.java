@@ -170,6 +170,7 @@ public class CountingServiceImpl implements CountingService {
     @Scheduled(cron = "0 0 3 * * *")
     public void saveCacheDataToDB() {
         logger.debug("Scheduled to save counting information." );
+        logger.debug("Created Time: {}, Record {}-Pv&Uv data.", DateUtil.nowDateTime(), DateUtil.getStartOfYesterday());
         int idCount = cacheSet.size(CACHE_POST_ID_LIST).intValue();
 
         List<ResourceUniqueVisitor> uvs = new ArrayList<>(idCount);
