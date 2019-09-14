@@ -48,7 +48,6 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional(readOnly = true)
     public Optional<Category> getCategoryWithPosts(String categoryName) {
-        logger.info("hit getCategoryWithPosts");
         return categoryRepository.findOptionalByName(categoryName)
                 .map(u -> {
                     u.getPosts().size();
@@ -59,7 +58,6 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional(readOnly = true)
     public Optional<Category> getCategoryWithPosts(Long categoryId) {
-        logger.info("hit getCategoryWithPosts");
         return categoryRepository.findOptionalById(categoryId)
                 .map(u -> {
                     u.getPosts().size();
@@ -85,7 +83,6 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public void removeCategoryById(Long categoryId) {
-        logger.info("hit removeCategoryById");
         getCategoryWithPosts(categoryId).map(category -> {
             category.getPosts().forEach(e -> e.getCategories().remove(category));
             categoryRepository.delete(category);
