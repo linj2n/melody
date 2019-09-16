@@ -152,11 +152,11 @@ public class CountingServiceImpl implements CountingService {
     }
 
     private Optional<Integer> getSitePvCount() {
-        return Optional.of(cache.get(CACHE_SITE_PV, SITE_PV));
+        return Optional.ofNullable(cache.get(CACHE_SITE_PV, SITE_PV));
     }
 
     private Optional<Long> getSiteUvCount() {
-        return Optional.of(redisTemplate.opsForHyperLogLog().size(CACHE_SITE_UV));
+        return Optional.ofNullable(redisTemplate.opsForHyperLogLog().size(CACHE_SITE_UV));
     }
 
     private int getPostUvCount(long postId) {
@@ -169,8 +169,8 @@ public class CountingServiceImpl implements CountingService {
 
     @Scheduled(cron = "0 0 3 * * *")
     public void saveCacheDataToDB() {
-        logger.debug("Scheduled to save counting information." );
-        logger.debug("Created Time: {}, Record {}-Pv&Uv data.", DateUtil.nowDateTime(), DateUtil.getStartOfYesterday());
+        logger.info("Scheduled to save counting information." );
+        logger.info("Created Time: {}, Record {}-Pv&Uv data.", DateUtil.nowDateTime(), DateUtil.getStartOfYesterday());
         int idCount = cacheSet.size(CACHE_POST_ID_LIST).intValue();
 
         List<ResourceUniqueVisitor> uvs = new ArrayList<>(idCount);
