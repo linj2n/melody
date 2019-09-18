@@ -170,15 +170,18 @@ public class CountingServiceImpl implements CountingService {
     @Scheduled(cron = "0 0 3 * * *")
     public void saveCacheDataToDB() {
         logger.info("Scheduled to save counting information." );
-        logger.info("Created Time: {}, Record {}-Pv&Uv data.", DateUtil.nowDateTime(), DateUtil.getStartOfYesterday());
         int idCount = cacheSet.size(CACHE_POST_ID_LIST).intValue();
 
         List<ResourceUniqueVisitor> uvs = new ArrayList<>(idCount);
         List<ResourceView> pvs = new ArrayList<>(idCount);
 
         // Add site uv and pv
-        uvs.add(createNewUV(SITE_UV, getSiteUvCount().orElse(0L), null, DateUtil.getStartOfYesterday()));
-        pvs.add(createNewPV(SITE_PV, getSitePvCount().orElse(0), null, DateUtil.getStartOfYesterday()));
+        Long siteUvCount = getSiteUvCount().orElse(0L);
+        Integer sitePvCount = getSitePvCount().orElse(0);
+        logger.info("Recording page views: {} ,  unique views: {}, on {}: . Created Time: {}, ", sitePvCount, siteUvCount, DateUtil.getStartOfYesterday(), DateUtil.nowDateTime());
+
+        uvs.add(createNewUV(SITE_UV, siteUvCount, null, DateUtil.getStartOfYesterday()));
+        pvs.add(createNewPV(SITE_PV, sitePvCount, null, DateUtil.getStartOfYesterday()));
 
         // Add post uv and pv
         List<Long> postIds = new ArrayList<>(idCount);
