@@ -64,16 +64,16 @@ public class PostServiceImpl implements PostService{
     }
 
     /**
-     * Use Spring scheduling framework to save counting information Schedule time: every 10 seconds
+     * Use Spring scheduling framework to save counting information Schedule time: every 5 minutes
      */
-    @Scheduled(fixedRate = 10000)
+    @Scheduled(fixedRate = 10000 * 60 * 5)
     public void savePostFromCacheInBatch() {
-        logger.debug("Scheduled to save post information, size={}. " + BATCH_SIZE);
+        logger.debug("Scheduled to save post information, size={}. ", BATCH_SIZE);
         savePostFromCache(BATCH_SIZE);
     }
 
     private void savePostFromCache(int size) {
-        logger.debug("Start to save post information in batch [size:{}]. " + size);
+        logger.debug("Start to save post information in batch [size:{}]. ", size);
         int cacheSize = postsCache.size(CACHE_POST_ID).intValue();
         if (cacheSize == 0) {
             return ;
