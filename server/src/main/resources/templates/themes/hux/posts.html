@@ -138,7 +138,7 @@
                 <ul class="pager">
 
                     <li class="previous" th:if="${prePost} != null">
-                        <a th:href="@{'/posts/' + prePost.id}" data-toggle="tooltip" data-placement="top"
+                        <a th:href="@{'/posts/' + ${prePost.id}}" data-toggle="tooltip" data-placement="top"
                            th:title="${prePost.title}">
                             Previous<br>
                             <span th:text="${prePost.title}">prePost title</span>
@@ -147,7 +147,7 @@
 
 
                     <li class="next" th:if="${nextPost} != null">
-                        <a th:href="@{'/posts/' + nextPost.id}" data-toggle="tooltip" data-placement="top"
+                        <a th:href="@{'/posts/' + ${nextPost.id}}" data-toggle="tooltip" data-placement="top"
                            th:title="${nextPost.title}">
                             Next<br>
                             <span th:text="${nextPost.title}">nextPost title</span>
@@ -194,7 +194,7 @@
                         <a th:each="tag : ${post.tags}"
                            th:attr="data-encode=${tag.name}"
                            th:title="${tag.name}"
-                           th:href="@{'/archives/?tag=' + tag.name}"
+                           th:href="@{'/archives/?tag=' + ${tag.name}}"
                            th:inline="text"
                         >
                             [[${tag.name}]]
