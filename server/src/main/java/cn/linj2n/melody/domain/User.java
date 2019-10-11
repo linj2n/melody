@@ -1,5 +1,6 @@
 package cn.linj2n.melody.domain;
 
+import cn.linj2n.melody.security.oauth2.UserSourceType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,7 +28,6 @@ public class User {
      * 用户登录名
      */
     @NotNull
-    @Pattern(regexp = "^[a-z0-9]*$|(anonymousUser)")
     @Size(min = 1, max = 50)
     @Column(length = 50, unique = true, nullable = false)
     private String login;
@@ -44,7 +44,7 @@ public class User {
      */
     @JsonIgnore
     @NotNull
-    @Size(min = 60, max = 60)
+    @Size(min = 2, max = 60)
     @Column(length = 60)
     private String password;
 
@@ -101,6 +101,19 @@ public class User {
      */
     @Column(name = "avatar_url")
     private String avatarUrl;
+
+    /**
+     * 用户类型
+     */
+
+    @Enumerated(EnumType.STRING)
+    private UserSourceType sourceType;
+
+    /**
+     * 用户主页
+     */
+    @Column(name = "url")
+    private String url;
 
     /**
      * 用户所有权限集

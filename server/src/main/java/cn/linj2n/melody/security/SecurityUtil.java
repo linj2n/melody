@@ -1,5 +1,6 @@
 package cn.linj2n.melody.security;
 
+import cn.linj2n.melody.security.oauth2.The3rdPartyUserDetails;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -29,6 +30,9 @@ public final class SecurityUtil {
             if (authentication.getPrincipal() instanceof UserDetails) {
                 UserDetails springSecurityUser = (UserDetails) authentication.getPrincipal();
                 userName = springSecurityUser.getUsername();
+            } else if (authentication.getPrincipal() instanceof The3rdPartyUserDetails) {
+                The3rdPartyUserDetails the3rdPartyUser = (The3rdPartyUserDetails) authentication.getPrincipal();
+                userName = the3rdPartyUser.getLogin();
             } else if (authentication.getPrincipal() instanceof String) {
                 userName = (String) authentication.getPrincipal();
             }
@@ -87,4 +91,23 @@ public final class SecurityUtil {
         }
         return false;
     }
+
+    public static boolean isThe3rdPartyUser() {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+        return authentication != null
+                && authentication.getPrincipal() instanceof The3rdPartyUserDetails;
+    }
+
+
+    public static Object getCurrentPrincipal() {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+        Object principal = null;
+        if (authentication != null) {
+            principal = authentication.getPrincipal();
+        }
+        return principal;
+    }
+
 }

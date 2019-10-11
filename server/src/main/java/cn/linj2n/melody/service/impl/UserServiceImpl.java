@@ -4,6 +4,10 @@ import cn.linj2n.melody.domain.Authority;
 import cn.linj2n.melody.domain.User;
 import cn.linj2n.melody.repository.AuthorityRepository;
 import cn.linj2n.melody.repository.UserRepository;
+import cn.linj2n.melody.security.AuthoritiesConstants;
+import cn.linj2n.melody.security.SecurityUtil;
+import cn.linj2n.melody.security.oauth2.The3rdPartyUserDetails;
+import cn.linj2n.melody.security.oauth2.UserSourceType;
 import cn.linj2n.melody.service.UserService;
 import cn.linj2n.melody.service.utils.RandomUtil;
 import cn.linj2n.melody.web.errors.ExceptionThrownInService;
@@ -72,6 +76,26 @@ public class UserServiceImpl implements UserService{
 
         /* 4. save new user*/
         userRepository.save(newUser);
+        return newUser;
+    }
+
+    @Override
+    public User createUserInformation(The3rdPartyUserDetails userDetails) {
+        logger.info("start to register new User from userDetails: {}.", userDetails);
+        User newUser = new User(userDetails.getLogin());
+        newUser.setPassword("N/A");
+        newUser.setUsername(userDetails.getName());
+        newUser.setEmail(userDetails.getEmail());
+        newUser.setActivated(true);
+        newUser.setAvatarUrl(userDetails.getAvatarUrl());
+        newUser.setUrl(userDetails.getUrl());
+        newUser.setSourceType(userDetails.getFrom());
+        newUser.setAuthorities(new HashSet<>());
+
+        authorityRepository.findOneByName(AuthoritiesConstants.THE_3RD_PARTY_USER).ifPresent(authority -> newUser.getAuthorities().add(authority));
+        userRepository.save(newUser);
+
+        logger.info("new 3rd party user: {}. ", newUser);
         return newUser;
     }
 
@@ -147,7 +171,6 @@ public class UserServiceImpl implements UserService{
         return userRepository.findOneByResetCode(resetKey)
                 .map(user -> {
                     logger.info("Reset password [resetKey = {}].",resetKey);
-                    logger.info("Reset password [newPassword = {}].",newPassword);
                     String encryptedPassword = passwordEncoder.encode(newPassword);
                     user.setPassword(encryptedPassword);
                     user.setResetCode(null);
@@ -198,5 +221,34 @@ public class UserServiceImpl implements UserService{
     @Override
     public Optional<User> getUserByLogin(String login) {
         return userRepository.findOneByLogin(login);
+    }
+
+    @Override
+    public Optional<User> getCurrentLoginUser() {
+        if (SecurityUtil.isThe3rdPartyUser()) {
+            The3rdPartyUserDetails userDetails = (The3rdPartyUserDetails) SecurityUtil.getCurrentPrincipal();
+            updateThe3rdPartyUserProfile(userDetails);
+        }
+        String login = SecurityUtil.getCurrentUserLogin();
+        return getUserByLogin(login);
+
+    }
+
+    private void updateThe3rdPartyUserProfile(The3rdPartyUserDetails userDetails) {
+        getUserByLoginAndSourceType(userDetails.getLogin(), userDetails.getFrom())
+                .map(user -> {
+                    user.setUrl(userDetails.getUrl());
+                    user.setAvatarUrl(userDetails.getAvatarUrl());
+                    user.setUsername(userDetails.getName());
+                    return userRepository.save(user);
+                });
+    }
+
+    @Override
+    public Optional<User> getUserByLoginAndSourceType(String login, UserSourceType userSourceType) {
+        return userRepository.findOneByLoginAndSourceType(login, userSourceType).map(user -> {
+            user.getAuthorities().size();
+            return user;
+        });
     }
 }

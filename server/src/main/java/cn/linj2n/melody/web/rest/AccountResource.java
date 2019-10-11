@@ -63,7 +63,7 @@ public class AccountResource {
     public ResponseEntity<?> getAccountInfo() {
 
         return userService
-                .getUserByLogin(SecurityUtil.getCurrentUserLogin())
+                .getCurrentLoginUser()
                 .map(user -> new ResponseEntity<>(
                         ResponseBuilder.buildSuccessResponse(null, dtoModelMapper.convertToDTO(user)),
                         HttpStatus.OK))
