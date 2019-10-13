@@ -59,13 +59,13 @@ public class Comment {
      * 评论所属作者
      */
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
-    private CommentAuthor author;
+    private User author;
 
     /**
      * 评论对象的作者
      */
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
-    private CommentAuthor replyToAuthor;
+    private User replyToAuthor;
 
     /**
      * 评论的回复数
