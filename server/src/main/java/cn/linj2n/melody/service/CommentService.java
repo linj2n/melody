@@ -1,5 +1,6 @@
 package cn.linj2n.melody.service;
 
+import cn.linj2n.melody.domain.Comment;
 import cn.linj2n.melody.web.dto.comment.CommentDTO;
 import cn.linj2n.melody.web.dto.comment.CommentFormDTO;
 import cn.linj2n.melody.web.dto.comment.ReplyToCommentDTO;

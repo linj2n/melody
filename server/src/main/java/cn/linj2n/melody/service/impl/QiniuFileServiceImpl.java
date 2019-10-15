@@ -42,7 +42,7 @@ public class QiniuFileServiceImpl implements QiniuFileService {
     public String getUploadToken() {
         StringMap putPolicy = new StringMap();
         putPolicy.put("callbackUrl", melodyProperties.getQiniu().getCallBackHandlingUrl());
-        putPolicy.put("callbackBody", "{\"key\":\"$(key)\",\"hash\":\"$(etag)\",\"fsize\":$(fsize)}");
+        putPolicy.put("callbackBody", "{\"key\":\"$(key)\",\"hash\":\"$(etag)\",\"bucket\":\"$(bucket)\",\"fsize\":$(fsize)}");
         putPolicy.put("callbackBodyType", "application/json");
         long expireSeconds = 3600;
         return qiniuAuth.uploadToken(

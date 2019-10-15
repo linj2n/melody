@@ -1,127 +1,124 @@
 package cn.linj2n.melody.service.impl;
 
+import cn.linj2n.melody.domain.Authority;
 import cn.linj2n.melody.domain.Comment;
 import cn.linj2n.melody.domain.CommentAuthor;
-import cn.linj2n.melody.domain.enumeration.CommentAuthorRole;
+import cn.linj2n.melody.domain.User;
 import cn.linj2n.melody.domain.enumeration.CommentStatus;
 import cn.linj2n.melody.domain.enumeration.CommentType;
-import cn.linj2n.melody.repository.CommentAuthorRepository;
 import cn.linj2n.melody.repository.CommentRepository;
+import cn.linj2n.melody.security.AuthoritiesConstants;
 import cn.linj2n.melody.security.SecurityUtil;
 import cn.linj2n.melody.service.CommentService;
+import cn.linj2n.melody.service.UserService;
+import cn.linj2n.melody.web.dto.comment.CommentAuthorDTO;
 import cn.linj2n.melody.web.dto.comment.CommentDTO;
 import cn.linj2n.melody.web.dto.comment.CommentFormDTO;
 import cn.linj2n.melody.web.dto.comment.ReplyToCommentDTO;
 import cn.linj2n.melody.web.utils.DTOModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.DigestUtils;
+
+import java.util.Set;
 
 
 @Service
 public class CommentServiceImpl implements CommentService {
 
-    private static final int AUTHOR_NAME_DEFAULT_LENGTH = 8;
-
-    private static final String ADMIN_EMAIL = "linj2n@163.com";
-
-    private static final String ROLE_ADMIN = "ROLE_ADMIN";
-
-    private CommentAuthorRepository commentAuthorRepository;
-
     private CommentRepository commentRepository;
 
     private DTOModelMapper dtoModelMapper;
 
+    private UserService userService;
 
-    public CommentServiceImpl(CommentAuthorRepository commentAuthorRepository, CommentRepository commentRepository, DTOModelMapper dtoModelMapper) {
-        this.commentAuthorRepository = commentAuthorRepository;
+    @Autowired
+    public CommentServiceImpl(CommentRepository commentRepository, DTOModelMapper dtoModelMapper, UserService userService) {
         this.commentRepository = commentRepository;
         this.dtoModelMapper = dtoModelMapper;
+        this.userService = userService;
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void replyToThePost(Long postId, CommentFormDTO commentFormDTO) {
 
-        if (commentFormDTO.getEmail().equals(ADMIN_EMAIL) && !SecurityUtil.isCurrentUserInRole(ROLE_ADMIN)) {
-            // TODO: Not good design, need to refactor.
-            return ;
-        }
+        // 1. Fetch current login user information as the author.
+        userService.getCurrentLoginUser().map(author -> {
 
-        CommentAuthor author = commentAuthorRepository
-                .findOptionalByEmail(commentFormDTO.getEmail())
-                .orElseGet(() -> createNewAuthorByEmail(commentFormDTO.getEmail()));
+            // 2. Convert commentFormDTO to comment.
+            Comment comment = new Comment();
+            comment.setContent(commentFormDTO.getContent());
+            comment.setCommentType(CommentType.REPLY_TO_POST);
+            comment.setCommentStatus(getCommentStatusByAuthorRole(author.getAuthorities()));
+            comment.setReplyCount(0L);
 
-        Comment comment = new Comment();
-        comment.setContent(commentFormDTO.getContent());
-        comment.setCommentType(CommentType.REPLY_TO_POST);
-        comment.setCommentStatus(getCommentStatusByAuthorRole(author.getRole()));
-        comment.setReplyCount(0L);
+            // 3. Saving comment to database.
+            commentRepository.save(comment);
+            commentRepository.updateCommentDetail(comment.getId(), postId, author.getId(), null, null);
 
-        commentRepository.save(comment);
-        commentRepository.updateCommentDetail(comment.getId(), postId, author.getId(), null, null);
-
-        // TODO: Notify target author by email.
-    }
-
-    private CommentAuthor createNewAuthorByEmail(String email) {
-        CommentAuthor newAuthor = new CommentAuthor();
-        newAuthor.setEmail(email);
-        newAuthor.setId(null);
-        newAuthor.setRole(CommentAuthorRole.VISITOR);
-        String emailHashCode = DigestUtils.md5DigestAsHex(newAuthor.getEmail().getBytes());
-        newAuthor.setMd5Code(emailHashCode);
-        newAuthor.setName(emailHashCode.substring(emailHashCode.length() - AUTHOR_NAME_DEFAULT_LENGTH));
-        return commentAuthorRepository.save(newAuthor);
+            // TODO: Notify target author by email.
+            return author;
+        });
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void replyToTheComment(Long postId, Long parentCommentId, CommentFormDTO commentFormDTO) {
 
-        if (commentFormDTO.getEmail().equals(ADMIN_EMAIL) && !SecurityUtil.isCurrentUserInRole(ROLE_ADMIN)) {
-            // TODO: Not good design, need to refactor.
-            return ;
-        }
+        // 1. Fetch current login user information as the author.
+        userService.getCurrentLoginUser().map(author -> {
 
-        CommentAuthor author = commentAuthorRepository
-                .findOptionalByEmail(commentFormDTO.getEmail())
-                .orElseGet(() -> createNewAuthorByEmail(commentFormDTO.getEmail()));
+            Long replyToAuthorId = commentFormDTO.getReplyToAuthorId();
 
-        Long replyToAuthorId = commentFormDTO.getReplyToAuthorId();
+            // 2. Convert commentFormDTO to comment.
+            Comment comment = new Comment();
+            comment.setContent(commentFormDTO.getContent());
+            comment.setCommentType(CommentType.REPLY_TO_COMMENT);
+            comment.setCommentStatus(getCommentStatusByAuthorRole(author.getAuthorities()));
+            comment.setReplyCount(0L);
 
-        Comment comment = new Comment();
-        comment.setContent(commentFormDTO.getContent());
-        comment.setCommentType(CommentType.REPLY_TO_COMMENT);
-        comment.setCommentStatus(getCommentStatusByAuthorRole(author.getRole()));
-        comment.setReplyCount(0L);
+            // 3. Saving comment to database with parentCommentId and replyToAuthorId.
+            commentRepository.save(comment);
+            commentRepository.updateCommentDetail(comment.getId(), postId, author.getId(), replyToAuthorId, parentCommentId);
 
-        commentRepository.save(comment);
-        commentRepository.updateCommentDetail(comment.getId(), postId, author.getId(), replyToAuthorId, parentCommentId);
-
-        // TODO: Notify target author by email.
+            // TODO: Notify target author by email.
+            return comment;
+        });
     }
 
     @Override
     public Page<CommentDTO> listPostComments(Long postId, Pageable pageable) {
         return commentRepository
                 .findAllByPostIdAndCommentTypeAndCommentStatus(postId, CommentType.REPLY_TO_POST, CommentStatus.ACTIVE, pageable)
-                .map(dtoModelMapper::convertToDTO);
+                .map(comment -> {
+                    CommentAuthorDTO authorDTO = dtoModelMapper.convertToCommentAuthorDTO(comment.getAuthor());
+                    CommentDTO commentDTO = dtoModelMapper.convertToDTO(comment);
+                    commentDTO.setAuthor(authorDTO);
+                    return commentDTO;
+                });
     }
 
     @Override
     public Page<ReplyToCommentDTO> listRepliesToComment(Long postId, Long parentCommentId, Pageable pageable) {
         return commentRepository
                 .findAllByPostIdAndParentCommentIdAndCommentStatus(postId, parentCommentId, CommentStatus.ACTIVE, pageable)
-                .map(dtoModelMapper::convertToReplyDTO);
+                .map(comment -> {
+                    CommentAuthorDTO author = dtoModelMapper.convertToCommentAuthorDTO(comment.getAuthor());
+                    CommentAuthorDTO replyToAuthor = dtoModelMapper.convertToCommentAuthorDTO(comment.getReplyToAuthor());
+                    ReplyToCommentDTO reply = dtoModelMapper.convertToReplyDTO(comment);
+                    reply.setAuthor(author);
+                    reply.setReplyToAuthor(replyToAuthor);
+                    return reply;
+                });
     }
 
-    private CommentStatus getCommentStatusByAuthorRole(CommentAuthorRole role) {
-        boolean isAdminOrNormalRole = role.equals(CommentAuthorRole.NORMAL) || role.equals(CommentAuthorRole.ADMIN);
-        return isAdminOrNormalRole
+    private CommentStatus getCommentStatusByAuthorRole(Set<Authority> authorities) {
+        boolean isAdminOrAuthenticatedRole =
+                authorities.stream().anyMatch(authority -> authority.getName().equals(AuthoritiesConstants.ADMIN));
+        return isAdminOrAuthenticatedRole
                 ? CommentStatus.ACTIVE
                 : CommentStatus.BLOCK;
     }
