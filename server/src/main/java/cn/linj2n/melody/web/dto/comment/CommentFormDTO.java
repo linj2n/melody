@@ -14,7 +14,7 @@ public class CommentFormDTO {
     @Email
     private String email;
 
-    private long replyToAuthorId;
+    private Long replyToAuthorId;
 
     @NotNull
     @Size(min = 8, max = 1000)

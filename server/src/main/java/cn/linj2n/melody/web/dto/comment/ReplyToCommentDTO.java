@@ -10,7 +10,7 @@ import lombok.Setter;
 public class ReplyToCommentDTO {
 
     @JsonProperty(value = "id")
-    private long id;
+    private Long id;
 
     @JsonProperty(value = "author")
     private CommentAuthorDTO author;
@@ -19,7 +19,7 @@ public class ReplyToCommentDTO {
     private CommentAuthorDTO replyToAuthor;
 
     @JsonProperty(value = "created_at")
-    private long createdTime;
+    private Long createdTime;
 
     @JsonProperty(value = "content")
     private String content;
