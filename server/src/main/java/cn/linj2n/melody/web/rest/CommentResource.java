@@ -52,7 +52,7 @@ public class CommentResource {
                                          @Valid @RequestBody CommentFormDTO commentFormDTO) {
         commentService.replyToThePost(postId, commentFormDTO);
         return new ResponseEntity<>(
-                ResponseBuilder.buildSuccessResponse("评论成功，审核中。", null),
+                ResponseBuilder.buildSuccessResponse("评论提交成功，审核中。", null),
                 HttpStatus.OK
         );
     }
