@@ -32,10 +32,7 @@
         />
       </div>
       <!-- child comment list -->
-      <div
-        class="child-comment-list"
-        v-if="showChildComment && comment.reply_count"
-      >
+      <div class="child-comment-list" v-show="showChildComment">
         <a-list
           :dataSource="childComments"
           :pagination="pagination"
