@@ -5,7 +5,7 @@
         <!-- new comment editor -->
         <NewCommentEditor
           :new-comment-form="newCommentForm"
-          @handleSubmitNewComment="handleSubmitNewComment"
+          @handleSubmitNewComment="replyToPost"
         />
         <!-- comment list -->
         <a-list
@@ -32,79 +32,8 @@
 <script>
 import NewCommentEditor from './components/NewCommentEditor.vue'
 import RootComment from './components/RootComment.vue'
-var comments = [{
-  id: 1,
-  content: 'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure).',
-  author: {
-    id: 1,
-    name: 'Tommy',
-    avatar: 'http://qiniuyunimage.cdn.linj2n.cn/avatar_db.jpeg',
-    link: 'http://tommy.cn',
-    is_post_author: false
-  },
-  created_at: '2019-10-21 12:00',
-  reply_count: 11
-}, {
-  id: 2,
-  content: 'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure).',
-  author: {
-    id: 1,
-    name: 'Tommy',
-    avatar: 'http://qiniuyunimage.cdn.linj2n.cn/avatar_db.jpeg',
-    link: 'http://tommy.cn',
-    is_post_author: false
-  },
-  created_at: '2019-10-21 12:00',
-  reply_count: 11
-}, {
-  id: 3,
-  content: 'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure).',
-  author: {
-    id: 1,
-    name: 'Tommy',
-    avatar: 'http://qiniuyunimage.cdn.linj2n.cn/avatar_db.jpeg',
-    link: 'http://tommy.cn',
-    is_post_author: true
-  },
-  created_at: '2019-10-21 12:00',
-  reply_count: 11
-}, {
-  id: 4,
-  content: 'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure).',
-  author: {
-    id: 1,
-    name: 'Tommy',
-    avatar: 'http://qiniuyunimage.cdn.linj2n.cn/avatar_db.jpeg',
-    link: 'http://tommy.cn',
-    is_post_author: false
-  },
-  created_at: '2019-10-21 12:00',
-  reply_count: 0
-}, {
-  id: 5,
-  content: 'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure).',
-  author: {
-    id: 1,
-    name: 'Tommy',
-    avatar: 'http://qiniuyunimage.cdn.linj2n.cn/avatar_db.jpeg',
-    link: 'http://tommy.cn',
-    is_post_author: false
-  },
-  created_at: '2019-10-21 12:00',
-  reply_count: 11
-}, {
-  id: 6,
-  content: 'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure).',
-  author: {
-    id: 1,
-    name: 'Tommy',
-    avatar: 'http://qiniuyunimage.cdn.linj2n.cn/avatar_db.jpeg',
-    link: 'http://tommy.cn',
-    is_post_author: false
-  },
-  created_at: '2019-10-21 12:00',
-  reply_count: 11
-}]
+import moment from 'moment'
+import { listAllPostComments } from '@/api/comment'
 export default {
   name: 'app',
   components: {
@@ -112,10 +41,11 @@ export default {
     RootComment
   },
   created () {
-    this.initComments()
+    this.fetchComments()
   },
   data () {
     return {
+      moment,
       rootComments: [],
       rootCommentsSpinning: true,
       user: {
@@ -124,12 +54,15 @@ export default {
       },
       pagination: {
         onChange: (page, pageSize) => {
-          console.log('page: ' + page)
-          console.log('pageSize: ' + pageSize)
+          this.pagination.current = page
+          this.fetchComments()
+          window.scrollTo(0, 0)
         },
+        current: 1,
         hideOnSinglePage: true,
-        pageSize: 3
+        pageSize: 10
       },
+      sort: 'createdAt,DESC', // TODO: add sort condition,
       post: {
         id: 1
       },
@@ -139,19 +72,53 @@ export default {
         avatar: 'http://qiniuyunimage.cdn.linj2n.cn/avatar_db.jpeg',
         placeholder: '回复@linj2n.....',
         content: '',
-        submitting: false
+        submitting: false,
+        editorVisible: true
       }
     }
   },
   methods: {
-    initComments () {
-      const vm = this
-      setTimeout(() => {
-        vm.rootComments = [...comments]
-        vm.rootCommentsSpinning = false
-      }, 2000)
+    fetchComments () {
+      // const vm = this
+      // setTimeout(() => {
+      //   vm.rootComments = [...comments]
+      //   vm.rootCommentsSpinning = false
+      // }, 2000)
+      listAllPostComments(1, this.pagination, this.sort).then(res => {
+        this.rootComments = res.data.content
+        this.rootCommentsSpinning = false
+        this.pagination.total = res.data.totalElements
+      })
     },
-    replyToPost () {
+    replyToPost (newCommentForm) {
+      if (!newCommentForm.content) {
+        return
+      }
+
+      newCommentForm.submitting = true
+
+      setTimeout(() => {
+        newCommentForm.submitting = false
+        this.rootComments = [
+          {
+            id: this.rootComments.length,
+            content: newCommentForm.content,
+            author: {
+              id: 1,
+              name: 'linj2n',
+              avatar: 'http://qiniuyunimage.cdn.linj2n.cn/avatar_db.jpeg',
+              link: 'http://linj2n.cn',
+              is_post_author: false
+            },
+            created_at: moment().fromNow(),
+            reply_count: 0
+          },
+          ...this.rootComments
+        ]
+        newCommentForm.content = ''
+      }, 1000)
+    },
+    replyToComment (newCommentForm) {
 
     },
     handleSubmitNewComment (newCommentForm) {

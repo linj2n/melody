@@ -2,7 +2,7 @@
   <div class="child-comment">
     <a-comment
       :avatar="childComment.author.avatar"
-      :datetime="childComment.created_at"
+      :datetime="childComment.createdAt"
       :content="childComment.content"
     >
       <template slot="author">
@@ -29,12 +29,10 @@
           回复
         </span>
       </template>
-      <div class="new-comment-editor" v-show="showReplyEditor">
-        <NewCommentEditor
-          :newCommentForm="newCommentForm"
-          @handleSubmitNewComment="handleSubmitNewComment"
-        />
-      </div>
+      <NewCommentEditor
+        :newCommentForm="newCommentForm"
+        @handleSubmitNewComment="handleSubmitNewComment"
+      />
     </a-comment>
   </div>
 </template>
@@ -47,14 +45,14 @@ export default {
   },
   data () {
     return {
-      showReplyEditor: false,
       newCommentForm: {
         replyToAuthorId: null,
         author: '',
         avatar: '',
         placeholder: '',
         content: '',
-        submitting: false
+        submitting: false,
+        editorVisible: false
       }
     }
   },
@@ -70,7 +68,7 @@ export default {
       this.$emit('handleSubmitNewComment', newCommentForm)
     },
     handleReplyClick () {
-      this.showReplyEditor = !this.showReplyEditor
+      this.newCommentForm.editorVisible = !this.newCommentForm.editorVisible
     }
   }
 }

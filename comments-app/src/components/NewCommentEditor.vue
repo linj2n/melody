@@ -1,5 +1,5 @@
 <template>
-  <div class="new-comment-editor">
+  <div class="new-comment-editor" v-show="newCommentForm.editorVisible">
     <a-comment>
       <a-avatar
         v-if="newCommentForm.avatar && newCommentForm.author"
