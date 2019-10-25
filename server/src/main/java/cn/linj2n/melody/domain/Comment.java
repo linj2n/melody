@@ -61,7 +61,7 @@ public class Comment {
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
     private User author;
 
-    /**
+    /*a*
      * 评论对象的作者
      */
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
