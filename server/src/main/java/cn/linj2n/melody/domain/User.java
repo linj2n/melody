@@ -137,6 +137,127 @@ public class User {
     public User(String login) {
         this.login = login;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Boolean getActivated() {
+        return activated;
+    }
+
+    public void setActivated(Boolean activated) {
+        this.activated = activated;
+    }
+
+    public String getActivationKey() {
+        return activationKey;
+    }
+
+    public void setActivationKey(String activationKey) {
+        this.activationKey = activationKey;
+    }
+
+    public String getResetCode() {
+        return resetCode;
+    }
+
+    public void setResetCode(String resetCode) {
+        this.resetCode = resetCode;
+    }
+
+    public ZonedDateTime getResetCodeCreatedTime() {
+        return resetCodeCreatedTime;
+    }
+
+    public void setResetCodeCreatedTime(ZonedDateTime resetCodeCreatedTime) {
+        this.resetCodeCreatedTime = resetCodeCreatedTime;
+    }
+
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
+    }
+
+    public ZonedDateTime getVerificationCodeCreatedTime() {
+        return verificationCodeCreatedTime;
+    }
+
+    public void setVerificationCodeCreatedTime(ZonedDateTime verificationCodeCreatedTime) {
+        this.verificationCodeCreatedTime = verificationCodeCreatedTime;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+
+    public UserSourceType getSourceType() {
+        return sourceType;
+    }
+
+    public void setSourceType(UserSourceType sourceType) {
+        this.sourceType = sourceType;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public Set<Authority> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(Set<Authority> authorities) {
+        this.authorities = authorities;
+    }
+
     @Override
     public int hashCode() {
         return 31;
