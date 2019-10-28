@@ -2,9 +2,11 @@
   <div class="child-comment">
     <a-comment
       :avatar="childComment.author.avatar"
-      :datetime="childComment.createdAt"
       :content="childComment.content"
     >
+      <template slot="datetime">
+        {{ childComment.createdAt | parseTime("YYYY-MM-DD HH:mm") }}
+      </template>
       <template slot="author">
         <span>
           <a class="comment-author" :href="childComment.author.link">
@@ -31,6 +33,7 @@
       </template>
       <NewCommentEditor
         :newCommentForm="newCommentForm"
+        :options="replyEditorOptions"
         @handleSubmitNewComment="handleSubmitNewComment"
       />
     </a-comment>
@@ -38,21 +41,28 @@
 </template>
 <script>
 import NewCommentEditor from './NewCommentEditor.vue'
+import { parseUnixTime } from '@/utils/time'
 export default {
   name: 'ChildComment',
   components: {
     NewCommentEditor
   },
+  filters: {
+    parseTime: (value, format) => parseUnixTime(value, format)
+  },
+  created () {
+    this.init()
+  },
   data () {
     return {
       newCommentForm: {
         replyToAuthorId: null,
-        author: '',
-        avatar: '',
-        placeholder: '',
-        content: '',
+        content: ''
+      },
+      replyEditorOptions: {
+        visible: false,
         submitting: false,
-        editorVisible: false
+        placeholder: ''
       }
     }
   },
@@ -64,14 +74,22 @@ export default {
     }
   },
   methods: {
-    handleSubmitNewComment (newCommentForm) {
-      this.$emit('handleSubmitNewComment', newCommentForm)
+    init () {
+      const author = this.childComment.author
+      this.replyEditorOptions.placeholder = '回复 @' + author.name
+      this.newCommentForm.replyToAuthorId = author.id
+    },
+    handleSubmitNewComment (newCommentForm, options) {
+      this.$emit('handleSubmitNewComment', newCommentForm, options)
     },
     handleReplyClick () {
-      this.newCommentForm.editorVisible = !this.newCommentForm.editorVisible
+      this.replyEditorOptions.visible = !this.replyEditorOptions.visible
     }
   }
 }
 </script>
 <style scoped>
+.child-comment {
+  width: 100%;
+}
 </style>

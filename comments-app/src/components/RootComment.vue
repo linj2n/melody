@@ -1,18 +1,23 @@
 <template>
   <div class="root-comment">
     <a-comment :avatar="comment.author.avatar">
+      <template slot="avatar">
+        <a-avatar size="default" icon="user" :src="comment.author.avatar" />
+      </template>
       <template slot="datetime">
-        {{ comment.createdAt | formatTime }}
+        {{ comment.createdAt | parseTime("YYYY-MM-DD HH:mm") }}
       </template>
       <template slot="author">
         <a class="comment-author" :href="comment.author.link">
           {{ comment.author.name }}
         </a>
       </template>
+
       <!-- comment content -->
       <template slot="content">
         <p slot="content">{{ comment.content }}</p>
       </template>
+
       <!-- comment actions -->
       <template slot="actions">
         <span @click="handleReplyClick" class="comment-action-button">
@@ -20,16 +25,18 @@
           回复
         </span>
         <span
-          v-if="comment.replyCount > 0"
+          v-if="childComments.length > 0"
           @click="handleMoreClick"
           class="comment-action-button"
         >
           <a-icon :type="getIcon" style="margin-right: 4px" />
-          更多 ({{ comment.replyCount }})
+          更多 ({{ childComments.length }})
         </span>
       </template>
       <NewCommentEditor
         :newCommentForm="newCommentForm"
+        :options="replyEditorOptions"
+        :showAvatar="false"
         @handleSubmitNewComment="replyToComments"
       />
       <!-- child comment list -->
@@ -37,7 +44,7 @@
         <a-list
           :dataSource="childComments"
           :pagination="pagination"
-          :loading="childCommentsSpinning"
+          :loading="childCommentsLoading"
           itemLayout="horizontal"
         >
           <a-list-item slot="renderItem" slot-scope="item">
@@ -53,47 +60,10 @@
   </div>
 </template>
 <script>
-import moment from 'moment'
 import NewCommentEditor from './NewCommentEditor.vue'
 import ChildComment from './ChildComment.vue'
-// import parseTime from '../utils/time.js'
-// var replies = [{
-//   id: 1,
-//   content: 'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure).',
-//   created_at: '2019-10-21 12:00',
-//   author: {
-//     id: 1,
-//     name: 'Tommy',
-//     avatar: 'http://qiniuyunimage.cdn.linj2n.cn/avatar_db.jpeg',
-//     link: 'http://tommy.cn',
-//     is_post_author: false
-//   },
-//   replyToAuthor: {
-//     id: 2,
-//     name: 'Jerry',
-//     avatar: 'http://qiniuyunimage.cdn.linj2n.cn/avatar_db.jpeg',
-//     link: 'http://tommy.cn',
-//     is_post_author: false
-//   }
-// }, {
-//   id: 1,
-//   content: 'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure).',
-//   created_at: '2019-10-21 12:00',
-//   author: {
-//     id: 1,
-//     name: 'Tommy',
-//     avatar: 'http://qiniuyunimage.cdn.linj2n.cn/avatar_db.jpeg',
-//     link: 'http://tommy.cn',
-//     is_post_author: false
-//   },
-//   replyToAuthor: {
-//     id: 2,
-//     name: 'Jerry',
-//     avatar: 'http://qiniuyunimage.cdn.linj2n.cn/avatar_db.jpeg',
-//     link: 'http://tommy.cn',
-//     is_post_author: false
-//   }
-// }]
+import { parseUnixTime } from '@/utils/time'
+import { replyToComment, listChildComments } from '@/api/comment'
 export default {
   name: 'RootComment',
   components: {
@@ -101,11 +71,7 @@ export default {
     ChildComment
   },
   filters: {
-    formatTime: function (value) {
-      if (value) {
-        return moment.unix(value).format('YYYY-DD-MM hh:mm')
-      }
-    }
+    parseTime: (value, format) => parseUnixTime(value, format)
   },
   props: {
     comment: {
@@ -115,95 +81,72 @@ export default {
     }
   },
   created () {
-    // this.initNewCommentForm()
+    this.init()
   },
   computed: {
     getIcon: function () {
       return this.showChildComment ? 'down-circle' : 'right-circle'
     }
   },
+  watch: {
+    comment: function (newComment, oldComment) {
+      this.init()
+    }
+  },
   data () {
     return {
-      moment,
       showReplyEditor: false,
       showChildComment: false,
-      childCommentsSpinning: true,
+      childCommentsLoading: true,
       childComments: [],
       pagination: {
         onChange: (page, pageSize) => {
           console.log('page: ' + page)
           console.log('pageSize: ' + pageSize)
         },
-        pageSize: 3,
+        current: 1,
+        pageSize: 10,
         hideOnSinglePage: true,
         size: 'small'
       },
+      sort: 'createdAt,DESC',
       newCommentForm: {
         replyToAuthorId: null,
-        author: '',
-        avatar: '',
-        placeholder: '',
-        content: '',
+        content: ''
+      },
+      replyEditorOptions: {
+        visible: false,
         submitting: false,
-        editorVisible: false
+        placeholder: ''
       }
     }
   },
   methods: {
-    initNewCommentForm () {
-      this.newCommentForm.parentCommentId = this.comment.id
-      this.newCommentForm.placeholder = '回复 @' + this.comment.author.name
-      this.newCommentForm.content = ''
-      this.newCommentForm.replyToAuthorId = this.comment.author.id
-      this.newCommentForm.submitting = false
-      this.newCommentForm.avatar = ''
-      this.newCommentForm.author = ''
+    init () {
+      const author = this.comment.author
+      this.replyEditorOptions.placeholder = '回复 @' + author.name
+      this.fetchChildComments()
     },
-    replyToComments (newCommentForm) {
-      // console.log('reply to comments , content: ' + newCommentForm.content)
-      // const newComment = {
-      //   id: 1,
-      //   content: newCommentForm.content,
-      //   created_at: moment().fromNow(),
-      //   author: {
-      //     id: 1,
-      //     name: 'linj2n',
-      //     avatar: 'http://qiniuyunimage.cdn.linj2n.cn/avatar_db.jpeg',
-      //     link: 'http://tommy.cn',
-      //     is_post_author: false
-      //   },
-      //   replyToAuthor: {
-      //     id: 2,
-      //     name: 'Jerry',
-      //     avatar: 'http://qiniuyunimage.cdn.linj2n.cn/avatar_db.jpeg',
-      //     link: 'http://tommy.cn',
-      //     is_post_author: false
-      //   }
-      // }
-      // replies = [newComment, ...replies]
-      // newCommentForm.submitting = true
-      // this.childCommentsSpinning = true
-      // this.showChildComment = true
-      // setTimeout(() => {
-      //   this.childComments = [...replies]
-      //   this.childCommentsSpinning = false
-      //   newCommentForm.editorVisible = false
-      //   newCommentForm.submitting = false
-      //   newCommentForm.content = ''
-      // }, 2000)
+    replyToComments (newCommentForm, options) {
+      options.submitting = true
+      replyToComment(1, this.comment.id, { email: '', content: newCommentForm.content, replyToAuthorId: newCommentForm.replyToAuthorId }).then(res => {
+        options.submitting = false
+        options.visible = false
+        newCommentForm.content = ''
+        this.fetchChildComments()
+      })
+    },
+    fetchChildComments () {
+      this.childCommentsLoading = true
+      listChildComments(1, this.comment.id, this.sort).then(res => {
+        this.childComments = res.data.content
+        this.childCommentsLoading = false
+      })
     },
     handleReplyClick () {
-      this.newCommentForm.editorVisible = !this.newCommentForm.editorVisible
+      this.replyEditorOptions.visible = !this.replyEditorOptions.visible
     },
     handleMoreClick () {
-      this.childCommentsSpinning = true
-      // setTimeout(() => {
-      //   // this.childComments = [...replies]
-      //   replies.forEach(reply => {
-      //     this.childComments.push(Object.assign({}, reply))
-      //   })
-      //   this.childCommentsSpinning = false
-      // }, 2000)
       this.showChildComment = !this.showChildComment
     }
   }

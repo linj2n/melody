@@ -1,24 +1,26 @@
 <template>
-  <div class="new-comment-editor" v-show="newCommentForm.editorVisible">
+  <div class="new-comment-editor" v-show="options.visible">
     <a-comment>
-      <a-avatar
-        v-if="newCommentForm.avatar && newCommentForm.author"
-        slot="avatar"
-        :src="newCommentForm.avatar"
-        :alt="newCommentForm.author"
-      />
+      <template slot="avatar" v-if="options.showAvatar">
+        <a-avatar
+          size="default"
+          icon="user"
+          :src="newCommentForm.avatar"
+          :alt="newCommentForm.author"
+        />
+      </template>
       <div slot="content" class="new-comment-editor-area">
         <a-form-item>
           <a-textarea
             :rows="4"
             v-model="newCommentForm.content"
-            :placeholder="newCommentForm.placeholder"
+            :placeholder="options.placeholder"
           ></a-textarea>
         </a-form-item>
         <a-form-item>
           <a-button
             htmlType="submit"
-            :loading="newCommentForm.submitting"
+            :loading="options.submitting"
             @click="handleSubmit"
             type="primary"
           >
@@ -30,7 +32,6 @@
   </div>
 </template>
 <script>
-import moment from 'moment'
 export default {
   name: 'NewCommentEditor',
   props: {
@@ -38,19 +39,29 @@ export default {
       type: Object,
       required: true,
       default: () => { }
-    }
-  },
-  data () {
-    return {
-      moment
+    },
+
+    options: {
+      type: Object,
+      required: false,
+      default: function () {
+        return {
+          submitting: false,
+          visible: true,
+          showAvatar: true
+        }
+      }
     }
   },
   methods: {
     handleSubmit () {
-      this.$emit('handleSubmitNewComment', this.newCommentForm)
+      this.$emit('handleSubmitNewComment', this.newCommentForm, this.options)
     }
   }
 }
 </script>
 <style scoped>
+.new-comment-editor {
+  width: 100%;
+}
 </style>
