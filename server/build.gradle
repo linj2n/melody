@@ -33,6 +33,7 @@ apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+//apply plugin: 'war'
 
 
 // 打包的类型为 jar，并指定了生成的打包的文件名称和版本
@@ -40,6 +41,11 @@ jar {
 	baseName = 'melody-blog'
 	version = '0.0.1'
 }
+
+//war {
+//	baseName = 'melody-blog-war'
+//	version
+//}
 
 // 指定编译 .java 文件的 JDK 版本
 sourceCompatibility = 1.8
@@ -124,5 +130,15 @@ dependencies {
 
 
 	compile 'org.json:json:20180813'
+
+	compile('org.springframework.security.oauth:spring-security-oauth2:2.1.0.RELEASE')
+
+	testCompile group: 'org.springframework.security', name: 'spring-security-test', version: '4.0.0.RELEASE'
+
+
+
+//	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+
+
 
 }
