@@ -13,6 +13,8 @@ import java.util.Set;
 @Setter
 public class UserDTO {
 
+    private Long id;
+
     @NotNull
     @Size(min = 1,message = "{message.password.required}")
     private String login;
