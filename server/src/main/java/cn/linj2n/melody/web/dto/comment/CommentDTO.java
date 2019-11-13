@@ -15,12 +15,12 @@ public class CommentDTO {
     @JsonProperty(value = "author")
     private CommentAuthorDTO author;
 
-    @JsonProperty(value = "created_at")
+    @JsonProperty(value = "createdAt")
     private Long createdTime;
 
     @JsonProperty(value = "content")
     private String content;
 
-    @JsonProperty(value = "reply_count")
+    @JsonProperty(value = "replyCount")
     private Long replyCount;
 }
