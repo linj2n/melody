@@ -2,56 +2,18 @@
   <div>
     <a-row type="flex" justify="center">
       <a-col :span="24">
-        <a-modal title="填写信息" v-model="loginModalVisible" :footer="null">
-          <a-form
-            :form="visitorInfo"
-            @submit="handleSubmitUserProfile"
-            layout="vertical"
-          >
-            <a-form-item label="称呼">
-              <a-input
-                v-decorator="[
-                  'name',
-                  {
-                    rules: [
-                      { required: true, message: 'Please input your note!' }
-                    ]
-                  }
-                ]"
-              />
-            </a-form-item>
-            <a-form-item label="邮箱">
-              <a-input
-                v-decorator="[
-                  'email',
-                  {
-                    rules: [
-                      {
-                        type: 'email',
-                        message: 'The input is not valid E-mail!'
-                      },
-                      {
-                        required: true,
-                        message: 'Please input your E-mail!'
-                      }
-                    ]
-                  }
-                ]"
-              />
-            </a-form-item>
-            <a-form-item label="网站">
-              <a-input v-decorator="['link']" />
-            </a-form-item>
-            <a-form-item>
-              <a-button type="primary" html-type="submit">
-                确认
-              </a-button>
-            </a-form-item>
-          </a-form>
-          <a-divider>或者</a-divider>
+        <a-modal
+          title="使用社交媒体应用登录"
+          v-model="loginModalVisible"
+          :footer="null"
+        >
           <a-row>
             <a-col :span="24" :style="{ textAlign: 'center' }">
-              <a href="/api/v1/account/login/github" target="_blank">
+              <a
+                href="/api/v1/account/login/github"
+                target="_blank"
+                @click="loginModalVisible = false"
+              >
                 <a-icon
                   type="github"
                   theme="filled"
@@ -63,25 +25,10 @@
         </a-modal>
         <!-- reply editor -->
         <NewCommentEditor
-          :options="{
-            submitting: false,
-            visible: true,
-            showAvatar: true,
-            inputDisable: false,
-            avatarSize: 64
-          }"
-          :new-comment-form="newCommentForm"
-          :is-authenticated="isAuthenticated"
+          :options="replyEditorOptions"
           @handleSubmitNewComment="replyToPost"
-          @handleInputClick="validateAuthState"
+          @handleSocialLoginButton="handleSocialLoginButton"
         />
-        <a-button
-          type="primary"
-          html-type="submit"
-          @click="isAuthenticated = !isAuthenticated"
-        >
-          认证
-        </a-button>
         <!-- comment list -->
         <a-list
           :dataSource="rootComments"
@@ -123,13 +70,15 @@ export default {
   },
   created () {
     this.fetchComments()
-    this.initUserProfileForm()
-    this.getAuthState()
+    this.fetchAuthenticatedStatus()
+    const vm = this
+    window.onfocus = function () {
+      vm.getAccountInfo()
+    }
   },
   data () {
     return {
       moment,
-      visitorInfo: this.$form.createForm(this, { name: 'coordinated' }),
       loginModalVisible: false,
       rootComments: [],
       rootCommentsSpinning: true,
@@ -142,38 +91,38 @@ export default {
         hideOnSinglePage: true,
         pageSize: 10
       },
-      user: null,
-      sort: 'createdAt,DESC', // TODO: add sort condition,
-      newCommentForm: {
+      user: {
         name: '',
         link: '',
-        email: '',
-        content: '',
-        author: '',
-        avatar: ''
+        avatarUrl: ''
       },
-      isAuthenticated: false
+      sort: 'createdAt,DESC', // TODO: add sort condition,
+      isAuthenticated: false,
+      replyEditorOptions: {
+        submitting: false,
+        visible: true,
+        showAvatar: true,
+        inputDisable: false,
+        avatarSize: 64
+      }
     }
   },
   watch: {
     user: function (val) {
-      this.newCommentForm.name = val.username
-      this.newCommentForm.link = val.link
-      this.newCommentForm.avatar = val.avatarUrl
-      this.newCommentForm.author = val.name
+      // this.newCommentForm.name = val.username
+      // this.newCommentForm.link = val.link
+      // this.newCommentForm.avatar = val.avatarUrl
+      // this.newCommentForm.author = val.name
     }
   },
   methods: {
     getAccountInfo () {
-      if (this.isAuthenticated && this.user == null) {
+      if (this.isAuthenticated) {
         getAccountInfo().then(res => {
           const info = res.data
           this.user = { ...info }
         })
       }
-    },
-    initUserProfileForm () {
-
     },
     handleSubmitUserProfile (e) {
       e.preventDefault()
@@ -189,7 +138,6 @@ export default {
       newCommentForm.validateFields((err, values) => {
         if (!err) {
           options.submitting = true
-          console.log(values)
           replyToPost(this.postId, values).then(res => {
             options.submitting = false
             if (res.code === 20000) {
@@ -203,19 +151,11 @@ export default {
         }
       })
     },
-    validateAuthState (newCommentForm, options) {
-      this.getAccountInfo()
-      this.visitorInfo.validateFields((err, value) => {
-        const isEmptyForm = Object.keys(value).length === 0
-        const isValidForm = !err && !isEmptyForm
-        if (!isValidForm && !this.isAuthenticated()) {
-          newCommentForm.content = ''
-          this.loginModalVisible = true
-        }
-      })
-    },
-    getAuthState () {
+    fetchAuthenticatedStatus () {
       this.isAuthenticated = getAuthState() && getAuthState() === 'true'
+    },
+    handleSocialLoginButton () {
+      this.loginModalVisible = true
     }
   }
 }
