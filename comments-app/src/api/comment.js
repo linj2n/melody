@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import { getAuthState } from '@/utils/auth'
 
 export function listAllPostComments (postId, pager, sort) {
   return request({
@@ -13,16 +14,22 @@ export function listAllPostComments (postId, pager, sort) {
 }
 
 export function replyToPost (postId, comment) {
+  const URL = isAnonymousAuthor()
+    ? `/api/v1/posts/${postId}/anonymous-comments`
+    : `/api/v1/posts/${postId}/comments`
   return request({
-    url: `/api/v1/posts/${postId}/comments`,
+    url: URL,
     method: 'post',
     data: comment
   })
 }
 
 export function replyToComment (postId, parentCommentId, reply) {
+  const URL = isAnonymousAuthor()
+    ? `/api/v1/posts/${postId}/comments/${parentCommentId}/anonymous-replies`
+    : `/api/v1/posts/${postId}/comments/${parentCommentId}/replies`
   return request({
-    url: `/api/v1/posts/${postId}/comments/${parentCommentId}/replies`,
+    url: URL,
     method: 'post',
     data: reply
   })
@@ -36,4 +43,8 @@ export function listChildComments (postId, commentId, sort) {
       sort: sort
     }
   })
+}
+
+function isAnonymousAuthor () {
+  return !getAuthState() || getAuthState() === 'false'
 }
