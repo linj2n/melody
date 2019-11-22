@@ -67,11 +67,6 @@ public class Comment {
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
     private User replyToAuthor;
 
-    /**
-     * 评论的回复数
-     */
-    @Column(name = "reply_count", nullable = false)
-    private Long replyCount;
 
     /**
      * 评论所属的文章，指出评论贴在哪篇文章下
