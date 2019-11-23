@@ -120,14 +120,23 @@ public class DTOModelMapper {
 
 
     public CommentDTO convertToDTO(Comment comment) {
+        if (comment == null) {
+            return null;
+        }
         return modelMapper.map(comment, CommentDTO.class);
     }
 
     public CommentAuthorDTO convertToCommentAuthorDTO(User user) {
+        if (user == null) {
+            return null;
+        }
         return modelMapper.map(user, CommentAuthorDTO.class);
     }
 
     public ReplyToCommentDTO convertToReplyDTO(Comment comment) {
+        if (comment == null) {
+            return null;
+        }
         return modelMapper.map(comment, ReplyToCommentDTO.class);
     }
 
@@ -148,7 +157,6 @@ public class DTOModelMapper {
             protected void configure() {
                 map().setId(source.getId());
                 map().setContent(source.getContent());
-                map().setReplyCount(source.getReplyCount());
                 using(zonedDateTimeToLongConverter())
                         .map(source.getCreatedAt()).setCreatedTime(null);
 
