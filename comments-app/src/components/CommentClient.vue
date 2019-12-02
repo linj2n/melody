@@ -12,7 +12,7 @@
               <a
                 href="/api/v1/account/login/github"
                 target="_blank"
-                @click="loginModalVisible = false"
+                @click="requireToLogin"
               >
                 <a-icon
                   type="github"
@@ -41,7 +41,11 @@
             共 {{ pagination.total }} 条评论
           </template>
           <a-list-item slot="renderItem" slot-scope="item">
-            <RootComment :comment="item" :post-id="postId" />
+            <RootComment
+              :comment="item"
+              :post-id="postId"
+              @handleSubmitNewComment="replyToComment"
+            />
           </a-list-item>
         </a-list>
       </a-col>
@@ -51,10 +55,8 @@
 <script>
 import NewCommentEditor from '@/components/NewCommentEditor.vue'
 import RootComment from '@/components/RootComment.vue'
-import moment from 'moment'
-import { replyToPost, listAllPostComments } from '@/api/comment'
-import { getAccountInfo } from '@/api/user'
-import { getAuthState } from '@/utils/auth'
+import { replyToPost, listAllPostComments, replyToComment } from '@/api/comment'
+import { mapActions, mapState } from 'vuex'
 
 export default {
   name: 'CommentClient',
@@ -70,15 +72,18 @@ export default {
   },
   created () {
     this.fetchComments()
-    this.fetchAuthenticatedStatus()
-    const vm = this
-    window.onfocus = function () {
-      vm.getAccountInfo()
-    }
+  },
+  computed: {
+    ...mapState({
+      id: state => state.id,
+      userName: state => state.name,
+      avatarUrl: state => state.avatarUrl,
+      siteUrl: state => state.siteUrl,
+      isAuthenticated: state => state.isAuthenticated
+    })
   },
   data () {
     return {
-      moment,
       loginModalVisible: false,
       rootComments: [],
       rootCommentsSpinning: true,
@@ -91,13 +96,7 @@ export default {
         hideOnSinglePage: true,
         pageSize: 10
       },
-      user: {
-        name: '',
-        link: '',
-        avatarUrl: ''
-      },
       sort: 'createdAt,DESC', // TODO: add sort condition,
-      isAuthenticated: false,
       replyEditorOptions: {
         submitting: false,
         visible: true,
@@ -107,26 +106,10 @@ export default {
       }
     }
   },
-  watch: {
-    user: function (val) {
-      // this.newCommentForm.name = val.username
-      // this.newCommentForm.link = val.link
-      // this.newCommentForm.avatar = val.avatarUrl
-      // this.newCommentForm.author = val.name
-    }
-  },
   methods: {
-    getAccountInfo () {
-      if (this.isAuthenticated) {
-        getAccountInfo().then(res => {
-          const info = res.data
-          this.user = { ...info }
-        })
-      }
-    },
-    handleSubmitUserProfile (e) {
-      e.preventDefault()
-    },
+    ...mapActions({
+      updateUserInfo: 'GetInfo'
+    }),
     fetchComments () {
       listAllPostComments(this.postId, this.pagination, this.sort).then(res => {
         this.rootComments = res.data.content
@@ -134,11 +117,11 @@ export default {
         this.pagination.total = res.data.totalElements
       })
     },
-    replyToPost (newCommentForm, options) {
+    replyToPost (replyToAuthorId, newCommentForm, options) {
       newCommentForm.validateFields((err, values) => {
         if (!err) {
           options.submitting = true
-          replyToPost(this.postId, values).then(res => {
+          replyToPost(this.postId, { replyToAuthorId, ...values }).then(res => {
             options.submitting = false
             if (res.code === 20000) {
               this.$message.success(res.message)
@@ -151,11 +134,32 @@ export default {
         }
       })
     },
-    fetchAuthenticatedStatus () {
-      this.isAuthenticated = getAuthState() && getAuthState() === 'true'
+    replyToComment (parentCommentId, replyToAuthorId, newCommentForm, options) {
+      newCommentForm.validateFields((err, values) => {
+        if (!err) {
+          options.submitting = true
+          replyToComment(this.postId, parentCommentId, { replyToAuthorId, ...values }).then(res => {
+            options.submitting = false
+            if (res.code === 20000) {
+              options.visible = false
+              this.$message.success(res.message)
+              newCommentForm.resetFields()
+              this.fetchComments()
+            } else {
+              this.$message.error(res.message)
+            }
+          })
+        }
+      })
     },
     handleSocialLoginButton () {
       this.loginModalVisible = true
+    },
+    requireToLogin () {
+      window.onfocus = function () {
+        this.loginModalVisible = false
+        window.location.reload()
+      }
     }
   }
 }

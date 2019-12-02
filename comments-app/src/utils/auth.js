@@ -8,3 +8,7 @@ export function getAuthState () {
 export function removeAuthCookie () {
   return Cookies.remove(AuthKey)
 }
+
+export function isAuthenticated () {
+  return Cookies.get(AuthKey) && Cookies.get(AuthKey) === 'true'
+}
