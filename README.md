@@ -1,5 +1,5 @@
 # Melody
-🎵 一款基于`Spring Boot`、`Vue`、`Thymeleaf`的前后台博客 Web 应用，小巧玲珑，满足个人博客发布和管理使用，值得一试。
+🎵 一款基于`Spring Boot`、`Vue`、`Thymeleaf`的前后台博客 Web 应用，小巧玲珑，满足个人博客日常的发布和管理使用，值得一试。
 
 # 技术栈
 
